@@ -4,7 +4,6 @@ import { useSession } from "@/lib/auth-client";
 import { UserProfile } from "@/components/auth/user-profile";
 import { Button } from "@/components/ui/button";
 import { Lock, BarChart3, FileText, Download, Users, TrendingUp } from "lucide-react";
-import { useDiagnostics } from "@/hooks/use-diagnostics";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,7 +16,6 @@ interface OverviewStats {
 
 export default function DashboardPage() {
   const { data: session, isPending } = useSession();
-  const { isAiReady, loading: diagnosticsLoading } = useDiagnostics();
   const router = useRouter();
   const [stats, setStats] = useState<OverviewStats | null>(null);
   const [loading, setLoading] = useState(false);
@@ -171,36 +169,25 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Map Poster Generator */}
-        <div className="p-6 border border-border rounded-lg hover:shadow-lg transition-shadow">
-          <h2 className="text-xl font-semibold mb-2">Map Poster Generator</h2>
-          <p className="text-muted-foreground mb-4">
-            Create beautiful custom map posters
-          </p>
-          <Button asChild className="w-full">
-            <Link href="/mpg-templates">Create Map Poster</Link>
-          </Button>
-        </div>
-
         {/* My Templates */}
         <div className="p-6 border border-border rounded-lg hover:shadow-lg transition-shadow">
           <h2 className="text-xl font-semibold mb-2">My Templates</h2>
           <p className="text-muted-foreground mb-4">
             View and manage your saved map templates
           </p>
-          <Button asChild variant="outline" className="w-full">
+          <Button asChild className="w-full">
             <Link href="/dashboard/my-templates">My Templates</Link>
           </Button>
         </div>
 
-        {/* Export History */}
+        {/* My Orders (Export History) */}
         <div className="p-6 border border-border rounded-lg hover:shadow-lg transition-shadow">
-          <h2 className="text-xl font-semibold mb-2">Export History</h2>
+          <h2 className="text-xl font-semibold mb-2">My Orders</h2>
           <p className="text-muted-foreground mb-4">
-            View your export history and downloads
+            View your order history and downloads
           </p>
           <Button asChild variant="outline" className="w-full">
-            <Link href="/dashboard/exports">View History</Link>
+            <Link href="/dashboard/exports">View Orders</Link>
           </Button>
         </div>
 
@@ -213,23 +200,6 @@ export default function DashboardPage() {
           <Button asChild variant="outline" className="w-full">
             <Link href="/dashboard/profile">Manage Profile</Link>
           </Button>
-        </div>
-
-        {/* AI Chat */}
-        <div className="p-6 border border-border rounded-lg hover:shadow-lg transition-shadow">
-          <h2 className="text-xl font-semibold mb-2">AI Chat</h2>
-          <p className="text-muted-foreground mb-4">
-            Start a conversation with AI
-          </p>
-          {(diagnosticsLoading || !isAiReady) ? (
-            <Button disabled={true} className="w-full">
-              Go to Chat
-            </Button>
-          ) : (
-            <Button asChild variant="outline" className="w-full">
-              <Link href="/chat">Go to Chat</Link>
-            </Button>
-          )}
         </div>
       </div>
     </div>

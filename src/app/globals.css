@@ -71,6 +71,22 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
+
+  /* Custom DERMIOT-inspired colors */
+  --sage-green: hsl(110, 20%, 55%);
+  --sage-green-dark: hsl(110, 25%, 45%);
+  --sage-green-light: hsl(110, 20%, 65%);
+  --warm-cream: hsl(40, 35%, 97%);
+  --soft-yellow: hsl(45, 80%, 70%);
+  --charcoal: hsl(0, 0%, 17%);
+  --medium-gray: hsl(0, 0%, 42%);
+  --off-white: hsl(40, 20%, 99%);
+
+  /* Hero gradient */
+  --hero-gradient: linear-gradient(to bottom right, var(--warm-cream), var(--off-white), hsl(110, 20%, 55%, 0.06));
+
+  /* How it works gradient */
+  --how-it-works-gradient: linear-gradient(to bottom, hsl(0, 0%, 98%), hsl(0, 0%, 95%), hsl(0, 0%, 98%));
 }
 
 
@@ -80,5 +96,34 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  .bg-hero-gradient {
+    background: var(--hero-gradient);
+  }
+
+  .text-sage-green {
+    color: var(--sage-green);
+  }
+
+  .text-charcoal {
+    color: var(--charcoal);
+  }
+
+  .text-medium-gray {
+    color: var(--medium-gray);
+  }
+
+  .font-playfair {
+    font-family: var(--font-playfair), 'Playfair Display', serif;
+  }
+
+  .font-playfair-italic {
+    font-family: var(--font-playfair), 'Playfair Display', serif;
+    font-style: italic;
+  }
+
+  .bg-how-it-works-gradient {
+    background: var(--how-it-works-gradient);
   }
 }

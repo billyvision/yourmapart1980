@@ -1,29 +1,28 @@
 import Link from "next/link";
+import Image from "next/image";
 import { UserProfile } from "@/components/auth/user-profile";
 import { MainNav } from "./main-nav";
 import { MobileNav } from "./mobile-nav";
-import { Map } from "lucide-react";
 
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
-          >
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10">
-              <Map className="h-5 w-5" />
-            </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              YourMapArt
-            </span>
+        <div className="flex items-center justify-between gap-4">
+          {/* Logo - Left */}
+          <Link href="/" className="flex-shrink-0">
+            <Image
+              src="/logo.png"
+              alt="YourMapArt Logo"
+              width={200}
+              height={134}
+              className="h-12 w-auto md:h-14"
+              priority
+            />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
+          {/* Desktop Navigation - Center */}
+          <div className="hidden md:flex items-center gap-6 flex-1 justify-center">
             <MainNav />
           </div>
 
