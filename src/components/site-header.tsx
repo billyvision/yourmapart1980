@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { UserProfile } from "@/components/auth/user-profile";
-import { ModeToggle } from "./ui/mode-toggle";
 import { MainNav } from "./main-nav";
 import { MobileNav } from "./mobile-nav";
 import { Map } from "lucide-react";
@@ -32,7 +31,6 @@ export function SiteHeader() {
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-4">
               <UserProfile />
-              <ModeToggle />
             </div>
             {/* Mobile Menu */}
             <div className="md:hidden">

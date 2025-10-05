@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Home, Map, Palette, LogIn, LayoutDashboard, Shield, Menu, X } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
-import { ModeToggle } from "./ui/mode-toggle";
 import { UserProfile } from "./auth/user-profile";
 
 export function MobileNav() {
@@ -84,14 +83,6 @@ export function MobileNav() {
               );
             })}
           </nav>
-
-          {/* Theme Toggle */}
-          <div className="border-t pt-4">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Theme</span>
-              <ModeToggle />
-            </div>
-          </div>
         </div>
       </SheetContent>
     </Sheet>
