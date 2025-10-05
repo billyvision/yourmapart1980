@@ -19,7 +19,7 @@ export default function Home() {
                 Create Beautiful
               </h1>
               <h2 className="text-4xl tracking-tight font-bold sm:text-5xl md:text-6xl mt-2 font-playfair">
-                <span className="text-sage-green">Map Art</span>
+                <span className="text-black">Map Art</span>
               </h2>
               <h3 className="text-3xl sm:text-4xl md:text-5xl mt-2 text-charcoal/80 font-playfair-italic">
                 that tells your story
@@ -68,9 +68,9 @@ export default function Home() {
         {/* Decorative Divider */}
         <div className="flex justify-center py-4">
           <div className="flex space-x-2">
-            <div className="w-2 h-2 bg-sage-green/30 rounded-full"></div>
-            <div className="w-2 h-2 bg-sage-green/30 rounded-full"></div>
-            <div className="w-2 h-2 bg-sage-green/30 rounded-full"></div>
+            <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+            <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+            <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
           </div>
         </div>
       </section>
