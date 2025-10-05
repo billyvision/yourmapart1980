@@ -1,0 +1,91 @@
+{
+  "id": "template-9",
+  "name": "Love always win - 520 Chestnut Street, Philadelphia",
+  "city": "520 Chestnut Street, Philadelphia",
+  "style": "avocado",
+  "hidden": false,
+  "thumbnail": "/template-previews/template-9.jpg",
+  "jsonData": {
+    "version": "1.0",
+    "created": "2025-09-03T22:43:53.156Z",
+    "application": "YourMapArt",
+    "snapshot": {
+      "location": {
+        "city": "520 Chestnut Street, Philadelphia",
+        "lat": 39.9488873,
+        "lng": -75.150026,
+        "country": "United States",
+        "zoom": 12,
+        "mapOffsetX": 40,
+        "mapOffsetY": 0
+      },
+      "text": {
+        "headline": {
+          "text": "love always win",
+          "font": "Raleway",
+          "size": "M",
+          "allCaps": true
+        },
+        "city": {
+          "show": true,
+          "font": "playfair",
+          "size": "M"
+        },
+        "coordinates": {
+          "show": false,
+          "font": "roboto",
+          "size": "M"
+        },
+        "country": {
+          "show": true,
+          "font": "roboto",
+          "size": "M"
+        },
+        "custom": {
+          "text": "Jack and Jill",
+          "font": "Sacramento",
+          "size": "L"
+        },
+        "typography": {
+          "letterSpacing": 4.5,
+          "textSpacing": 1.2
+        }
+      },
+      "style": {
+        "mapStyle": "avocado",
+        "frame": {
+          "style": "heart",
+          "showBorder": true
+        },
+        "glow": {
+          "enabled": true,
+          "style": "forestGreen",
+          "intensity": 0.6
+        },
+        "background": {
+          "color": "#f4f7ea",
+          "useCustom": false,
+          "textColor": "#3a4a2e"
+        },
+        "features": {
+          "labels": true,
+          "buildings": true,
+          "parks": true,
+          "water": true,
+          "roads": true
+        },
+        "pin": {
+          "show": false,
+          "style": "home",
+          "color": "#FF6B6B",
+          "size": "M"
+        }
+      },
+      "export": {
+        "format": "png",
+        "size": "A4",
+        "quality": 0.95
+      }
+    }
+  }
+}

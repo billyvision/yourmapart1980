@@ -1,0 +1,91 @@
+{
+  "id": "template-10",
+  "name": "11-21-1980 - Paris",
+  "city": "Paris",
+  "style": "mondrian",
+  "hidden": false,
+  "thumbnail": "/template-previews/template-10.jpg",
+  "jsonData": {
+    "version": "1.0",
+    "created": "2025-09-04T22:33:02.708Z",
+    "application": "YourMapArt",
+    "snapshot": {
+      "location": {
+        "city": "Paris",
+        "lat": 48.8566,
+        "lng": 2.3522,
+        "country": "France",
+        "zoom": 10,
+        "mapOffsetX": 0,
+        "mapOffsetY": 0
+      },
+      "text": {
+        "headline": {
+          "text": "11-21-1980",
+          "font": "Playfair Display",
+          "size": "M",
+          "allCaps": true
+        },
+        "city": {
+          "show": true,
+          "font": "playfair",
+          "size": "M"
+        },
+        "coordinates": {
+          "show": true,
+          "font": "roboto",
+          "size": "M"
+        },
+        "country": {
+          "show": true,
+          "font": "roboto",
+          "size": "M"
+        },
+        "custom": {
+          "text": "Jasmine ❤️ Jack",
+          "font": "Alex Brush",
+          "size": "L"
+        },
+        "typography": {
+          "letterSpacing": 4.5,
+          "textSpacing": 1.2
+        }
+      },
+      "style": {
+        "mapStyle": "mondrian",
+        "frame": {
+          "style": "square",
+          "showBorder": false
+        },
+        "glow": {
+          "enabled": false,
+          "style": "lavender",
+          "intensity": 0.4
+        },
+        "background": {
+          "color": "#e8f4f0",
+          "useCustom": true,
+          "textColor": "#333333"
+        },
+        "features": {
+          "labels": false,
+          "buildings": true,
+          "parks": true,
+          "water": true,
+          "roads": true
+        },
+        "pin": {
+          "show": false,
+          "style": "home",
+          "color": "#FF6B6B",
+          "size": "M"
+        }
+      },
+      "export": {
+        "format": "png",
+        "size": "A4",
+        "quality": 0.95
+      }
+    }
+  }
+}

@@ -1,6 +1,11 @@
+'use client'
+
 import { Button } from "@/components/ui/button";
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <main className="flex-1 container mx-auto px-4 py-12">
       <div className="max-w-6xl mx-auto">
@@ -23,8 +28,8 @@ export default function Home() {
                 Transform your favorite locations into beautiful, personalized artwork
               </p>
               <div className="pt-8">
-                <Button size="lg">
-                  Get Started
+                <Button size="lg" onClick={() => router.push('/mpg-templates')}>
+                  Create Your Map Art
                 </Button>
               </div>
             </div>

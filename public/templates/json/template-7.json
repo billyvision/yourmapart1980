@@ -1,0 +1,91 @@
+{
+  "id": "template-7",
+  "name": "singapore-beige",
+  "city": "Singapore",
+  "style": "storm",
+  "hidden": false,
+  "thumbnail": "/template-previews/template-7.jpg",
+  "jsonData": {
+    "version": "1.0",
+    "created": "2025-09-03T04:04:26.773Z",
+    "application": "YourMapArt",
+    "snapshot": {
+      "location": {
+        "city": "Singapore",
+        "lat": 1.3521,
+        "lng": 103.8198,
+        "country": "Singapore",
+        "zoom": 13,
+        "mapOffsetX": 0,
+        "mapOffsetY": 0
+      },
+      "text": {
+        "headline": {
+          "text": "",
+          "font": "Montserrat",
+          "size": "M",
+          "allCaps": true
+        },
+        "city": {
+          "show": true,
+          "font": "opensans",
+          "size": "L"
+        },
+        "coordinates": {
+          "show": false,
+          "font": "roboto",
+          "size": "M"
+        },
+        "country": {
+          "show": false,
+          "font": "roboto",
+          "size": "M"
+        },
+        "custom": {
+          "text": "",
+          "font": "Montserrat",
+          "size": "M"
+        },
+        "typography": {
+          "letterSpacing": 8,
+          "textSpacing": 1.2
+        }
+      },
+      "style": {
+        "mapStyle": "storm",
+        "frame": {
+          "style": "square",
+          "showBorder": false
+        },
+        "glow": {
+          "enabled": false,
+          "style": "silverGrey",
+          "intensity": 0.4
+        },
+        "background": {
+          "color": "#e8d7b3",
+          "useCustom": true,
+          "textColor": "#333333"
+        },
+        "features": {
+          "labels": false,
+          "buildings": false,
+          "parks": false,
+          "water": true,
+          "roads": true
+        },
+        "pin": {
+          "show": true,
+          "style": "heart",
+          "color": "#FFD700",
+          "size": "L"
+        }
+      },
+      "export": {
+        "format": "png",
+        "size": "A4",
+        "quality": 0.95
+      }
+    }
+  }
+}

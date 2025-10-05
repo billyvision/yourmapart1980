@@ -1,0 +1,91 @@
+{
+  "id": "template-8",
+  "name": "red-madness",
+  "city": "Barcelona",
+  "style": "crimsonSteel",
+  "hidden": false,
+  "thumbnail": "/template-previews/template-8.jpg",
+  "jsonData": {
+    "version": "1.0",
+    "created": "2025-09-03T22:23:33.832Z",
+    "application": "YourMapArt",
+    "snapshot": {
+      "location": {
+        "city": "Barcelona",
+        "lat": 41.3851,
+        "lng": 2.1734,
+        "country": "Spain",
+        "zoom": 12,
+        "mapOffsetX": 0,
+        "mapOffsetY": 0
+      },
+      "text": {
+        "headline": {
+          "text": "",
+          "font": "Montserrat",
+          "size": "M",
+          "allCaps": true
+        },
+        "city": {
+          "show": true,
+          "font": "opensans",
+          "size": "L"
+        },
+        "coordinates": {
+          "show": false,
+          "font": "roboto",
+          "size": "M"
+        },
+        "country": {
+          "show": false,
+          "font": "roboto",
+          "size": "M"
+        },
+        "custom": {
+          "text": "",
+          "font": "Montserrat",
+          "size": "M"
+        },
+        "typography": {
+          "letterSpacing": 8,
+          "textSpacing": 1.2
+        }
+      },
+      "style": {
+        "mapStyle": "crimsonSteel",
+        "frame": {
+          "style": "square",
+          "showBorder": false
+        },
+        "glow": {
+          "enabled": false,
+          "style": "silverGrey",
+          "intensity": 0.4
+        },
+        "background": {
+          "color": "#c73e3a",
+          "useCustom": true,
+          "textColor": "#FFFFFF"
+        },
+        "features": {
+          "labels": false,
+          "buildings": false,
+          "parks": false,
+          "water": false,
+          "roads": true
+        },
+        "pin": {
+          "show": false,
+          "style": "basic",
+          "color": "#2C3E50",
+          "size": "L"
+        }
+      },
+      "export": {
+        "format": "png",
+        "size": "A4",
+        "quality": 0.95
+      }
+    }
+  }
+}

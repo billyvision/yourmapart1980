@@ -1,0 +1,91 @@
+/* Premium Glow Button Styles for Map Poster Generator */
+
+/* Base glow button styling */
+.mpg-glow-button {
+  position: relative;
+  overflow: visible;
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+/* Active glow button with depth effect */
+.mpg-glow-button.active {
+  transform: translateZ(2px);
+}
+
+/* Glow effect intensifier for webkit browsers */
+@supports (-webkit-appearance: none) {
+  .mpg-glow-button {
+    -webkit-transform-style: preserve-3d;
+  }
+  
+  .mpg-glow-button.active {
+    -webkit-transform: translateZ(2px);
+  }
+}
+
+/* Pulsing animation for selected glow */
+@keyframes glowPulse {
+  0% {
+    filter: brightness(1.1);
+  }
+  50% {
+    filter: brightness(1.2);
+  }
+  100% {
+    filter: brightness(1.1);
+  }
+}
+
+.mpg-glow-button.active {
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+/* Enhanced glow effects for each color */
+.glow-silver-grey {
+  box-shadow: 0 0 25px #c0c0c0, 0 0 50px #a8a8a8, 0 0 75px rgba(192, 192, 192, 0.8);
+}
+
+.glow-turquoise {
+  box-shadow: 0 0 20px #40e0d0, 0 0 40px #40e0d0, 0 0 60px #48d1cc;
+}
+
+.glow-lavender {
+  box-shadow: 0 0 25px #e6e6fa, 0 0 50px #dda0dd, 0 0 75px #b19cd9;
+}
+
+.glow-royal-blue {
+  box-shadow: 0 0 30px #4169e1, 0 0 60px #4169e1, 0 0 90px rgba(65, 105, 225, 0.8);
+}
+
+.glow-forest-green {
+  box-shadow: 0 0 25px #228b22, 0 0 50px #228b22, 0 0 75px #2e8b57;
+}
+
+.glow-amber {
+  box-shadow: 0 0 20px #ffbf00, 0 0 40px #ffc107, 0 0 60px #ffb300;
+}
+
+.glow-rose-pink {
+  box-shadow: 0 0 30px #ff69b4, 0 0 60px #ff1493, 0 0 90px rgba(255, 105, 180, 0.8);
+}
+
+.glow-coral {
+  box-shadow: 0 0 25px #ff7f50, 0 0 50px #ff6347, 0 0 75px rgba(255, 127, 80, 0.8);
+}
+
+.glow-deep-violet {
+  box-shadow: 0 0 30px #9400d3, 0 0 60px #8b008b, 0 0 90px rgba(148, 0, 211, 0.8);
+}
+
+.glow-teal {
+  box-shadow: 0 0 25px #008080, 0 0 50px #20b2aa, 0 0 75px rgba(0, 128, 128, 0.8);
+}
+
+/* Dark background container for better glow visibility */
+.mpg-glow-container {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  backdrop-filter: blur(10px);
+}

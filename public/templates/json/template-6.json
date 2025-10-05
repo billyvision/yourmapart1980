@@ -1,0 +1,95 @@
+{
+  "id": "template-6",
+  "name": "yellow-dreams",
+  "city": "Las Vegas",
+  "style": "neon",
+  "hidden": false,
+  "thumbnail": "/template-previews/template-6.jpg",
+  "jsonData": {
+    "version": "1.0",
+    "created": "2025-09-06T13:29:11.690Z",
+    "application": "YourMapArt",
+    "snapshot": {
+      "location": {
+        "city": "Las Vegas",
+        "lat": 36.1674263,
+        "lng": -115.1484131,
+        "country": "United States",
+        "zoom": 10,
+        "mapOffsetX": 0,
+        "mapOffsetY": 0
+      },
+      "text": {
+        "headline": {
+          "text": "",
+          "font": "Montserrat",
+          "size": "M",
+          "allCaps": true
+        },
+        "city": {
+          "show": true,
+          "font": "playfair",
+          "size": "M"
+        },
+        "coordinates": {
+          "show": true,
+          "font": "roboto",
+          "size": "M"
+        },
+        "country": {
+          "show": true,
+          "font": "roboto",
+          "size": "M"
+        },
+        "custom": {
+          "text": "",
+          "font": "Alex Brush",
+          "size": "L"
+        },
+        "typography": {
+          "letterSpacing": 4.5,
+          "textSpacing": 1.2
+        }
+      },
+      "style": {
+        "mapStyle": "neon",
+        "frame": {
+          "style": "square",
+          "showBorder": false
+        },
+        "glow": {
+          "enabled": false,
+          "style": "lavender",
+          "intensity": 0.4
+        },
+        "background": {
+          "color": "#ffeb3b",
+          "useCustom": true,
+          "textColor": "#333333"
+        },
+        "features": {
+          "labels": false,
+          "buildings": true,
+          "parks": false,
+          "water": true,
+          "roads": true
+        },
+        "pin": {
+          "show": false,
+          "style": "home",
+          "color": "#FF6B6B",
+          "size": "M"
+        },
+        "fontColor": {
+          "useCustom": false,
+          "color": "#333333"
+        }
+      },
+      "export": {
+        "format": "png",
+        "size": "A4",
+        "quality": 0.95
+      }
+    }
+  }
+}

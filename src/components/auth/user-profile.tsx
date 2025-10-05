@@ -37,6 +37,9 @@ export function UserProfile() {
     router.refresh();
   };
 
+  // Everyone goes to /dashboard - it shows different content based on role
+  const dashboardUrl = '/dashboard';
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -68,9 +71,9 @@ export function UserProfile() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/profile" className="flex items-center">
+          <Link href={dashboardUrl} className="flex items-center">
             <User className="mr-2 h-4 w-4" />
-            Your Profile
+            Dashboard
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />

@@ -1,0 +1,91 @@
+{
+  "id": "template-5",
+  "name": "pink",
+  "city": "Sydney",
+  "style": "purpleCoast",
+  "hidden": false,
+  "thumbnail": "/template-previews/template-5.jpg",
+  "jsonData": {
+    "version": "1.0",
+    "created": "2025-09-03T03:22:57.962Z",
+    "application": "YourMapArt",
+    "snapshot": {
+      "location": {
+        "city": "Sydney",
+        "lat": -33.8688,
+        "lng": 151.2093,
+        "country": "Australia",
+        "zoom": 13,
+        "mapOffsetX": 0,
+        "mapOffsetY": 0
+      },
+      "text": {
+        "headline": {
+          "text": "",
+          "font": "Montserrat",
+          "size": "M",
+          "allCaps": true
+        },
+        "city": {
+          "show": true,
+          "font": "playfair",
+          "size": "M"
+        },
+        "coordinates": {
+          "show": true,
+          "font": "roboto",
+          "size": "M"
+        },
+        "country": {
+          "show": true,
+          "font": "roboto",
+          "size": "M"
+        },
+        "custom": {
+          "text": "James and Zoyah",
+          "font": "Alex Brush",
+          "size": "L"
+        },
+        "typography": {
+          "letterSpacing": 8,
+          "textSpacing": 1.2
+        }
+      },
+      "style": {
+        "mapStyle": "purpleCoast",
+        "frame": {
+          "style": "circle",
+          "showBorder": false
+        },
+        "glow": {
+          "enabled": true,
+          "style": "lavender",
+          "intensity": 0.4
+        },
+        "background": {
+          "color": "#ffffff",
+          "useCustom": false,
+          "textColor": "#333333"
+        },
+        "features": {
+          "labels": false,
+          "buildings": false,
+          "parks": false,
+          "water": false,
+          "roads": true
+        },
+        "pin": {
+          "show": false,
+          "style": "home",
+          "color": "#FF6B6B",
+          "size": "M"
+        }
+      },
+      "export": {
+        "format": "png",
+        "size": "A4",
+        "quality": 0.95
+      }
+    }
+  }
+}
