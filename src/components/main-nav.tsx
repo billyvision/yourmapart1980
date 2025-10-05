@@ -45,10 +45,10 @@ export function MainNav() {
             key={item.href}
             href={item.href}
             className={cn(
-              "flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary",
+              "flex items-center gap-2 text-sm font-medium transition-colors hover:text-gray-300",
               isActive
-                ? "text-primary"
-                : "text-muted-foreground"
+                ? "text-white"
+                : "text-gray-400"
             )}
           >
             <Icon className="h-4 w-4" />

@@ -112,7 +112,7 @@ export function MPGBasicEditor({ templateId }: MPGBasicEditorProps) {
         {/* Simple Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Wand2 className="w-8 h-8 text-sage-green" />
+            <Wand2 className="w-8 h-8 text-black" />
             <h1 className="text-3xl md:text-4xl font-heading font-bold text-charcoal">
               Personalize Your Map
             </h1>
@@ -124,17 +124,49 @@ export function MPGBasicEditor({ templateId }: MPGBasicEditorProps) {
 
         {/* Progress Indicator */}
         <div ref={progressIndicatorRef} className="flex justify-center mb-8">
-          <div className="flex items-center gap-4">
-            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${
-              currentPage >= 1 ? 'bg-sage-green text-white' : 'bg-gray-200 text-gray-500'
-            }`}>
-              1
-            </div>
-            <div className={`w-20 h-1 ${currentPage >= 2 ? 'bg-sage-green' : 'bg-gray-200'}`} />
-            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${
-              currentPage >= 2 ? 'bg-sage-green text-white' : 'bg-gray-200 text-gray-500'
-            }`}>
-              2
+          <div className="bg-gradient-to-br from-gray-50/80 to-white/80 backdrop-blur-sm rounded-3xl p-6 border border-gray-200/50 shadow-lg">
+            <div className="flex items-center gap-6">
+              <div className="flex flex-col items-center group">
+                <div className={`flex items-center justify-center w-14 h-14 rounded-full transition-all duration-300 backdrop-blur-md border-2 ${
+                  currentPage >= 1
+                    ? 'bg-gradient-to-br from-gray-900 to-black text-white border-black shadow-xl scale-110'
+                    : 'bg-white/70 border-gray-300 text-gray-500 shadow-md'
+                }`}>
+                  <span className="text-lg font-bold">1</span>
+                  {currentPage === 1 && (
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent animate-pulse" />
+                  )}
+                </div>
+                <span className={`mt-2 text-xs font-semibold ${
+                  currentPage >= 1 ? 'text-black' : 'text-gray-400'
+                }`}>
+                  Personalize
+                </span>
+              </div>
+
+              <div className={`w-24 h-1 rounded-full transition-all duration-500 ${
+                currentPage >= 2
+                  ? 'bg-gradient-to-r from-gray-900 to-black shadow-md'
+                  : 'bg-gray-200'
+              }`} />
+
+              <div className="flex flex-col items-center group">
+                <div className={`flex items-center justify-center w-14 h-14 rounded-full transition-all duration-300 backdrop-blur-md border-2 ${
+                  currentPage >= 2
+                    ? 'bg-gradient-to-br from-gray-900 to-black text-white border-black shadow-xl scale-110'
+                    : 'bg-white/70 border-gray-300 text-gray-500 shadow-md'
+                }`}>
+                  <span className="text-lg font-bold">2</span>
+                  {currentPage === 2 && (
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent animate-pulse" />
+                  )}
+                </div>
+                <span className={`mt-2 text-xs font-semibold ${
+                  currentPage >= 2 ? 'text-black' : 'text-gray-400'
+                }`}>
+                  Download
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -169,13 +201,13 @@ export function MPGBasicEditor({ templateId }: MPGBasicEditorProps) {
                 {currentPage === 1 ? (
                   <Button
                     onClick={handleNext}
-                    className="flex items-center gap-2 bg-sage-green hover:bg-sage-green-dark text-white"
+                    className="flex items-center gap-2 bg-gradient-to-r from-gray-900 to-black hover:from-gray-800 hover:to-gray-900 text-white shadow-md hover:shadow-lg transition-all"
                   >
                     Next
                     <ChevronRight className="w-4 h-4" />
                   </Button>
                 ) : (
-                  <div /> 
+                  <div />
                 )}
               </div>
             </div>

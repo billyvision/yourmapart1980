@@ -185,7 +185,7 @@ export function MPGBuilder({ templateId }: MPGBuilderProps) {
               <Button
                 onClick={handleNext}
                 disabled={currentStep === 4 || !canProceed()}
-                className="flex items-center gap-2 bg-sage-green hover:bg-sage-green-dark text-white"
+                className="flex items-center gap-2 bg-gradient-to-r from-gray-900 to-black hover:from-gray-800 hover:to-gray-900 text-white shadow-md hover:shadow-lg transition-all"
               >
                 <span>{currentStep === 4 ? 'Complete' : 'Next'}</span>
                 <ChevronRight className="w-4 h-4" />
@@ -224,11 +224,11 @@ export function MPGBuilder({ templateId }: MPGBuilderProps) {
           <div className="lg:hidden fixed bottom-6 right-6 z-50">
             <Button
               onClick={() => setShowMobilePreview(true)}
-              className="w-16 h-16 rounded-full bg-sage-green hover:bg-sage-green-dark text-white shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-200"
+              className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-900 to-black hover:from-gray-800 hover:to-gray-900 text-white shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-200"
             >
               <Eye className="w-6 h-6" />
             </Button>
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-pulse" />
+            <div className="absolute -top-1 -right-1 w-3 h-3 bg-gray-900 rounded-full animate-pulse" />
           </div>
         )}
 
