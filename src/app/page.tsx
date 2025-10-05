@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
 import HowItWorks from "@/components/how-it-works";
+import FAQ from "@/components/faq";
 
 export default function Home() {
   const router = useRouter();
@@ -76,6 +77,9 @@ export default function Home() {
 
       {/* How It Works Section */}
       <HowItWorks />
+
+      {/* FAQ Section */}
+      <FAQ />
     </main>
   );
 }

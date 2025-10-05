@@ -87,6 +87,9 @@
 
   /* How it works gradient */
   --how-it-works-gradient: linear-gradient(to bottom, hsl(0, 0%, 98%), hsl(0, 0%, 95%), hsl(0, 0%, 98%));
+
+  /* FAQ gradient */
+  --faq-gradient: linear-gradient(to bottom, transparent, hsl(0, 0%, 96%), transparent);
 }
 
 
@@ -125,5 +128,9 @@
 
   .bg-how-it-works-gradient {
     background: var(--how-it-works-gradient);
+  }
+
+  .bg-faq-gradient {
+    background: var(--faq-gradient);
   }
 }

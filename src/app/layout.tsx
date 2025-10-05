@@ -22,9 +22,9 @@ const playfairDisplay = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Agentic Coding Boilerplate",
+  title: "Your Map Art - Create Beautiful Personalized Map Posters",
   description:
-    "Complete agentic coding boilerplate with authentication, database, AI integration, and modern tooling - perfect for building AI-powered applications and autonomous agents by Leon van Zyl",
+    "Transform your favorite locations into stunning personalized map art. Create custom map posters with beautiful designs, colors, and styles. Perfect for anniversaries, new homes, or celebrating special places.",
 };
 
 export default function RootLayout({
