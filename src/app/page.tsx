@@ -4,17 +4,95 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
 import HowItWorks from "@/components/how-it-works";
 import FAQ from "@/components/faq";
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function Home() {
   const router = useRouter();
   const wallsVideoRef = useRef<HTMLVideoElement>(null);
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [touchEndX, setTouchEndX] = useState(0);
+
+  const testimonials = [
+    {
+      name: "Sarah Mitchell",
+      title: "Perfect Anniversary Gift",
+      review: "Created a beautiful map poster of where we got engaged. The quality is outstanding and it's now the centerpiece of our living room. Everyone asks about it!",
+      imageBase: "/testimonials/testimonial4.jpg"
+    },
+    {
+      name: "Marcus Johnson",
+      title: "Cherished Memories",
+      review: "Used this to commemorate our family's journey - from where we were born to where we live now. The map detail is incredible and the customization options made it truly personal.",
+      imageBase: "/testimonials/testimonial2.png"
+    },
+    {
+      name: "Maria Thompson",
+      title: "Amazing Quality",
+      review: "Ordered a map of our first home together. The print quality exceeded my expectations and arrived beautifully packaged. The design is so elegant and meaningful.",
+      imageBase: "/testimonials/testimonial3.png"
+    },
+    {
+      name: "David Chen",
+      title: "Easy to Use",
+      review: "I'm not tech-savvy but this tool made it incredibly easy to create something special. The map preview feature is fantastic - I could see exactly how it would look before ordering.",
+      imageBase: "/testimonials/testimonial5.jpeg"
+    },
+    {
+      name: "Lisa Parker",
+      title: "Unique Wall Art",
+      review: "Love how I could customize every aspect - from the map style to the colors and text. The minimalist black and white design looks stunning in our modern home. Fast shipping too!",
+      imageBase: "/testimonials/testimonial1.png"
+    }
+  ];
 
   useEffect(() => {
     if (wallsVideoRef.current) {
       wallsVideoRef.current.playbackRate = 0.5;
     }
   }, []);
+
+  // Testimonials auto-rotation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [testimonials.length]);
+
+  // Testimonial navigation functions
+  const nextTestimonial = () => {
+    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const prevTestimonial = () => {
+    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  // Touch handlers for testimonials
+  const handleTestimonialTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.targetTouches[0].clientX);
+  };
+
+  const handleTestimonialTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.targetTouches[0].clientX);
+  };
+
+  const handleTestimonialTouchEnd = () => {
+    if (!touchStartX || !touchEndX) return;
+
+    const distance = touchStartX - touchEndX;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      nextTestimonial();
+    }
+    if (isRightSwipe) {
+      prevTestimonial();
+    }
+  };
 
   return (
     <main className="flex-1">
@@ -160,6 +238,166 @@ export default function Home() {
                 <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-gray-200/30 rounded-full blur-2xl"></div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="mt-12 py-16 bg-gradient-to-b from-transparent via-gray-50 to-transparent">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-black mb-2 font-playfair">What Our Customers Say</h2>
+            <p className="text-lg text-medium-gray max-w-2xl mx-auto">Join thousands of happy customers who've created meaningful map art</p>
+          </div>
+
+          <div className="relative max-w-6xl mx-auto">
+            {/* Desktop View - 3 Cards */}
+            <div className="hidden md:block">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {[0, 1, 2].map((index) => {
+                  const testimonialIndex = (currentTestimonial + index) % testimonials.length;
+                  const testimonial = testimonials[testimonialIndex];
+                  return (
+                    <div key={testimonialIndex} className="bg-white rounded-2xl shadow-sm hover:shadow-xl p-6 transition-all duration-300 border border-gray-100">
+                      {/* Name and Picture at Top */}
+                      <div className="flex items-center space-x-3 mb-4">
+                        <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center border-2 border-gray-200 bg-gray-100 relative">
+                          <img
+                            src={testimonial.imageBase}
+                            alt={`${testimonial.name} headshot`}
+                            className="w-full h-full object-cover grayscale"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                              const fallback = target.parentElement?.querySelector('.fallback-initial') as HTMLElement;
+                              if (fallback) {
+                                fallback.style.display = 'flex';
+                                fallback.style.opacity = '1';
+                              }
+                            }}
+                          />
+                          <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center text-white font-bold fallback-initial absolute inset-0 opacity-0">
+                            {testimonial.name.charAt(0)}
+                          </div>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-charcoal font-playfair">{testimonial.name}</p>
+                        </div>
+                      </div>
+
+                      {/* 5 Stars Below Name/Picture */}
+                      <div className="flex gap-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <div key={i} className="w-6 h-4 bg-gradient-to-r from-gray-800 to-black rounded-sm flex items-center justify-center shadow-sm">
+                            <span className="text-white text-xs font-bold">★</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Title */}
+                      <p className="text-sm text-medium-gray font-medium mb-4">{testimonial.title}</p>
+
+                      {/* Testimonial Text */}
+                      <p className="text-medium-gray leading-relaxed italic">"{testimonial.review}"</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Mobile View - 1 Card with Swipe */}
+            <div className="md:hidden">
+              <div
+                className="overflow-hidden"
+                onTouchStart={handleTestimonialTouchStart}
+                onTouchMove={handleTestimonialTouchMove}
+                onTouchEnd={handleTestimonialTouchEnd}
+              >
+                <div
+                  className="flex transition-transform duration-300 ease-out"
+                  style={{ transform: `translateX(-${currentTestimonial * 100}%)` }}
+                >
+                  {testimonials.map((testimonial, index) => (
+                    <div key={index} className="w-full flex-shrink-0 px-4">
+                      <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+                        {/* Name and Picture at Top */}
+                        <div className="flex items-center space-x-3 mb-4">
+                          <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center border-2 border-gray-200 bg-gray-100 relative">
+                            <img
+                              src={testimonial.imageBase}
+                              alt={`${testimonial.name} headshot`}
+                              className="w-full h-full object-cover grayscale"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = 'none';
+                                const fallback = target.parentElement?.querySelector('.fallback-initial') as HTMLElement;
+                                if (fallback) {
+                                  fallback.style.display = 'flex';
+                                  fallback.style.opacity = '1';
+                                }
+                              }}
+                            />
+                            <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center text-white font-bold fallback-initial absolute inset-0 opacity-0">
+                              {testimonial.name.charAt(0)}
+                            </div>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-charcoal font-playfair">{testimonial.name}</p>
+                          </div>
+                        </div>
+
+                        {/* 5 Stars Below Name/Picture */}
+                        <div className="flex gap-1 mb-4">
+                          {[...Array(5)].map((_, i) => (
+                            <div key={i} className="w-6 h-4 bg-gradient-to-r from-gray-800 to-black rounded-sm flex items-center justify-center shadow-sm">
+                              <span className="text-white text-xs font-bold">★</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Title */}
+                        <p className="text-sm text-medium-gray font-medium mb-4">{testimonial.title}</p>
+
+                        {/* Testimonial Text */}
+                        <p className="text-medium-gray leading-relaxed italic">"{testimonial.review}"</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation Arrows */}
+            <button
+              onClick={prevTestimonial}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white hover:bg-gray-50 rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-200 z-10"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft className="w-5 h-5 text-black" />
+            </button>
+            <button
+              onClick={nextTestimonial}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white hover:bg-gray-50 rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-200 z-10"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight className="w-5 h-5 text-black" />
+            </button>
+          </div>
+
+          {/* Dot Indicators */}
+          <div className="flex justify-center mt-8 space-x-2">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentTestimonial(index)}
+                className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                  index === currentTestimonial
+                    ? 'bg-black w-8'
+                    : 'bg-gray-300 hover:bg-gray-400'
+                }`}
+                aria-label={`Go to testimonial ${index + 1}`}
+              />
+            ))}
           </div>
         </div>
       </section>
