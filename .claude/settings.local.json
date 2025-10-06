@@ -38,7 +38,8 @@
       "Bash(npx tsx:*)",
       "Bash(source .env)",
       "Bash(identify:*)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "Bash(ffprobe:*)"
     ],
     "additionalDirectories": [
       "C:\\c\\Projects\\nextjs-better-auth-postgresql-starter-kit"

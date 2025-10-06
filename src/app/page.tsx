@@ -62,6 +62,29 @@ export default function Home() {
                 </div>
               </div>
             </div>
+
+            {/* Right Video */}
+            <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
+              <div className="relative mx-auto w-full">
+                <div className="bg-white/10 p-8 lg:p-12 rounded-3xl">
+                  <div className="relative rounded-2xl overflow-hidden shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                    <video
+                      className="w-full h-auto"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      disablePictureInPicture
+                      controlsList="nodownload nofullscreen noremoteplayback"
+                      onContextMenu={(e) => e.preventDefault()}
+                    >
+                      <source src="/videos/hero-video.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
