@@ -4,9 +4,17 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
 import HowItWorks from "@/components/how-it-works";
 import FAQ from "@/components/faq";
+import { useRef, useEffect } from 'react';
 
 export default function Home() {
   const router = useRouter();
+  const wallsVideoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (wallsVideoRef.current) {
+      wallsVideoRef.current.playbackRate = 0.5;
+    }
+  }, []);
 
   return (
     <main className="flex-1">
@@ -100,6 +108,61 @@ export default function Home() {
 
       {/* How It Works Section */}
       <HowItWorks />
+
+      {/* Maps that Matter Section */}
+      <section className="mt-12 py-12 bg-gradient-to-br from-gray-50 via-white to-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left content - Text */}
+            <div className="order-2 lg:order-1">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl text-charcoal/80 font-playfair-italic mb-4 leading-tight">
+                maps that matter
+              </h2>
+              <p className="text-lg text-medium-gray mb-4 leading-relaxed">
+                Transform your most meaningful locations into stunning personalized map art. Whether it's where you met, your first home, favorite vacation spot, or any place that holds special memories - create unique wall décor that tells your geographical story.
+              </p>
+              <p className="text-lg text-medium-gray mb-6 leading-relaxed">
+                Each piece is carefully crafted to showcase the places that matter most to you, creating a conversation starter that's both beautiful and deeply personal.
+              </p>
+              <Button
+                size="lg"
+                onClick={() => router.push('/mpg-templates')}
+                className="text-lg px-8 py-3"
+              >
+                Start Creating Your Map Story
+              </Button>
+            </div>
+
+            {/* Right content - Video */}
+            <div className="order-1 lg:order-2">
+              <div className="relative max-w-2xl mx-auto">
+                <div className="bg-gray-100/50 p-6 rounded-3xl">
+                  <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3]">
+                    <video
+                      ref={wallsVideoRef}
+                      className="w-full h-full object-cover"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      disablePictureInPicture
+                      controlsList="nodownload nofullscreen noremoteplayback"
+                      onContextMenu={(e) => e.preventDefault()}
+                    >
+                      <source src="/videos/walls-video.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+
+                {/* Floating accent elements */}
+                <div className="absolute -top-4 -right-4 w-20 h-20 bg-gray-300/30 rounded-full blur-xl"></div>
+                <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-gray-200/30 rounded-full blur-2xl"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* FAQ Section */}
       <FAQ />
