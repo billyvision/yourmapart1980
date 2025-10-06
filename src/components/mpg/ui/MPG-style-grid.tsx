@@ -74,8 +74,8 @@ export function MPGStyleGrid({
           {/* Style Name */}
           <div className={cn(
             "px-2 py-1.5 text-center transition-colors duration-200",
-            selectedStyle === style.id 
-              ? "bg-sage-green text-white" 
+            selectedStyle === style.id
+              ? "bg-sage-green-dark text-white"
               : "bg-gray-50 text-charcoal"
           )}>
             <p className="text-xs font-medium truncate">{style.name}</p>
@@ -83,7 +83,7 @@ export function MPGStyleGrid({
           
           {/* Selected Indicator */}
           {selectedStyle === style.id && (
-            <div className="absolute top-1 right-1 w-5 h-5 bg-sage-green rounded-full flex items-center justify-center shadow-md">
+            <div className="absolute top-1 right-1 w-5 h-5 bg-sage-green-dark rounded-full flex items-center justify-center shadow-md">
               <Check className="w-3 h-3 text-white" strokeWidth={3} />
             </div>
           )}

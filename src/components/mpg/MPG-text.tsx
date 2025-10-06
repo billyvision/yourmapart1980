@@ -83,7 +83,7 @@ export function MPGText() {
     <div className="space-y-2">
       {/* Step Header */}
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-sage-green text-white">
+        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-sage-green-dark text-white">
           <Type className="w-5 h-5" />
         </div>
         <div>
@@ -199,10 +199,10 @@ export function MPGText() {
                     <button
                       key={size}
                       onClick={() => setHeadlineSize(size)}
-                      className={`px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                      className={`px-2.5 py-1.5 text-xs rounded-md transition-colors ${
                         headlineSize === size
-                          ? 'bg-sage-green text-white'
-                          : 'bg-gray-50 hover:bg-sage-green/10 text-charcoal border border-gray-200'
+                          ? 'bg-gray-200 text-charcoal font-bold italic border-2 border-charcoal'
+                          : 'bg-gray-50 hover:bg-gray-100 text-charcoal font-medium border border-gray-200'
                       }`}
                       title={`${size === 'S' ? 'Small' : size === 'M' ? 'Medium' : 'Large'} size`}
                     >
@@ -294,10 +294,10 @@ export function MPGText() {
                   key={size}
                   onClick={() => setTitleSize(size)}
                   disabled={!showCityName}
-                  className={`px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors disabled:opacity-50 ${
+                  className={`px-2.5 py-1.5 text-xs rounded-md transition-colors disabled:opacity-50 ${
                     titleSize === size
-                      ? 'bg-sage-green text-white'
-                      : 'bg-gray-50 hover:bg-sage-green/10 text-charcoal border border-gray-200'
+                      ? 'bg-gray-200 text-charcoal font-bold italic border-2 border-charcoal'
+                      : 'bg-gray-50 hover:bg-gray-100 text-charcoal font-medium border border-gray-200'
                   }`}
                   title={`${size === 'S' ? 'Small' : size === 'M' ? 'Medium' : 'Large'} size`}
                 >
@@ -375,10 +375,10 @@ export function MPGText() {
                   key={size}
                   onClick={() => setCoordinatesSize(size)}
                   disabled={!showCoordinates}
-                  className={`px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors disabled:opacity-50 ${
+                  className={`px-2.5 py-1.5 text-xs rounded-md transition-colors disabled:opacity-50 ${
                     coordinatesSize === size
-                      ? 'bg-sage-green text-white'
-                      : 'bg-gray-50 hover:bg-sage-green/10 text-charcoal border border-gray-200'
+                      ? 'bg-gray-200 text-charcoal font-bold italic border-2 border-charcoal'
+                      : 'bg-gray-50 hover:bg-gray-100 text-charcoal font-medium border border-gray-200'
                   }`}
                   title={`${size === 'S' ? 'Small' : size === 'M' ? 'Medium' : 'Large'} size`}
                 >
@@ -456,10 +456,10 @@ export function MPGText() {
                   key={size}
                   onClick={() => setCountrySize(size)}
                   disabled={!showCountry}
-                  className={`px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors disabled:opacity-50 ${
+                  className={`px-2.5 py-1.5 text-xs rounded-md transition-colors disabled:opacity-50 ${
                     countrySize === size
-                      ? 'bg-sage-green text-white'
-                      : 'bg-gray-50 hover:bg-sage-green/10 text-charcoal border border-gray-200'
+                      ? 'bg-gray-200 text-charcoal font-bold italic border-2 border-charcoal'
+                      : 'bg-gray-50 hover:bg-gray-100 text-charcoal font-medium border border-gray-200'
                   }`}
                   title={`${size === 'S' ? 'Small' : size === 'M' ? 'Medium' : 'Large'} size`}
                 >
@@ -559,10 +559,10 @@ export function MPGText() {
                     <button
                       key={size}
                       onClick={() => setCustomTextSize(size)}
-                      className={`px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                      className={`px-2.5 py-1.5 text-xs rounded-md transition-colors ${
                         customTextSize === size
-                          ? 'bg-sage-green text-white'
-                          : 'bg-gray-50 hover:bg-sage-green/10 text-charcoal border border-gray-200'
+                          ? 'bg-gray-200 text-charcoal font-bold italic border-2 border-charcoal'
+                          : 'bg-gray-50 hover:bg-gray-100 text-charcoal font-medium border border-gray-200'
                       }`}
                       title={`${size === 'S' ? 'Small' : size === 'M' ? 'Medium' : 'Large'} size`}
                     >

@@ -143,7 +143,7 @@ export function MPGStyleAndSettings() {
     <div className="space-y-2">
       {/* Step Header */}
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-sage-green text-white">
+        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-sage-green-dark text-white">
           <Palette className="w-5 h-5" />
         </div>
         <div>
@@ -257,7 +257,7 @@ export function MPGStyleAndSettings() {
                   }}
                   className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                     frameStyle === frame.id
-                      ? 'bg-sage-green text-white shadow-md'
+                      ? 'bg-sage-green-dark text-white shadow-md'
                       : 'bg-white hover:bg-sage-green/10 text-charcoal border border-gray-200'
                   }`}
                 >
@@ -310,7 +310,6 @@ export function MPGStyleAndSettings() {
             <Switch
               checked={glowEffect}
               onCheckedChange={setGlowEffect}
-              className="data-[state=checked]:bg-sage-green"
               disabled={frameStyle === 'square'}
             />
           </div>
@@ -898,7 +897,6 @@ export function MPGStyleAndSettings() {
             <Switch
               checked={showPin}
               onCheckedChange={setShowPin}
-              className="data-[state=checked]:bg-sage-green"
             />
           </div>
 
@@ -945,10 +943,10 @@ export function MPGStyleAndSettings() {
                     <button
                       key={size}
                       onClick={() => setPinSize(size)}
-                      className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                      className={`px-3 py-2 rounded-lg text-xs transition-all ${
                         pinSize === size
-                          ? 'bg-sage-green text-white shadow-md'
-                          : 'bg-white hover:bg-sage-green/10 text-charcoal border border-gray-200'
+                          ? 'bg-gray-200 text-charcoal font-bold italic border-2 border-charcoal shadow-md'
+                          : 'bg-white hover:bg-gray-100 text-charcoal font-medium border border-gray-200'
                       }`}
                     >
                       {size === 'S' ? 'Small' : size === 'M' ? 'Medium' : 'Large'}

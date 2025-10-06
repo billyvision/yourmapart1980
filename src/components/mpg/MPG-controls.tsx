@@ -223,7 +223,6 @@ export function MPGControls() {
               <Switch
                 checked={showCoordinates}
                 onCheckedChange={setShowCoordinates}
-                className="data-[state=checked]:bg-sage-green"
               />
             </div>
             <div className="flex items-center justify-between">
@@ -233,7 +232,6 @@ export function MPGControls() {
               <Switch
                 checked={showCountry}
                 onCheckedChange={setShowCountry}
-                className="data-[state=checked]:bg-sage-green"
               />
             </div>
           </div>

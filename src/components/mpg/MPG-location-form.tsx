@@ -237,7 +237,7 @@ export function MPGLocationForm() {
     <div className="space-y-2">
       {/* Step Header */}
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-sage-green text-white">
+        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-sage-green-dark text-white">
           <MapPin className="w-5 h-5" />
         </div>
         <div>
@@ -388,7 +388,7 @@ export function MPGLocationForm() {
                   </button>
                   <button
                     onClick={resetMapPosition}
-                    className="w-8 h-8 rounded-md bg-sage-green hover:bg-sage-green-dark text-white flex items-center justify-center transition-colors shadow-sm"
+                    className="w-8 h-8 rounded-md bg-sage-green-dark hover:bg-sage-green-dark/90 text-white flex items-center justify-center transition-colors shadow-sm"
                     title="Reset Position"
                   >
                     <RotateCcw className="w-3 h-3" />
@@ -460,8 +460,8 @@ export function MPGLocationForm() {
               onClick={() => loadPresetCity(preset)}
               className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                 city === preset.name
-                  ? 'bg-sage-green text-white shadow-md'
-                  : 'bg-white hover:bg-sage-green/10 text-charcoal border border-gray-200'
+                  ? 'bg-blue-100 text-charcoal shadow-md border border-blue-200'
+                  : 'bg-white hover:bg-blue-50 text-charcoal border border-gray-200'
               }`}
             >
               {preset.name}

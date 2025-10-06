@@ -45,7 +45,6 @@ export function MPGCompactToggle({
         checked={checked}
         onCheckedChange={onCheckedChange}
         disabled={disabled}
-        className="data-[state=checked]:bg-sage-green"
       />
     </div>
   );

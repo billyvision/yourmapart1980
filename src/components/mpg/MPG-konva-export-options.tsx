@@ -303,7 +303,7 @@ export function MPGKonvaExportOptions() {
         <Button
           onClick={handleExport}
           disabled={isExporting}
-          className="w-full bg-sage-green hover:bg-sage-green-dark text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-md"
+          className="w-full bg-sage-green hover:bg-sage-green-dark text-charcoal font-semibold py-3 rounded-lg transition-all duration-200 shadow-md"
         >
           {isExporting ? (
             <>
