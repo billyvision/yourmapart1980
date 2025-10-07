@@ -319,14 +319,14 @@ export default function Home() {
       </section>
 
       {/* Secondary Hero Section (Reversed Layout) */}
-      <section className="relative overflow-hidden bg-hero-gradient py-12">
+      <section className="relative overflow-hidden bg-hero-gradient py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:grid lg:grid-cols-12 lg:gap-8">
+          <div className="lg:grid lg:grid-cols-12 lg:gap-4 xl:gap-6 items-start">
             {/* Left Image Carousel */}
-            <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center lg:order-1">
-              <div className="relative mx-auto w-4/5">
-                <div className="bg-white/10 p-6 lg:p-8 rounded-3xl">
-                  <div className="relative rounded-2xl overflow-hidden shadow-2xl transform -rotate-3 hover:rotate-0 transition-transform duration-500 aspect-square">
+            <div className="relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-start lg:order-1">
+              <div className="relative mx-auto w-full">
+                <div className="bg-white/10 p-8 lg:p-12 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.3)]">
+                  <div className="relative rounded-2xl overflow-hidden shadow-[0_25px_50px_rgba(0,0,0,0.25)] transform -rotate-3 hover:rotate-0 transition-transform duration-500 aspect-square">
                     <style jsx>{`
                       @keyframes kenBurns {
                         0% {
@@ -363,41 +363,41 @@ export default function Home() {
             </div>
 
             {/* Right Content */}
-            <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-center flex flex-col justify-center lg:order-2 px-4">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl text-charcoal font-playfair-italic mb-6 leading-tight">
+            <div className="mt-8 lg:mt-0 sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-center flex flex-col justify-center lg:order-2 lg:pl-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl text-charcoal font-playfair-italic mb-5 leading-tight">
                 Every map tells a story
               </h2>
 
-              <div className="space-y-6 text-left sm:text-center max-w-xl mx-auto">
-                <div className="space-y-3">
+              <div className="space-y-4 text-left sm:text-center max-w-lg mx-auto">
+                <div className="space-y-2">
                   <div className="inline-block bg-black text-white px-6 py-3 rounded-md font-semibold text-lg sm:text-xl">
-                    Where you fell in love.
+                    Where you fell in love
                   </div>
-                  <p className="text-medium-gray leading-relaxed">
+                  <p className="text-medium-gray leading-relaxed text-sm sm:text-base">
                     The street corner. The coffee shop. That bench in the park.
                   </p>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="inline-block bg-black text-white px-6 py-3 rounded-md font-semibold text-lg sm:text-xl">
-                    Where home became real.
+                    Where home became real
                   </div>
-                  <p className="text-medium-gray leading-relaxed">
+                  <p className="text-medium-gray leading-relaxed text-sm sm:text-base">
                     First keys. First walls. First chapter together.
                   </p>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="inline-block bg-black text-white px-6 py-3 rounded-md font-semibold text-lg sm:text-xl">
-                    Where memories were made.
+                    Where memories were made
                   </div>
-                  <p className="text-medium-gray leading-relaxed">
+                  <p className="text-medium-gray leading-relaxed text-sm sm:text-base">
                     Adventures lived. Dreams chased. Life celebrated.
                   </p>
                 </div>
               </div>
 
-              <div className="mt-8 pt-6 border-t border-gray-300/30">
+              <div className="mt-6 pt-5 border-t border-gray-300/30 max-w-lg mx-auto">
                 <p className="text-base sm:text-lg text-medium-gray italic mb-4">
                   Your places. Your colors. Your story.
                   <br />
