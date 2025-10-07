@@ -16,11 +16,11 @@ export default function FAQ() {
     },
     {
       question: "What types of designs can I create?",
-      answer: "We offer two unique design types: Map Posters (personalized city and location maps) and Star Maps (custom night sky designs showing constellations on special dates). Each design type offers multiple customization options and artistic styles."
+      answer: "We offer two unique design types: Custom Maps (personalized city and location maps) and Star Maps (custom night sky designs showing constellations on special dates). Each design type offers multiple customization options and artistic styles."
     },
     {
       question: "How do I customize my design?",
-      answer: "For Map Posters, simply enter your city or location and choose from 35+ artistic color themes and styles. For Star Maps, enter a special date and location to see the exact constellation arrangement for that moment. All designs include customizable text and color options."
+      answer: "For Custom Maps, simply enter your city or location and choose from 35+ artistic color themes and styles. For Star Maps, enter a special date and location to see the exact constellation arrangement for that moment. All designs include customizable text and color options."
     },
     {
       question: "What file formats do you provide?",

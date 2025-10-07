@@ -313,7 +313,7 @@ export function MPGKonvaExportOptions() {
           ) : (
             <>
               <Download className="w-5 h-5 mr-2" />
-              Export Map Poster
+              Export Design
             </>
           )}
         </Button>

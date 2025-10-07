@@ -188,7 +188,7 @@ export function MPGBasicDownload() {
         <Button
           onClick={handleDownload}
           disabled={isExporting}
-          className="w-full h-12 bg-sage-green hover:bg-sage-green-dark text-white text-base font-medium"
+          className="w-full h-12 bg-sage-green hover:bg-sage-green-dark text-charcoal text-base font-medium"
         >
           {isExporting ? (
             <>

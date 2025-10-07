@@ -1,0 +1,95 @@
+{
+  "id": "template-11",
+  "name": "newyork-green12",
+  "city": "New York",
+  "style": "emeraldCoast",
+  "hidden": false,
+  "thumbnail": "/template-previews/template-11.jpg",
+  "jsonData": {
+    "version": "1.0",
+    "created": "2025-10-07T02:04:35.885Z",
+    "application": "YourMapArt",
+    "snapshot": {
+      "location": {
+        "city": "New York",
+        "lat": 40.7128,
+        "lng": -74.006,
+        "country": "United States",
+        "zoom": 10,
+        "mapOffsetX": 0,
+        "mapOffsetY": -10
+      },
+      "text": {
+        "headline": {
+          "text": "",
+          "font": "Montserrat",
+          "size": "M",
+          "allCaps": true
+        },
+        "city": {
+          "show": true,
+          "font": "playfair",
+          "size": "M"
+        },
+        "coordinates": {
+          "show": true,
+          "font": "roboto",
+          "size": "M"
+        },
+        "country": {
+          "show": true,
+          "font": "roboto",
+          "size": "M"
+        },
+        "custom": {
+          "text": "",
+          "font": "Montserrat",
+          "size": "M"
+        },
+        "typography": {
+          "letterSpacing": 8,
+          "textSpacing": 1.2
+        }
+      },
+      "style": {
+        "mapStyle": "emeraldCoast",
+        "frame": {
+          "style": "house",
+          "showBorder": true
+        },
+        "glow": {
+          "enabled": true,
+          "style": "turquoise",
+          "intensity": 0.3
+        },
+        "background": {
+          "color": "#3f6964",
+          "useCustom": true,
+          "textColor": "#FFFFFF"
+        },
+        "features": {
+          "labels": false,
+          "buildings": false,
+          "parks": false,
+          "water": true,
+          "roads": true
+        },
+        "pin": {
+          "show": true,
+          "style": "heart",
+          "color": "#FF6B6B",
+          "size": "L"
+        },
+        "fontColor": {
+          "useCustom": false,
+          "color": "#333333"
+        }
+      },
+      "export": {
+        "format": "png",
+        "size": "A4",
+        "quality": 0.95
+      }
+    }
+  }
+}

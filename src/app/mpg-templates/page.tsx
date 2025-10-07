@@ -50,12 +50,12 @@ export default function MPGTemplatesPage() {
             {templates.filter(t => !t.hidden).map((template) => (
               <div
                 key={template.id}
-                className="bg-card rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer group"
-                onClick={() => handleTemplateClick(template.id)}
+                className="bg-card rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group"
               >
                 {/* Template Preview */}
                 <div
-                  className="aspect-[3/4] relative overflow-hidden"
+                  className="aspect-[3/4] relative overflow-hidden cursor-pointer"
+                  onClick={() => handleTemplateClick(template.id)}
                   style={{
                     background: template.style === 'chalkboard'
                       ? '#2C3E50'
@@ -106,8 +106,14 @@ export default function MPGTemplatesPage() {
                   </div>
 
                   {/* Overlay on hover */}
-                  <div className="absolute inset-0 bg-primary/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <Button className="bg-background text-primary hover:bg-background/90 text-sm">
+                  <div className="absolute inset-0 bg-primary/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleTemplateClick(template.id);
+                      }}
+                      className="bg-background text-primary hover:bg-background/90 text-sm pointer-events-auto"
+                    >
                       Personalize This
                     </Button>
                   </div>

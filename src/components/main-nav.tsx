@@ -23,7 +23,7 @@ export function MainNav() {
       icon: Map,
     },
     {
-      title: "Map Poster",
+      title: "Map Studio",
       href: "/mpg",
       icon: Palette,
     },

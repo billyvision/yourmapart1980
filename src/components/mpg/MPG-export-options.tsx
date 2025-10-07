@@ -153,12 +153,12 @@ export function MPGExportOptions({ previewRef }: MPGExportOptionsProps) {
           {isExporting ? (
             <>
               <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-              Generating Map Poster...
+              Generating...
             </>
           ) : (
             <>
               <Download className="w-5 h-5 mr-2" />
-              Download Map Poster
+              Download Design
             </>
           )}
         </Button>

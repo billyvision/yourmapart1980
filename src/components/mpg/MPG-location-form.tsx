@@ -375,7 +375,7 @@ export function MPGLocationForm() {
                     className="w-8 h-8 rounded-md bg-gray-50 hover:bg-sage-green/10 border border-gray-200 flex items-center justify-center transition-colors"
                     title="Move Up"
                   >
-                    <ChevronUp className="w-4 h-4 text-charcoal" />
+                    <ChevronUp className="w-5 h-5 text-charcoal stroke-[2.5]" />
                   </button>
                   <div />
                   
@@ -384,7 +384,7 @@ export function MPGLocationForm() {
                     className="w-8 h-8 rounded-md bg-gray-50 hover:bg-sage-green/10 border border-gray-200 flex items-center justify-center transition-colors"
                     title="Move Left"
                   >
-                    <ChevronLeft className="w-4 h-4 text-charcoal" />
+                    <ChevronLeft className="w-5 h-5 text-charcoal stroke-[2.5]" />
                   </button>
                   <button
                     onClick={resetMapPosition}
@@ -398,7 +398,7 @@ export function MPGLocationForm() {
                     className="w-8 h-8 rounded-md bg-gray-50 hover:bg-sage-green/10 border border-gray-200 flex items-center justify-center transition-colors"
                     title="Move Right"
                   >
-                    <ChevronRight className="w-4 h-4 text-charcoal" />
+                    <ChevronRight className="w-5 h-5 text-charcoal stroke-[2.5]" />
                   </button>
                   
                   <div />
@@ -407,7 +407,7 @@ export function MPGLocationForm() {
                     className="w-8 h-8 rounded-md bg-gray-50 hover:bg-sage-green/10 border border-gray-200 flex items-center justify-center transition-colors"
                     title="Move Down"
                   >
-                    <ChevronDown className="w-4 h-4 text-charcoal" />
+                    <ChevronDown className="w-5 h-5 text-charcoal stroke-[2.5]" />
                   </button>
                   <div />
                 </div>
@@ -422,14 +422,14 @@ export function MPGLocationForm() {
                     className="w-8 h-8 rounded-md bg-gray-50 hover:bg-sage-green/10 border border-gray-200 flex items-center justify-center transition-colors"
                     title="Zoom In"
                   >
-                    <Plus className="w-4 h-4 text-charcoal" />
+                    <Plus className="w-5 h-5 text-charcoal stroke-[2.5]" />
                   </button>
                   <button
                     onClick={() => adjustZoom(-1)}
                     className="w-8 h-8 rounded-md bg-gray-50 hover:bg-sage-green/10 border border-gray-200 flex items-center justify-center transition-colors"
                     title="Zoom Out"
                   >
-                    <Minus className="w-4 h-4 text-charcoal" />
+                    <Minus className="w-5 h-5 text-charcoal stroke-[2.5]" />
                   </button>
                 </div>
               </div>

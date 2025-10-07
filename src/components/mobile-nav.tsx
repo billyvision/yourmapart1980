@@ -28,7 +28,7 @@ export function MobileNav() {
       icon: Map,
     },
     {
-      title: "Map Poster",
+      title: "Map Studio",
       href: "/mpg",
       icon: Palette,
     },

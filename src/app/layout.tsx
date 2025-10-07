@@ -22,9 +22,9 @@ const playfairDisplay = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Your Map Art - Create Beautiful Personalized Map Posters",
+  title: "Your Map Art - Create Beautiful Personalized Maps",
   description:
-    "Transform your favorite locations into stunning personalized map art. Create custom map posters with beautiful designs, colors, and styles. Perfect for anniversaries, new homes, or celebrating special places.",
+    "Transform your favorite locations into stunning personalized map art. Create custom maps with beautiful designs, colors, and styles. Perfect for anniversaries, new homes, or celebrating special places.",
 };
 
 export default function RootLayout({

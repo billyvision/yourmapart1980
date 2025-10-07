@@ -257,8 +257,8 @@ export function MPGStyleAndSettings() {
                   }}
                   className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                     frameStyle === frame.id
-                      ? 'bg-sage-green-dark text-white shadow-md'
-                      : 'bg-white hover:bg-sage-green/10 text-charcoal border border-gray-200'
+                      ? 'bg-yellow-100 text-charcoal shadow-md border border-yellow-200'
+                      : 'bg-white hover:bg-yellow-50 text-charcoal border border-gray-200'
                   }`}
                 >
                   {frame.name}
@@ -330,21 +330,36 @@ export function MPGStyleAndSettings() {
                 </Label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {Object.entries(MPG_KONVA_GLOW_EFFECTS).slice(0, 9).map(([key, config]) => {
-                    const isGradient = key.includes('Gradient');
+                    const isSelected = glowStyle === key;
+                    // Calculate brightness to determine text color
+                    const rgb = parseInt(config.color.slice(1), 16);
+                    const r = (rgb >> 16) & 0xff;
+                    const g = (rgb >> 8) & 0xff;
+                    const b = rgb & 0xff;
+                    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+                    const textColor = brightness > 155 ? '#1a1a1a' : '#ffffff';
+
                     return (
                       <button
                         key={key}
                         onClick={() => setGlowStyle(key as any)}
-                        className={`relative px-2 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                          glowStyle === key
-                            ? 'ring-2 ring-sage-green'
-                            : 'hover:ring-1 hover:ring-sage-green/50'
-                        } ${isGradient ? 'bg-gradient-to-br from-gray-200 to-gray-400 text-white' : 'bg-white text-charcoal border border-gray-200'}`}
+                        className={`relative px-2 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+                          isSelected
+                            ? 'shadow-lg scale-105'
+                            : 'hover:scale-102 hover:shadow-md'
+                        }`}
                         style={{
-                          boxShadow: glowStyle === key ? `0 0 10px ${config.color}88` : undefined,
+                          backgroundColor: isSelected ? config.color : '#ffffff',
+                          borderColor: isSelected ? config.color : config.color + '40',
+                          borderWidth: '2px',
+                          borderStyle: 'solid',
+                          color: isSelected ? textColor : '#1a1a1a',
+                          boxShadow: isSelected
+                            ? `0 0 20px ${config.color}66, 0 0 40px ${config.color}33`
+                            : `0 0 10px ${config.color}20`,
                         }}
                       >
-                        <span className={isGradient ? 'font-semibold' : ''}>
+                        <span className="font-medium">
                           {config.name}
                         </span>
                       </button>
@@ -357,21 +372,36 @@ export function MPGStyleAndSettings() {
               <div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {Object.entries(MPG_KONVA_GLOW_EFFECTS).slice(9).map(([key, config]) => {
-                    const isGradient = key.includes('Gradient');
+                    const isSelected = glowStyle === key;
+                    // Calculate brightness to determine text color
+                    const rgb = parseInt(config.color.slice(1), 16);
+                    const r = (rgb >> 16) & 0xff;
+                    const g = (rgb >> 8) & 0xff;
+                    const b = rgb & 0xff;
+                    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+                    const textColor = brightness > 155 ? '#1a1a1a' : '#ffffff';
+
                     return (
                       <button
                         key={key}
                         onClick={() => setGlowStyle(key as any)}
-                        className={`relative px-2 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                          glowStyle === key
-                            ? 'ring-2 ring-sage-green'
-                            : 'hover:ring-1 hover:ring-sage-green/50'
-                        } ${isGradient ? 'bg-gradient-to-br from-gray-200 to-gray-400 text-white' : 'bg-white text-charcoal border border-gray-200'}`}
+                        className={`relative px-2 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+                          isSelected
+                            ? 'shadow-lg scale-105'
+                            : 'hover:scale-102 hover:shadow-md'
+                        }`}
                         style={{
-                          boxShadow: glowStyle === key ? `0 0 10px ${config.color}88` : undefined,
+                          backgroundColor: isSelected ? config.color : '#ffffff',
+                          borderColor: isSelected ? config.color : config.color + '40',
+                          borderWidth: '2px',
+                          borderStyle: 'solid',
+                          color: isSelected ? textColor : '#1a1a1a',
+                          boxShadow: isSelected
+                            ? `0 0 20px ${config.color}66, 0 0 40px ${config.color}33`
+                            : `0 0 10px ${config.color}20`,
                         }}
                       >
-                        <span className={isGradient ? 'font-semibold' : ''}>
+                        <span className="font-medium">
                           {config.name}
                         </span>
                       </button>
@@ -810,7 +840,7 @@ export function MPGStyleAndSettings() {
                   className="w-8 h-8 rounded-md bg-gray-50 hover:bg-sage-green/10 border border-gray-200 flex items-center justify-center transition-colors"
                   title="Move Up"
                 >
-                  <ChevronUp className="w-4 h-4 text-charcoal" />
+                  <ChevronUp className="w-5 h-5 text-charcoal stroke-[2.5]" />
                 </button>
                 <div />
                 
@@ -819,7 +849,7 @@ export function MPGStyleAndSettings() {
                   className="w-8 h-8 rounded-md bg-gray-50 hover:bg-sage-green/10 border border-gray-200 flex items-center justify-center transition-colors"
                   title="Move Left"
                 >
-                  <ChevronLeft className="w-4 h-4 text-charcoal" />
+                  <ChevronLeft className="w-5 h-5 text-charcoal stroke-[2.5]" />
                 </button>
                 <button
                   onClick={resetMapPosition}
@@ -833,7 +863,7 @@ export function MPGStyleAndSettings() {
                   className="w-8 h-8 rounded-md bg-gray-50 hover:bg-sage-green/10 border border-gray-200 flex items-center justify-center transition-colors"
                   title="Move Right"
                 >
-                  <ChevronRight className="w-4 h-4 text-charcoal" />
+                  <ChevronRight className="w-5 h-5 text-charcoal stroke-[2.5]" />
                 </button>
                 
                 <div />
@@ -842,7 +872,7 @@ export function MPGStyleAndSettings() {
                   className="w-8 h-8 rounded-md bg-gray-50 hover:bg-sage-green/10 border border-gray-200 flex items-center justify-center transition-colors"
                   title="Move Down"
                 >
-                  <ChevronDown className="w-4 h-4 text-charcoal" />
+                  <ChevronDown className="w-5 h-5 text-charcoal stroke-[2.5]" />
                 </button>
                 <div />
               </div>
@@ -857,14 +887,14 @@ export function MPGStyleAndSettings() {
                   className="w-8 h-8 rounded-md bg-gray-50 hover:bg-sage-green/10 border border-gray-200 flex items-center justify-center transition-colors"
                   title="Zoom In"
                 >
-                  <Plus className="w-4 h-4 text-charcoal" />
+                  <Plus className="w-5 h-5 text-charcoal stroke-[2.5]" />
                 </button>
                 <button
                   onClick={() => adjustZoom(-1)}
                   className="w-8 h-8 rounded-md bg-gray-50 hover:bg-sage-green/10 border border-gray-200 flex items-center justify-center transition-colors"
                   title="Zoom Out"
                 >
-                  <Minus className="w-4 h-4 text-charcoal" />
+                  <Minus className="w-5 h-5 text-charcoal stroke-[2.5]" />
                 </button>
               </div>
             </div>

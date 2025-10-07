@@ -316,10 +316,10 @@ export function MPGBasicPersonalize() {
         <Button
           onClick={handleOpenAdvancedEditor}
           variant="outline"
-          className="group flex items-center gap-2 px-6 py-2 border-2 border-sage-green text-sage-green hover:bg-sage-green hover:text-white transition-all duration-200"
+          className="group flex items-center gap-2 px-6 py-2 border-2 border-sage-green text-sage-green hover:bg-sage-green/10 transition-all duration-200"
         >
           <Sparkles className="w-4 h-4" />
-          <span>Need more customization? Open Advanced Editor</span>
+          <span>Need more customization? Open Map Studio</span>
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Button>
       </div>

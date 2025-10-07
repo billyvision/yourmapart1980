@@ -146,7 +146,7 @@ export function MPGBuilder({ templateId }: MPGBuilderProps) {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-heading font-bold text-charcoal mb-4">
-            Create Your Map Poster
+            Design Your Map
           </h1>
           <p className="text-lg text-medium-gray max-w-2xl mx-auto">
             Follow these simple steps to create your personalized map wall art
