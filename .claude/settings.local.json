@@ -41,7 +41,8 @@
       "Bash(cp:*)",
       "Bash(ffprobe:*)",
       "Bash(git rm:*)",
-      "WebSearch"
+      "WebSearch",
+      "WebFetch(domain:www.gelato.com)"
     ],
     "additionalDirectories": [
       "C:\\c\\Projects\\nextjs-better-auth-postgresql-starter-kit"
