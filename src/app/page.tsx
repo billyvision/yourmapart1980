@@ -325,8 +325,7 @@ export default function Home() {
             {/* Left Image Carousel */}
             <div className="relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-start lg:order-1">
               <div className="relative mx-auto w-full">
-                <div className="bg-white/10 p-8 lg:p-12 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.3)]">
-                  <div className="relative rounded-2xl overflow-hidden shadow-[0_25px_50px_rgba(0,0,0,0.25)] transform -rotate-3 hover:rotate-0 transition-transform duration-500 aspect-square">
+                  <div className="relative rounded-2xl overflow-hidden shadow-[0_25px_50px_rgba(0,0,0,0.4)] transform -rotate-3 hover:rotate-0 transition-transform duration-500 aspect-square">
                     <style jsx>{`
                       @keyframes kenBurns {
                         0% {
@@ -358,7 +357,6 @@ export default function Home() {
                       </div>
                     ))}
                   </div>
-                </div>
               </div>
             </div>
 
