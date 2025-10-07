@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Home, Map, Palette, LogIn, LayoutDashboard, Shield, Menu, X } from "lucide-react";
+import { Home, Map, Palette, LogIn, LayoutDashboard, Shield, Menu, X, Info } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 import { UserProfile } from "./auth/user-profile";
 
@@ -21,6 +21,11 @@ export function MobileNav() {
       title: "Home",
       href: "/",
       icon: Home,
+    },
+    {
+      title: "How It Works",
+      href: "/how-it-works",
+      icon: Info,
     },
     {
       title: "Templates",

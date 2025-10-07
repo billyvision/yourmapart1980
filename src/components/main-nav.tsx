@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Home, Map, Palette, LogIn, LayoutDashboard, Shield } from "lucide-react";
+import { Home, Map, Palette, LogIn, LayoutDashboard, Shield, Info } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 
 export function MainNav() {
@@ -16,6 +16,11 @@ export function MainNav() {
       title: "Home",
       href: "/",
       icon: Home,
+    },
+    {
+      title: "How It Works",
+      href: "/how-it-works",
+      icon: Info,
     },
     {
       title: "Templates",

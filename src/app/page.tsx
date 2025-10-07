@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import HowItWorks from "@/components/how-it-works";
 import FAQ from "@/components/faq";
 import { useRef, useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Zap, Palette, Heart } from 'lucide-react';
 
 export default function Home() {
   const router = useRouter();
@@ -126,6 +126,7 @@ export default function Home() {
                 <Button
                   size="lg"
                   variant="outline"
+                  onClick={() => router.push('/how-it-works')}
                   className="text-lg"
                 >
                   See How It Works
@@ -237,6 +238,58 @@ export default function Home() {
                 <div className="absolute -top-4 -right-4 w-20 h-20 bg-gray-300/30 rounded-full blur-xl"></div>
                 <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-gray-200/30 rounded-full blur-2xl"></div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Value Propositions Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-3 gap-12 lg:gap-16">
+            {/* Instant Digital Download */}
+            <div className="text-center">
+              <div className="flex justify-center mb-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center">
+                  <Zap className="w-10 h-10 text-black" />
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold text-charcoal mb-4 font-playfair">
+                Instant Digital Download
+              </h3>
+              <p className="text-medium-gray leading-relaxed">
+                Get your personalized map art immediately after creation. High-resolution files ready for printing or sharing, delivered straight to your device in seconds.
+              </p>
+            </div>
+
+            {/* Completely Customizable */}
+            <div className="text-center">
+              <div className="flex justify-center mb-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center">
+                  <Palette className="w-10 h-10 text-black" />
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold text-charcoal mb-4 font-playfair">
+                Completely Customizable
+              </h3>
+              <p className="text-medium-gray leading-relaxed">
+                Every element is in your control. From map styles and colors to frames and text, create exactly what you envision with our powerful customization tools.
+              </p>
+            </div>
+
+            {/* Uniquely Personal */}
+            <div className="text-center">
+              <div className="flex justify-center mb-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center">
+                  <Heart className="w-10 h-10 text-black" />
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold text-charcoal mb-4 font-playfair">
+                Uniquely Personal
+              </h3>
+              <p className="text-medium-gray leading-relaxed">
+                Transform meaningful locations into one-of-a-kind art pieces. Each creation tells your unique story, making perfect gifts that celebrate life&apos;s special moments.
+              </p>
             </div>
           </div>
         </div>
