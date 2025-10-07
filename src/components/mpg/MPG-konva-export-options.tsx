@@ -14,11 +14,13 @@ import { MPG_BASE_CANVAS } from '@/lib/mpg/MPG-konva-constants';
 import { MPGAccordionSection } from './ui/MPG-accordion-section';
 import { MPGAccordionManager } from './ui/MPG-accordion-manager';
 import { MPGSaveTemplateButton } from './MPG-save-template-button';
+import { useSession } from '@/lib/auth-client';
 
 export function MPGKonvaExportOptions() {
   const [isExporting, setIsExporting] = useState(false);
   const hiddenPreviewRef = useRef<HTMLDivElement>(null);
-  
+  const { data: session } = useSession();
+
   const {
     exportFormat,
     exportSize,
@@ -26,6 +28,10 @@ export function MPGKonvaExportOptions() {
     setExportSize,
     city
   } = useMPGStore();
+
+  // Check if user is superadmin
+  const userRole = (session?.user as any)?.role;
+  const isSuperAdmin = userRole === 'superadmin';
 
   const handleExport = async () => {
     setIsExporting(true);
@@ -247,55 +253,57 @@ export function MPGKonvaExportOptions() {
         </div>
         </MPGAccordionSection>
 
-        {/* Data Export Section */}
-        <MPGAccordionSection
-          id="data-export"
-          letter="D"
-          title="Data Export"
-          description="Save your map design as JSON data"
-          icon={FileJson}
-          colorTheme="blue"
-        >
-        <div className="space-y-3">
-          {/* JSON Export Info */}
-          <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg">
-            <h4 className="text-sm font-semibold text-blue-900 mb-2">JSON Snapshot</h4>
-            <p className="text-xs text-blue-800 mb-3">
-              Export your complete map design configuration as a JSON file. This includes all your settings:
-              location, text, styles, colors, and preferences.
-            </p>
-            <div className="bg-white p-2 rounded border border-blue-200 mb-3">
-              <code className="text-xs text-gray-700">
-                <span className="text-blue-600">{"{"}</span><br />
-                <span className="ml-2 text-green-600">"version"</span>: "1.0",<br />
-                <span className="ml-2 text-green-600">"location"</span>: {"{ city, coordinates... }"},<br />
-                <span className="ml-2 text-green-600">"text"</span>: {"{ headline, custom... }"},<br />
-                <span className="ml-2 text-green-600">"style"</span>: {"{ map, frame, glow... }"},<br />
-                <span className="ml-2">...</span><br />
-                <span className="text-blue-600">{"}"}</span>
-              </code>
+        {/* Data Export Section - SUPERADMIN ONLY */}
+        {isSuperAdmin && (
+          <MPGAccordionSection
+            id="data-export"
+            letter="D"
+            title="Data Export"
+            description="Save your map design as JSON data"
+            icon={FileJson}
+            colorTheme="blue"
+          >
+          <div className="space-y-3">
+            {/* JSON Export Info */}
+            <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg">
+              <h4 className="text-sm font-semibold text-blue-900 mb-2">JSON Snapshot</h4>
+              <p className="text-xs text-blue-800 mb-3">
+                Export your complete map design configuration as a JSON file. This includes all your settings:
+                location, text, styles, colors, and preferences.
+              </p>
+              <div className="bg-white p-2 rounded border border-blue-200 mb-3">
+                <code className="text-xs text-gray-700">
+                  <span className="text-blue-600">{"{"}</span><br />
+                  <span className="ml-2 text-green-600">"version"</span>: "1.0",<br />
+                  <span className="ml-2 text-green-600">"location"</span>: {"{ city, coordinates... }"},<br />
+                  <span className="ml-2 text-green-600">"text"</span>: {"{ headline, custom... }"},<br />
+                  <span className="ml-2 text-green-600">"style"</span>: {"{ map, frame, glow... }"},<br />
+                  <span className="ml-2">...</span><br />
+                  <span className="text-blue-600">{"}"}</span>
+                </code>
+              </div>
+            </div>
+
+            {/* Download Button */}
+            <Button
+              onClick={downloadMapJSON}
+              variant="outline"
+              className="w-full border-sage-green text-sage-green hover:bg-sage-green hover:text-white transition-colors"
+            >
+              <FileJson className="w-4 h-4 mr-2" />
+              Download JSON Snapshot
+            </Button>
+
+            {/* Future Import Hint */}
+            <div className="p-3 bg-amber-50 rounded-lg">
+              <p className="text-xs text-amber-700">
+                <span className="font-medium">💾 Save for Later:</span> Keep this JSON file to recreate your exact design in the future.
+                Import functionality coming soon!
+              </p>
             </div>
           </div>
-          
-          {/* Download Button */}
-          <Button
-            onClick={downloadMapJSON}
-            variant="outline"
-            className="w-full border-sage-green text-sage-green hover:bg-sage-green hover:text-white transition-colors"
-          >
-            <FileJson className="w-4 h-4 mr-2" />
-            Download JSON Snapshot
-          </Button>
-          
-          {/* Future Import Hint */}
-          <div className="p-3 bg-amber-50 rounded-lg">
-            <p className="text-xs text-amber-700">
-              <span className="font-medium">💾 Save for Later:</span> Keep this JSON file to recreate your exact design in the future. 
-              Import functionality coming soon!
-            </p>
-          </div>
-        </div>
-        </MPGAccordionSection>
+          </MPGAccordionSection>
+        )}
       </MPGAccordionManager>
 
       {/* Export Button - Always visible */}

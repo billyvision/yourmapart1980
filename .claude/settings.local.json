@@ -39,7 +39,8 @@
       "Bash(source .env)",
       "Bash(identify:*)",
       "Bash(cp:*)",
-      "Bash(ffprobe:*)"
+      "Bash(ffprobe:*)",
+      "Bash(git rm:*)"
     ],
     "additionalDirectories": [
       "C:\\c\\Projects\\nextjs-better-auth-postgresql-starter-kit"
