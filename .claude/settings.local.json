@@ -40,7 +40,8 @@
       "Bash(identify:*)",
       "Bash(cp:*)",
       "Bash(ffprobe:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "WebSearch"
     ],
     "additionalDirectories": [
       "C:\\c\\Projects\\nextjs-better-auth-postgresql-starter-kit"

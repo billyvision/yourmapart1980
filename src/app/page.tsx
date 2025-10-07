@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
 import HowItWorks from "@/components/how-it-works";
+import FeaturedTemplates from "@/components/featured-templates";
 import FAQ from "@/components/faq";
 import { useRef, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight, Zap, Palette, Heart } from 'lucide-react';
@@ -187,6 +188,9 @@ export default function Home() {
 
       {/* How It Works Section */}
       <HowItWorks />
+
+      {/* Featured Templates Section */}
+      <FeaturedTemplates />
 
       {/* Maps that Matter Section */}
       <section className="mt-12 py-12 bg-gradient-to-br from-gray-50 via-white to-gray-50">
