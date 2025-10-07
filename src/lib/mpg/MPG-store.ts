@@ -59,6 +59,10 @@ interface MPGState {
   exportSize: string;
   exportQuality: number;
   isExporting: boolean;
+
+  // Product selection
+  productType: 'digital' | 'poster' | 'canvas' | 'framed' | 'acrylic' | 'metal';
+  productSize: string;
   
   // Map instance reference
   mapInstance: any | null;
@@ -121,6 +125,8 @@ interface MPGState {
   setExportSize: (size: string) => void;
   setExportQuality: (quality: number) => void;
   setIsExporting: (isExporting: boolean) => void;
+  setProductType: (type: 'digital' | 'poster' | 'canvas' | 'framed' | 'acrylic' | 'metal') => void;
+  setProductSize: (size: string) => void;
   setMapInstance: (instance: any) => void;
   setUseVectorMaps: (use: boolean) => void;
   setShowMapLabels: (show: boolean) => void;
@@ -167,6 +173,8 @@ export const useMPGStore = create<MPGState>((set, get) => ({
   mapInstance: null,
   mapOffsetX: 0,
   mapOffsetY: 0,
+  productType: 'digital' as 'digital' | 'poster' | 'canvas' | 'framed' | 'acrylic' | 'metal',
+  productSize: 'A4', // Default to A4 for digital downloads
   frameStyle: 'square' as 'square' | 'circle' | 'heart' | 'house', // Explicitly set square as default
   showFrameBorder: false, // Default to false for square frame (default frame style)
   useVectorMaps: true, // Default to vector maps (better quality)
@@ -258,6 +266,8 @@ export const useMPGStore = create<MPGState>((set, get) => ({
   setExportSize: (exportSize) => set({ exportSize }),
   setExportQuality: (exportQuality) => set({ exportQuality }),
   setIsExporting: (isExporting) => set({ isExporting }),
+  setProductType: (productType) => set({ productType }),
+  setProductSize: (productSize) => set({ productSize }),
   setMapInstance: (mapInstance) => set({ mapInstance }),
   setUseVectorMaps: (useVectorMaps) => set({ useVectorMaps }),
   setShowMapLabels: (showMapLabels) => set({ showMapLabels }),

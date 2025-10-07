@@ -1,43 +1,143 @@
 'use client'
 import React, { useState, useRef } from 'react';
-import { Download, FileImage, FileText, Loader2, FileType, Ruler, Info, FileJson } from 'lucide-react';
+import { Download, FileImage, Loader2, Package, Check, Sparkles, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useMPGStore } from '@/lib/mpg/MPG-store';
 import { exportMapPosterKonva } from '@/lib/mpg/MPG-konva-export';
-import { downloadMapJSON, generateMapSnapshot } from '@/lib/mpg/MPG-json-export';
 import { MPGKonvaPreview } from './MPG-konva-preview';
-import { MPG_CANVAS_SIZES } from '@/lib/mpg/MPG-constants';
 import { MPG_BASE_CANVAS } from '@/lib/mpg/MPG-konva-constants';
-import { MPGAccordionSection } from './ui/MPG-accordion-section';
-import { MPGAccordionManager } from './ui/MPG-accordion-manager';
 import { MPGSaveTemplateButton } from './MPG-save-template-button';
 import { useSession } from '@/lib/auth-client';
+import { cn } from '@/lib/utils';
+
+// Product configurations with sizes and pricing
+const PRODUCT_CONFIGS = {
+  digital: {
+    name: 'Digital Download',
+    description: 'Instant high-resolution download',
+    icon: FileImage,
+    price: 9.99,
+    sizes: [
+      { value: 'A4', label: 'A4 (210×297mm)', dimensions: '8.3×11.7"' },
+      { value: 'Letter', label: 'Letter (8.5×11")', dimensions: '8.5×11"' },
+      { value: 'Square', label: 'Square (12×12")', dimensions: '12×12"' },
+      { value: 'Portrait', label: 'Portrait (16×20")', dimensions: '16×20"' },
+      { value: 'Landscape', label: 'Landscape (20×16")', dimensions: '20×16"' },
+    ],
+    features: ['300 DPI', 'Print-ready', 'Instant download', 'No watermark'],
+  },
+  poster: {
+    name: 'Paper Poster',
+    description: 'Premium matte or glossy finish',
+    icon: Package,
+    basePrice: 34.99,
+    sizes: [
+      { value: '8x10', label: '8×10"', price: 24.99 },
+      { value: '11x14', label: '11×14"', price: 34.99, popular: true },
+      { value: '12x16', label: '12×16"', price: 39.99 },
+      { value: '16x20', label: '16×20"', price: 49.99, popular: true },
+      { value: '18x24', label: '18×24"', price: 59.99 },
+      { value: '24x36', label: '24×36"', price: 79.99 },
+    ],
+    features: ['Premium paper (200-250 GSM)', 'Vibrant archival inks', 'Matte or glossy finish', 'Ships in protective tube'],
+  },
+  canvas: {
+    name: 'Canvas Print',
+    description: 'Gallery-wrapped, ready to hang',
+    icon: Package,
+    basePrice: 89.99,
+    sizes: [
+      { value: '12x16', label: '12×16"', price: 74.99 },
+      { value: '16x20', label: '16×20"', price: 89.99, popular: true },
+      { value: '18x24', label: '18×24"', price: 109.99, popular: true },
+      { value: '20x24', label: '20×24"', price: 129.99 },
+      { value: '24x36', label: '24×36"', price: 159.99 },
+    ],
+    features: ['Museum-quality canvas', 'Solid wood stretcher bars', 'Ready to hang', 'Fade-resistant inks'],
+  },
+  framed: {
+    name: 'Framed Print',
+    description: 'Professional frame included',
+    icon: Package,
+    basePrice: 119.99,
+    sizes: [
+      { value: '8x10', label: '8×10"', price: 69.99 },
+      { value: '11x14', label: '11×14"', price: 89.99 },
+      { value: '12x16', label: '12×16"', price: 99.99 },
+      { value: '16x20', label: '16×20"', price: 119.99, popular: true },
+      { value: '18x24', label: '18×24"', price: 149.99 },
+    ],
+    features: ['Sustainably-sourced timber', 'Protective glazing', 'Hanging hardware included', 'Ready to display'],
+  },
+  acrylic: {
+    name: 'Acrylic Print',
+    description: 'Crystal-clear, ultra-modern',
+    icon: Sparkles,
+    basePrice: 179.99,
+    sizes: [
+      { value: '12x16', label: '12×16"', price: 139.99 },
+      { value: '16x20', label: '16×20"', price: 179.99, popular: true },
+      { value: '20x24', label: '20×24"', price: 229.99 },
+      { value: '24x32', label: '24×32"', price: 289.99 },
+    ],
+    features: ['4mm crystal-clear acrylic', 'Floating mount system', 'Depth and dimension effect', 'Diamond polished edges'],
+  },
+  metal: {
+    name: 'Metal Print',
+    description: 'Sleek aluminum finish',
+    icon: Sparkles,
+    basePrice: 169.99,
+    sizes: [
+      { value: '12x16', label: '12×16"', price: 129.99 },
+      { value: '16x20', label: '16×20"', price: 169.99, popular: true },
+      { value: '18x24', label: '18×24"', price: 199.99 },
+      { value: '20x24', label: '20×24"', price: 229.99 },
+      { value: '24x36', label: '24×36"', price: 289.99 },
+    ],
+    features: ['Premium aluminum di-bond', 'Vivid color reproduction', 'Scratch-resistant', 'Lightweight & durable'],
+  },
+};
 
 export function MPGKonvaExportOptions() {
   const [isExporting, setIsExporting] = useState(false);
-  const hiddenPreviewRef = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
 
   const {
     exportFormat,
-    exportSize,
-    setExportFormat,
-    setExportSize,
+    productType,
+    productSize,
+    setProductType,
+    setProductSize,
     city
   } = useMPGStore();
 
-  // Check if user is superadmin
-  const userRole = (session?.user as any)?.role;
-  const isSuperAdmin = userRole === 'superadmin';
+  const currentProduct = PRODUCT_CONFIGS[productType];
+  const currentSize = currentProduct.sizes.find(s => s.value === productSize);
+  const currentPrice = (currentSize && 'price' in currentSize ? currentSize.price : undefined) ||
+                       ('basePrice' in currentProduct ? currentProduct.basePrice : undefined) ||
+                       ('price' in currentProduct ? currentProduct.price : 0);
+
+  // Auto-set first size when product type changes
+  React.useEffect(() => {
+    const firstSize = currentProduct.sizes[0]?.value;
+    if (firstSize && !currentProduct.sizes.find(s => s.value === productSize)) {
+      setProductSize(firstSize);
+    }
+  }, [productType, currentProduct.sizes, productSize, setProductSize]);
 
   const handleExport = async () => {
+    if (productType !== 'digital') {
+      // For physical products, show "Add to Cart" or redirect to checkout
+      alert(`Add to Cart: ${currentProduct.name} - ${currentSize?.label || productSize} - $${currentPrice.toFixed(2)}`);
+      return;
+    }
+
+    // Digital download export
     setIsExporting(true);
-    
+
     try {
-      // Create a temporary container for the export canvas
       const exportContainer = document.createElement('div');
       exportContainer.style.position = 'absolute';
       exportContainer.style.left = '-9999px';
@@ -46,17 +146,15 @@ export function MPGKonvaExportOptions() {
       exportContainer.style.height = `${MPG_BASE_CANVAS.height}px`;
       document.body.appendChild(exportContainer);
 
-      // Create React root for the export canvas
       const { createRoot } = await import('react-dom/client');
       const root = createRoot(exportContainer);
 
-      // Create a promise to wait for export readiness
       let exportStage: any = null;
       const stageReady = new Promise<void>((resolve) => {
         root.render(
           <MPGKonvaPreview
             isExportMode={true}
-            exportSize={exportSize as any}
+            exportSize={productSize as any}
             showWatermark={false}
             onExportReady={(stage: any) => {
               exportStage = stage;
@@ -66,30 +164,25 @@ export function MPGKonvaExportOptions() {
         );
       });
 
-      // Wait for stage to be ready
       await stageReady;
-      
+
       if (!exportStage) {
         throw new Error('Failed to get canvas stage');
       }
 
-      // Additional wait to ensure everything is rendered
       await new Promise(resolve => setTimeout(resolve, 500));
 
-      // Export with the stage using the base canvas approach
-      // The high resolution comes from pixelRatio in toDataURL/toBlob
       await exportMapPosterKonva({
         stage: exportStage,
         format: exportFormat,
-        size: exportSize as any,
+        size: productSize as any,
         fileName: `${city.toLowerCase().replace(/\s+/g, '-')}-map`,
         quality: exportFormat === 'jpg' ? 0.95 : 1
       });
 
-      // Cleanup
       root.unmount();
       document.body.removeChild(exportContainer);
-      
+
     } catch (error) {
       console.error('Export failed:', error);
       alert('Failed to export map poster. Please try again.');
@@ -99,238 +192,222 @@ export function MPGKonvaExportOptions() {
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-6">
       {/* Step Header */}
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-sage-green text-white">
-          <Download className="w-5 h-5" />
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-gray-900 to-black text-white">
+          <ShoppingCart className="w-5 h-5" />
         </div>
         <div>
           <h3 className="text-xl font-heading font-semibold text-charcoal">
-            Export & Download
+            Choose Your Product
           </h3>
           <p className="text-medium-gray text-sm mt-1">
-            Download your map poster in high resolution
+            Select format and size for your custom map
           </p>
         </div>
       </div>
 
-      <MPGAccordionManager>
-        {/* File Format Section */}
-        <MPGAccordionSection
-          id="file-format"
-          letter="A"
-          title="File Format"
-          description="Choose your preferred export format"
-          icon={FileType}
-          colorTheme="purple"
-        >
-        <div className="space-y-3">
-          <RadioGroup
-            value={exportFormat}
-            onValueChange={(value: any) => setExportFormat(value)}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-3"
-          >
-            <div className="relative">
-              <RadioGroupItem
-                value="png"
-                id="format-png"
-                className="peer sr-only"
-              />
-              <Label
-                htmlFor="format-png"
-                className="flex flex-col items-center justify-center p-3 sm:p-4 border-2 rounded-lg cursor-pointer transition-all hover:border-sage-green peer-checked:border-sage-green peer-checked:bg-sage-green/10"
-              >
-                <FileImage className="w-6 h-6 sm:w-8 sm:h-8 mb-2 text-sage-green" />
-                <span className="font-medium text-sm">PNG</span>
-                <span className="text-xs text-medium-gray">Best quality</span>
-              </Label>
-            </div>
-
-            <div className="relative">
-              <RadioGroupItem
-                value="jpg"
-                id="format-jpg"
-                className="peer sr-only"
-              />
-              <Label
-                htmlFor="format-jpg"
-                className="flex flex-col items-center justify-center p-3 sm:p-4 border-2 rounded-lg cursor-pointer transition-all hover:border-sage-green peer-checked:border-sage-green peer-checked:bg-sage-green/10"
-              >
-                <FileImage className="w-6 h-6 sm:w-8 sm:h-8 mb-2 text-sage-green" />
-                <span className="font-medium text-sm">JPG</span>
-                <span className="text-xs text-medium-gray">Smaller size</span>
-              </Label>
-            </div>
-
-            <div className="relative">
-              <RadioGroupItem
-                value="pdf"
-                id="format-pdf"
-                className="peer sr-only"
-              />
-              <Label
-                htmlFor="format-pdf"
-                className="flex flex-col items-center justify-center p-3 sm:p-4 border-2 rounded-lg cursor-pointer transition-all hover:border-sage-green peer-checked:border-sage-green peer-checked:bg-sage-green/10"
-              >
-                <FileText className="w-6 h-6 sm:w-8 sm:h-8 mb-2 text-sage-green" />
-                <span className="font-medium text-sm">PDF</span>
-                <span className="text-xs text-medium-gray">For printing</span>
-              </Label>
-            </div>
-          </RadioGroup>
-          
-          <div className="p-3 bg-warm-cream/50 rounded-lg">
-            <p className="text-xs text-medium-gray">
-              <span className="font-semibold text-charcoal">Selected: </span>
-              {exportFormat.toUpperCase()} format
-            </p>
-          </div>
+      {/* Product Type Selection */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <Label className="text-sm font-semibold text-charcoal">Product Type</Label>
+          {productType === 'digital' && (
+            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">
+              Instant Download
+            </span>
+          )}
+          {productType !== 'digital' && (
+            <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full font-medium">
+              Physical Product
+            </span>
+          )}
         </div>
-        </MPGAccordionSection>
 
-        {/* Paper Size Section */}
-        <MPGAccordionSection
-          id="paper-size"
-          letter="B"
-          title="Paper Size"
-          description="Select your print dimensions"
-          icon={Ruler}
-          colorTheme="orange"
-        >
-        <div className="space-y-3">
-          <Select value={exportSize} onValueChange={setExportSize}>
-            <SelectTrigger id="export-size" className="w-full">
-              <SelectValue placeholder="Select size" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="A4">A4 (210×297mm)</SelectItem>
-              <SelectItem value="Letter">Letter (8.5×11")</SelectItem>
-              <SelectItem value="Square">Square (12×12")</SelectItem>
-              <SelectItem value="Portrait">Portrait (16×20")</SelectItem>
-              <SelectItem value="Landscape">Landscape (20×16")</SelectItem>
-            </SelectContent>
-          </Select>
-          
-          {/* Size Guide */}
-          <div className="bg-gray-50 rounded-lg p-3">
-            <h4 className="text-xs font-semibold text-charcoal mb-2">Size Guide</h4>
-            <ul className="space-y-1 text-xs text-medium-gray">
-              <li>• <span className="font-medium">A4:</span> Standard paper (210×297mm)</li>
-              <li>• <span className="font-medium">Letter:</span> US standard (8.5×11")</li>
-              <li>• <span className="font-medium">Square:</span> Instagram ready (12×12")</li>
-              <li>• <span className="font-medium">Portrait/Landscape:</span> Wall art sizes</li>
-            </ul>
-          </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {(Object.keys(PRODUCT_CONFIGS) as Array<keyof typeof PRODUCT_CONFIGS>).map((type) => {
+            const config = PRODUCT_CONFIGS[type];
+            const Icon = config.icon;
+            const isSelected = productType === type;
+
+            return (
+              <button
+                key={type}
+                onClick={() => setProductType(type)}
+                className={cn(
+                  "relative flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-200 hover:shadow-md group",
+                  isSelected
+                    ? "border-charcoal bg-gray-50 shadow-sm"
+                    : "border-gray-200 hover:border-gray-400 bg-white"
+                )}
+              >
+                {/* Selection Indicator */}
+                {isSelected && (
+                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-charcoal rounded-full flex items-center justify-center shadow-md">
+                    <Check className="w-4 h-4 text-white" />
+                  </div>
+                )}
+
+                <div className={cn(
+                  "w-10 h-10 rounded-full flex items-center justify-center mb-2 transition-colors",
+                  isSelected
+                    ? "bg-charcoal text-white"
+                    : "bg-gray-100 text-gray-600 group-hover:bg-gray-200 group-hover:text-charcoal"
+                )}>
+                  <Icon className="w-5 h-5" />
+                </div>
+
+                <span className={cn(
+                  "text-xs font-medium text-center transition-colors",
+                  isSelected ? "text-charcoal" : "text-gray-700"
+                )}>
+                  {config.name}
+                </span>
+
+                {type === 'digital' && 'price' in config && (
+                  <span className="text-xs text-gray-500 mt-1">${config.price}</span>
+                )}
+              </button>
+            );
+          })}
         </div>
-        </MPGAccordionSection>
 
-        {/* Export Information Section */}
-        <MPGAccordionSection
-          id="export-info"
-          letter="C"
-          title="Export Information"
-          description="Review your export settings"
-          icon={Info}
-          colorTheme="green"
-        >
-        <div className="space-y-3">
-          <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg">
-            <p className="text-xs text-blue-800">
-              <strong className="block mb-1">Current Settings:</strong>
-              • Format: {exportFormat.toUpperCase()}<br />
-              • Size: {exportSize}<br />
-              • Resolution: High-quality print ready<br />
-              • WYSIWYG accuracy guaranteed
-            </p>
-          </div>
-          
-          <div className="p-3 bg-amber-50 rounded-lg">
-            <p className="text-xs text-amber-700">
-              💡 <span className="font-medium">Tip:</span> Use PNG for best quality, JPG for smaller file size, PDF for professional printing
-            </p>
-          </div>
+        {/* Product Description */}
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <h4 className="text-sm font-semibold text-charcoal mb-2">{currentProduct.name}</h4>
+          <p className="text-xs text-medium-gray mb-3">{currentProduct.description}</p>
+          <ul className="grid grid-cols-2 gap-2">
+            {currentProduct.features.map((feature, idx) => (
+              <li key={idx} className="flex items-start gap-2 text-xs text-gray-600">
+                <Check className="w-3 h-3 text-charcoal mt-0.5 flex-shrink-0" />
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-        </MPGAccordionSection>
+      </div>
 
-        {/* Data Export Section - SUPERADMIN ONLY */}
-        {isSuperAdmin && (
-          <MPGAccordionSection
-            id="data-export"
-            letter="D"
-            title="Data Export"
-            description="Save your map design as JSON data"
-            icon={FileJson}
-            colorTheme="blue"
-          >
-          <div className="space-y-3">
-            {/* JSON Export Info */}
-            <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg">
-              <h4 className="text-sm font-semibold text-blue-900 mb-2">JSON Snapshot</h4>
-              <p className="text-xs text-blue-800 mb-3">
-                Export your complete map design configuration as a JSON file. This includes all your settings:
-                location, text, styles, colors, and preferences.
-              </p>
-              <div className="bg-white p-2 rounded border border-blue-200 mb-3">
-                <code className="text-xs text-gray-700">
-                  <span className="text-blue-600">{"{"}</span><br />
-                  <span className="ml-2 text-green-600">"version"</span>: "1.0",<br />
-                  <span className="ml-2 text-green-600">"location"</span>: {"{ city, coordinates... }"},<br />
-                  <span className="ml-2 text-green-600">"text"</span>: {"{ headline, custom... }"},<br />
-                  <span className="ml-2 text-green-600">"style"</span>: {"{ map, frame, glow... }"},<br />
-                  <span className="ml-2">...</span><br />
-                  <span className="text-blue-600">{"}"}</span>
-                </code>
+      {/* Size Selection */}
+      <div className="space-y-4">
+        <Label className="text-sm font-semibold text-charcoal">Select Size</Label>
+
+        <RadioGroup
+          value={productSize}
+          onValueChange={setProductSize}
+          className="grid grid-cols-2 sm:grid-cols-3 gap-3"
+        >
+          {currentProduct.sizes.map((size) => {
+            const isPopular = 'popular' in size && size.popular;
+            const sizePrice = 'price' in size ? size.price : ('price' in currentProduct ? currentProduct.price : undefined);
+
+            return (
+              <div key={size.value} className="relative">
+                <RadioGroupItem
+                  value={size.value}
+                  id={`size-${size.value}`}
+                  className="peer sr-only"
+                />
+                <Label
+                  htmlFor={`size-${size.value}`}
+                  className={cn(
+                    "flex flex-col p-4 border-2 rounded-lg cursor-pointer transition-all hover:border-gray-400 peer-checked:border-charcoal peer-checked:bg-gray-50 peer-checked:shadow-sm",
+                    isPopular && "border-orange-300 bg-orange-50/50"
+                  )}
+                >
+                  {/* Popular Badge */}
+                  {isPopular && (
+                    <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-xs px-2 py-0.5 rounded-full font-medium shadow-sm">
+                      Popular
+                    </span>
+                  )}
+
+                  <span className="font-semibold text-charcoal text-sm">{size.label}</span>
+
+                  {'dimensions' in size && (
+                    <span className="text-xs text-gray-500 mt-1">{size.dimensions}</span>
+                  )}
+
+                  {sizePrice && (
+                    <span className="text-charcoal font-bold text-base mt-2">
+                      ${sizePrice}
+                    </span>
+                  )}
+                </Label>
               </div>
-            </div>
+            );
+          })}
+        </RadioGroup>
+      </div>
 
-            {/* Download Button */}
-            <Button
-              onClick={downloadMapJSON}
-              variant="outline"
-              className="w-full border-sage-green text-sage-green hover:bg-sage-green hover:text-white transition-colors"
-            >
-              <FileJson className="w-4 h-4 mr-2" />
-              Download JSON Snapshot
-            </Button>
-
-            {/* Future Import Hint */}
-            <div className="p-3 bg-amber-50 rounded-lg">
-              <p className="text-xs text-amber-700">
-                <span className="font-medium">💾 Save for Later:</span> Keep this JSON file to recreate your exact design in the future.
-                Import functionality coming soon!
-              </p>
-            </div>
+      {/* Price Summary */}
+      <div className="bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-gray-200 rounded-xl p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h4 className="text-lg font-semibold text-charcoal">
+              {currentProduct.name}
+            </h4>
+            <p className="text-sm text-medium-gray">
+              {currentSize?.label || productSize}
+            </p>
           </div>
-          </MPGAccordionSection>
-        )}
-      </MPGAccordionManager>
+          <div className="text-right">
+            <div className="text-3xl font-bold text-charcoal">
+              ${currentPrice.toFixed(2)}
+            </div>
+            {productType === 'digital' && (
+              <div className="text-xs text-medium-gray mt-1">
+                One-time payment
+              </div>
+            )}
+          </div>
+        </div>
 
-      {/* Export Button - Always visible */}
-      <div className="mt-4 space-y-3">
+        {/* Action Button */}
         <Button
           onClick={handleExport}
           disabled={isExporting}
-          className="w-full bg-sage-green hover:bg-sage-green-dark text-charcoal font-semibold py-3 rounded-lg transition-all duration-200 shadow-md"
+          className="w-full bg-gradient-to-r from-gray-900 to-black hover:from-gray-800 hover:to-gray-900 text-white font-semibold py-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg text-base"
         >
           {isExporting ? (
             <>
               <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-              Exporting...
+              Processing...
+            </>
+          ) : productType === 'digital' ? (
+            <>
+              <Download className="w-5 h-5 mr-2" />
+              Download Now - ${currentPrice.toFixed(2)}
             </>
           ) : (
             <>
-              <Download className="w-5 h-5 mr-2" />
-              Export Design
+              <ShoppingCart className="w-5 h-5 mr-2" />
+              Add to Cart - ${currentPrice.toFixed(2)}
             </>
           )}
         </Button>
 
-        {/* Save Template Button */}
+        {/* Additional Info */}
+        <div className="mt-4 pt-4 border-t border-gray-300">
+          <div className="flex items-start gap-2 text-xs text-gray-600">
+            <Check className="w-4 h-4 text-charcoal mt-0.5 flex-shrink-0" />
+            <p>
+              {productType === 'digital'
+                ? 'Instant download after payment. 300 DPI print-ready files with no watermark.'
+                : 'Handcrafted with care. Ships within 3-5 business days. Free shipping on orders over $75.'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Save Template Button */}
+      <div className="pt-4 border-t border-gray-200">
         <MPGSaveTemplateButton
           variant="outline"
           className="w-full py-3"
         />
+        <p className="text-xs text-center text-gray-500 mt-2">
+          Save your design to easily reorder or create variations later
+        </p>
       </div>
     </div>
   );
