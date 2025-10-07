@@ -174,7 +174,7 @@ export const useMPGStore = create<MPGState>((set, get) => ({
   mapOffsetX: 0,
   mapOffsetY: 0,
   productType: 'digital' as 'digital' | 'poster' | 'canvas' | 'framed' | 'acrylic' | 'metal',
-  productSize: 'A4', // Default to A4 for digital downloads
+  productSize: '8x10', // Default to 8x10 for digital downloads
   frameStyle: 'square' as 'square' | 'circle' | 'heart' | 'house', // Explicitly set square as default
   showFrameBorder: false, // Default to false for square frame (default frame style)
   useVectorMaps: true, // Default to vector maps (better quality)

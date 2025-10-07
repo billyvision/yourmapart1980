@@ -27,6 +27,7 @@ import { MPGCompactToggle } from './ui/MPG-compact-toggle';
 import { MPGStyleGrid } from './ui/MPG-style-grid';
 import { MPGCompactStyleGrid } from './ui/MPG-compact-style-grid';
 import { MPGAccordionManager } from './ui/MPG-accordion-manager';
+import { MPGSaveTemplateButton } from './MPG-save-template-button';
 import { getPinIcon } from './MPG-pin-icons';
 import '@/styles/mpg-glow-buttons.css';
 
@@ -1046,6 +1047,17 @@ export function MPGStyleAndSettings() {
         </div>
         </MPGAccordionSection>
       </MPGAccordionManager>
+
+      {/* Save Draft Button */}
+      <div className="mt-6 pt-4 border-t border-gray-200">
+        <MPGSaveTemplateButton
+          variant="outline"
+          className="w-full py-3"
+        />
+        <p className="text-xs text-center text-gray-500 mt-2">
+          Save as draft to continue editing later
+        </p>
+      </div>
     </div>
   );
 }

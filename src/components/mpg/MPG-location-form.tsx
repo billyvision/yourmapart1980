@@ -13,6 +13,7 @@ import { Slider } from '@/components/ui/slider';
 import { useDebounce } from '@/hooks/useDebounce';
 import { MPGAccordionSection } from './ui/MPG-accordion-section';
 import { MPGAccordionManager } from './ui/MPG-accordion-manager';
+import { MPGSaveTemplateButton } from './MPG-save-template-button';
 
 interface SearchResult {
   place_id: string;
@@ -476,6 +477,17 @@ export function MPGLocationForm() {
         </div>
         </MPGAccordionSection>
       </MPGAccordionManager>
+
+      {/* Save Draft Button */}
+      <div className="mt-6 pt-4 border-t border-gray-200">
+        <MPGSaveTemplateButton
+          variant="outline"
+          className="w-full py-3"
+        />
+        <p className="text-xs text-center text-gray-500 mt-2">
+          Save as draft to continue editing later
+        </p>
+      </div>
     </div>
   );
 }

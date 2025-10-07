@@ -80,14 +80,14 @@ export function MPGSaveTemplateButton({
       <DialogTrigger asChild>
         <Button variant={variant} size={size} className={className}>
           <Save className="w-4 h-4 mr-2" />
-          Save Template
+          Save Draft
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Save Template</DialogTitle>
+          <DialogTitle>Save Draft</DialogTitle>
           <DialogDescription>
-            Save your map poster design to access it later from your dashboard.
+            Save your map design as a draft to access it later from your dashboard.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

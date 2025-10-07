@@ -14,6 +14,17 @@ export default function Home() {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchEndX, setTouchEndX] = useState(0);
+  const [currentLifestyleImage, setCurrentLifestyleImage] = useState(0);
+
+  const lifestyleImages = [
+    "/product-lifestyle/1-paris-woman.jpeg",
+    "/product-lifestyle/2-sydney-couple.png",
+    "/product-lifestyle/3-barcelona-couple.png",
+    "/product-lifestyle/4-heart-couple.png",
+    "/product-lifestyle/5-vegas-couple.png",
+    "/product-lifestyle/6-nyc-older-couple.png",
+    "/product-lifestyle/7-singapore-kids.png"
+  ];
 
   const testimonials = [
     {
@@ -53,6 +64,14 @@ export default function Home() {
       wallsVideoRef.current.playbackRate = 0.5;
     }
   }, []);
+
+  // Lifestyle images auto-rotation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentLifestyleImage((prev) => (prev + 1) % lifestyleImages.length);
+    }, 4500); // 3s display + 1.5s transition
+    return () => clearInterval(interval);
+  }, [lifestyleImages.length]);
 
   // Testimonials auto-rotation
   useEffect(() => {
@@ -303,76 +322,112 @@ export default function Home() {
       <section className="relative overflow-hidden bg-hero-gradient py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-12 lg:gap-8">
-            {/* Left Video */}
+            {/* Left Image Carousel */}
             <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center lg:order-1">
-              <div className="relative mx-auto w-full">
-                <div className="bg-white/10 p-8 lg:p-12 rounded-3xl">
-                  <div className="relative rounded-2xl overflow-hidden shadow-2xl transform -rotate-3 hover:rotate-0 transition-transform duration-500">
-                    <video
-                      className="w-full h-auto"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      disablePictureInPicture
-                      controlsList="nodownload nofullscreen noremoteplayback"
-                      onContextMenu={(e) => e.preventDefault()}
-                    >
-                      <source src="/videos/hero-video.mp4" type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
+              <div className="relative mx-auto w-4/5">
+                <div className="bg-white/10 p-6 lg:p-8 rounded-3xl">
+                  <div className="relative rounded-2xl overflow-hidden shadow-2xl transform -rotate-3 hover:rotate-0 transition-transform duration-500 aspect-square">
+                    <style jsx>{`
+                      @keyframes kenBurns {
+                        0% {
+                          transform: scale(1);
+                        }
+                        100% {
+                          transform: scale(1.05);
+                        }
+                      }
+                      .lifestyle-image {
+                        animation: kenBurns 3s ease-in-out forwards;
+                      }
+                    `}</style>
+                    {lifestyleImages.map((image, index) => (
+                      <div
+                        key={index}
+                        className="absolute inset-0 transition-opacity duration-[1500ms] ease-in-out"
+                        style={{
+                          opacity: currentLifestyleImage === index ? 1 : 0,
+                          zIndex: currentLifestyleImage === index ? 1 : 0
+                        }}
+                      >
+                        <img
+                          src={image}
+                          alt="Map art lifestyle"
+                          className="w-full h-full object-cover lifestyle-image"
+                          key={`${index}-${currentLifestyleImage}`}
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Right Content */}
-            <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-center flex flex-col justify-center lg:order-2">
-              <h1 className="text-4xl tracking-tight font-bold text-charcoal sm:text-5xl md:text-6xl font-playfair">
-                Create Beautiful
-              </h1>
-              <h2 className="text-4xl tracking-tight font-bold sm:text-5xl md:text-6xl mt-2 font-playfair">
-                <span className="text-black">Map Art</span>
+            <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-center flex flex-col justify-center lg:order-2 px-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl text-charcoal font-playfair-italic mb-6 leading-tight">
+                Every map tells a story
               </h2>
-              <h3 className="text-3xl sm:text-4xl md:text-5xl mt-2 text-charcoal/80 font-playfair-italic">
-                that tells your story
-              </h3>
-              <p className="mt-4 text-base text-medium-gray sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                Transform your most meaningful locations into stunning personalized posters. Perfect for anniversaries, new homes, or celebrating where your journey began.
-              </p>
 
-              {/* CTA Buttons */}
-              <div className="mt-8 sm:max-w-lg sm:mx-auto flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  size="lg"
-                  onClick={() => router.push('/mpg-templates')}
-                  className="text-lg"
-                >
-                  Create Your Design
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => router.push('/how-it-works')}
-                  className="text-lg"
-                >
-                  See How It Works
-                </Button>
+              <div className="space-y-6 text-left sm:text-center max-w-xl mx-auto">
+                <div className="space-y-3">
+                  <div className="inline-block bg-black text-white px-6 py-3 rounded-md font-semibold text-lg sm:text-xl">
+                    Where you fell in love.
+                  </div>
+                  <p className="text-medium-gray leading-relaxed">
+                    The street corner. The coffee shop. That bench in the park.
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="inline-block bg-black text-white px-6 py-3 rounded-md font-semibold text-lg sm:text-xl">
+                    Where home became real.
+                  </div>
+                  <p className="text-medium-gray leading-relaxed">
+                    First keys. First walls. First chapter together.
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="inline-block bg-black text-white px-6 py-3 rounded-md font-semibold text-lg sm:text-xl">
+                    Where memories were made.
+                  </div>
+                  <p className="text-medium-gray leading-relaxed">
+                    Adventures lived. Dreams chased. Life celebrated.
+                  </p>
+                </div>
               </div>
 
-              {/* Trust badges */}
-              <div className="mt-8 flex items-center gap-6 justify-center">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-charcoal">10,000+</div>
-                  <div className="text-sm text-medium-gray">Happy Customers</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-charcoal">4.9/5</div>
-                  <div className="text-sm text-medium-gray">Average Rating</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-charcoal">100%</div>
-                  <div className="text-sm text-medium-gray">Satisfaction</div>
+              <div className="mt-8 pt-6 border-t border-gray-300/30">
+                <p className="text-base sm:text-lg text-medium-gray italic mb-4">
+                  Your places. Your colors. Your story.
+                  <br />
+                  <span className="text-charcoal font-semibold not-italic">Beautifully mapped.</span>
+                </p>
+
+                <style jsx>{`
+                  @keyframes shimmer {
+                    0% {
+                      background-position: -200% center;
+                    }
+                    100% {
+                      background-position: 200% center;
+                    }
+                  }
+                  .shimmer-button {
+                    background: linear-gradient(
+                      90deg,
+                      #1a1a1a 0%,
+                      #2d2d2d 25%,
+                      #666666 50%,
+                      #2d2d2d 75%,
+                      #1a1a1a 100%
+                    );
+                    background-size: 200% auto;
+                    animation: shimmer 3s linear infinite;
+                  }
+                `}</style>
+                <div className="shimmer-button inline-block text-white px-8 py-4 rounded-md font-bold text-xl sm:text-2xl shadow-lg">
+                  Your Map Art
                 </div>
               </div>
             </div>

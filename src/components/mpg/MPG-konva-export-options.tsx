@@ -16,17 +16,18 @@ import { cn } from '@/lib/utils';
 const PRODUCT_CONFIGS = {
   digital: {
     name: 'Digital Download',
-    description: 'Instant high-resolution download',
+    description: 'Instant high-resolution PNG + PDF',
     icon: FileImage,
     price: 9.99,
     sizes: [
-      { value: 'A4', label: 'A4 (210×297mm)', dimensions: '8.3×11.7"' },
-      { value: 'Letter', label: 'Letter (8.5×11")', dimensions: '8.5×11"' },
-      { value: 'Square', label: 'Square (12×12")', dimensions: '12×12"' },
-      { value: 'Portrait', label: 'Portrait (16×20")', dimensions: '16×20"' },
-      { value: 'Landscape', label: 'Landscape (20×16")', dimensions: '20×16"' },
+      { value: '8x10', label: '8×10"', dimensions: '8×10"', popular: true },
+      { value: '11x14', label: '11×14"', dimensions: '11×14"', popular: true },
+      { value: '12x16', label: '12×16"', dimensions: '12×16"' },
+      { value: '16x20', label: '16×20"', dimensions: '16×20"', popular: true },
+      { value: '18x24', label: '18×24"', dimensions: '18×24"' },
+      { value: '24x36', label: '24×36"', dimensions: '24×36"' },
     ],
-    features: ['300 DPI', 'Print-ready', 'Instant download', 'No watermark'],
+    features: ['300 DPI PNG + PDF', 'Print-ready files', 'Instant download', 'No watermark'],
   },
   poster: {
     name: 'Paper Poster',
@@ -134,7 +135,7 @@ export function MPGKonvaExportOptions() {
       return;
     }
 
-    // Digital download export
+    // Digital download export - Both PNG and PDF
     setIsExporting(true);
 
     try {
@@ -172,12 +173,27 @@ export function MPGKonvaExportOptions() {
 
       await new Promise(resolve => setTimeout(resolve, 500));
 
+      const fileName = `${city.toLowerCase().replace(/\s+/g, '-')}-map`;
+
+      // Export PNG
       await exportMapPosterKonva({
         stage: exportStage,
-        format: exportFormat,
+        format: 'png',
         size: productSize as any,
-        fileName: `${city.toLowerCase().replace(/\s+/g, '-')}-map`,
-        quality: exportFormat === 'jpg' ? 0.95 : 1
+        fileName: fileName,
+        quality: 1
+      });
+
+      // Wait a moment between exports
+      await new Promise(resolve => setTimeout(resolve, 300));
+
+      // Export PDF
+      await exportMapPosterKonva({
+        stage: exportStage,
+        format: 'pdf',
+        size: productSize as any,
+        fileName: fileName,
+        quality: 1
       });
 
       root.unmount();
@@ -237,28 +253,29 @@ export function MPGKonvaExportOptions() {
                 className={cn(
                   "relative flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-200 hover:shadow-md group",
                   isSelected
-                    ? "border-charcoal bg-gray-50 shadow-sm"
+                    ? "border-charcoal bg-gray-50 shadow-md ring-2 ring-charcoal ring-offset-2"
                     : "border-gray-200 hover:border-gray-400 bg-white"
                 )}
               >
                 {/* Selection Indicator */}
                 {isSelected && (
-                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-charcoal rounded-full flex items-center justify-center shadow-md">
+                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-charcoal rounded-full flex items-center justify-center shadow-md z-10">
                     <Check className="w-4 h-4 text-white" />
                   </div>
                 )}
 
                 <div className={cn(
-                  "w-10 h-10 rounded-full flex items-center justify-center mb-2 transition-colors",
-                  isSelected
-                    ? "bg-charcoal text-white"
-                    : "bg-gray-100 text-gray-600 group-hover:bg-gray-200 group-hover:text-charcoal"
+                  "w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-all",
+                  "bg-gray-100 group-hover:bg-gray-200"
                 )}>
-                  <Icon className="w-5 h-5" />
+                  <Icon className={cn(
+                    "w-6 h-6 transition-colors",
+                    isSelected ? "text-charcoal" : "text-gray-600 group-hover:text-charcoal"
+                  )} />
                 </div>
 
                 <span className={cn(
-                  "text-xs font-medium text-center transition-colors",
+                  "text-xs font-semibold text-center transition-colors",
                   isSelected ? "text-charcoal" : "text-gray-700"
                 )}>
                   {config.name}
@@ -399,14 +416,14 @@ export function MPGKonvaExportOptions() {
         </div>
       </div>
 
-      {/* Save Template Button */}
+      {/* Save Draft Button */}
       <div className="pt-4 border-t border-gray-200">
         <MPGSaveTemplateButton
           variant="outline"
           className="w-full py-3"
         />
         <p className="text-xs text-center text-gray-500 mt-2">
-          Save your design to easily reorder or create variations later
+          Save as draft to continue editing later or create variations
         </p>
       </div>
     </div>
