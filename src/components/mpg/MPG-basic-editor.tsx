@@ -68,35 +68,29 @@ export function MPGBasicEditor({ templateId }: MPGBasicEditorProps) {
     }
   }, [templateId, savedTemplateId, toast, loadTemplate]);
 
+  const handleStepChange = (step: 1 | 2) => {
+    setCurrentPage(step);
+
+    // Scroll to show progress indicator with buffer after page change
+    setTimeout(() => {
+      const progressElement = progressIndicatorRef.current;
+      if (progressElement) {
+        const rect = progressElement.getBoundingClientRect();
+        const offsetTop = window.pageYOffset + rect.top - 132;
+        window.scrollTo({ top: Math.max(0, offsetTop), behavior: 'smooth' });
+      }
+    }, 50);
+  };
+
   const handleNext = () => {
     if (currentPage === 1) {
-      setCurrentPage(2);
-      
-      // Scroll to show progress indicator with buffer after page change
-      setTimeout(() => {
-        const progressElement = progressIndicatorRef.current;
-        if (progressElement) {
-          const rect = progressElement.getBoundingClientRect();
-          const offsetTop = window.pageYOffset + rect.top - 132;
-          window.scrollTo({ top: Math.max(0, offsetTop), behavior: 'smooth' });
-        }
-      }, 50);
+      handleStepChange(2);
     }
   };
 
   const handlePrevious = () => {
     if (currentPage === 2) {
-      setCurrentPage(1);
-      
-      // Scroll to show progress indicator with buffer after page change
-      setTimeout(() => {
-        const progressElement = progressIndicatorRef.current;
-        if (progressElement) {
-          const rect = progressElement.getBoundingClientRect();
-          const offsetTop = window.pageYOffset + rect.top - 132;
-          window.scrollTo({ top: Math.max(0, offsetTop), behavior: 'smooth' });
-        }
-      }, 50);
+      handleStepChange(1);
     }
   };
 
@@ -127,42 +121,54 @@ export function MPGBasicEditor({ templateId }: MPGBasicEditorProps) {
           <div className="bg-gradient-to-br from-gray-50/80 to-white/80 backdrop-blur-sm rounded-3xl p-6 border border-gray-200/50 shadow-lg">
             <div className="flex items-center gap-6">
               <div className="flex flex-col items-center group">
-                <div className={`flex items-center justify-center w-14 h-14 rounded-full transition-all duration-300 backdrop-blur-md border-2 ${
-                  currentPage >= 1
-                    ? 'bg-gradient-to-br from-gray-900 to-black text-white border-black shadow-xl scale-110'
-                    : 'bg-white/70 border-gray-300 text-gray-500 shadow-md'
-                }`}>
-                  <span className="text-lg font-bold">1</span>
+                <button
+                  onClick={() => handleStepChange(1)}
+                  className={`
+                    relative flex items-center justify-center w-14 h-14 rounded-full transition-all duration-300 backdrop-blur-md border-2
+                    ${currentPage >= 1
+                      ? 'bg-gradient-to-br from-gray-900 to-black text-white border-black shadow-xl scale-110 animate-in zoom-in-50 duration-300'
+                      : 'bg-white/70 border-gray-300 text-gray-500 shadow-md'
+                    }
+                    cursor-pointer hover:scale-105 hover:shadow-2xl transform-gpu
+                  `}
+                >
+                  <span className="text-lg font-bold relative z-10">1</span>
                   {currentPage === 1 && (
                     <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent animate-pulse" />
                   )}
-                </div>
-                <span className={`mt-2 text-xs font-semibold ${
-                  currentPage >= 1 ? 'text-black' : 'text-gray-400'
+                </button>
+                <span className={`mt-2 text-xs font-semibold text-center whitespace-nowrap transition-all duration-300 ${
+                  currentPage >= 1 ? 'text-black scale-105' : 'text-gray-400'
                 }`}>
                   Personalize
                 </span>
               </div>
 
-              <div className={`w-24 h-1 rounded-full transition-all duration-500 ${
+              <div className={`w-24 h-1 rounded-full transition-all duration-500 ease-out ${
                 currentPage >= 2
                   ? 'bg-gradient-to-r from-gray-900 to-black shadow-md'
                   : 'bg-gray-200'
               }`} />
 
               <div className="flex flex-col items-center group">
-                <div className={`flex items-center justify-center w-14 h-14 rounded-full transition-all duration-300 backdrop-blur-md border-2 ${
-                  currentPage >= 2
-                    ? 'bg-gradient-to-br from-gray-900 to-black text-white border-black shadow-xl scale-110'
-                    : 'bg-white/70 border-gray-300 text-gray-500 shadow-md'
-                }`}>
-                  <span className="text-lg font-bold">2</span>
+                <button
+                  onClick={() => handleStepChange(2)}
+                  className={`
+                    relative flex items-center justify-center w-14 h-14 rounded-full transition-all duration-300 backdrop-blur-md border-2
+                    ${currentPage >= 2
+                      ? 'bg-gradient-to-br from-gray-900 to-black text-white border-black shadow-xl scale-110 animate-in zoom-in-50 duration-300'
+                      : 'bg-white/70 border-gray-300 text-gray-500 shadow-md'
+                    }
+                    cursor-pointer hover:scale-105 hover:shadow-2xl transform-gpu
+                  `}
+                >
+                  <span className="text-lg font-bold relative z-10">2</span>
                   {currentPage === 2 && (
                     <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent animate-pulse" />
                   )}
-                </div>
-                <span className={`mt-2 text-xs font-semibold ${
-                  currentPage >= 2 ? 'text-black' : 'text-gray-400'
+                </button>
+                <span className={`mt-2 text-xs font-semibold text-center whitespace-nowrap transition-all duration-300 ${
+                  currentPage >= 2 ? 'text-black scale-105' : 'text-gray-400'
                 }`}>
                   Download
                 </span>
