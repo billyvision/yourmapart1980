@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useRef } from 'react';
-import { Download, FileImage, Loader2, Package, Check, Sparkles, ShoppingCart, FileJson } from 'lucide-react';
+import { Download, FileImage, Loader2, Package, Check, Sparkles, ShoppingCart, FileJson, ZoomIn, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -34,6 +34,7 @@ const PRODUCT_CONFIGS = {
     name: 'Paper Poster',
     description: 'Premium matte or glossy finish',
     icon: Package,
+    image: '/mpg/product-types/poster.png',
     basePrice: 34.99,
     sizes: [
       { value: '8x10', label: '8×10"', price: 24.99 },
@@ -49,6 +50,7 @@ const PRODUCT_CONFIGS = {
     name: 'Canvas Print',
     description: 'Gallery-wrapped, ready to hang',
     icon: Package,
+    image: '/mpg/product-types/canvas.png',
     basePrice: 89.99,
     sizes: [
       { value: '12x16', label: '12×16"', price: 74.99 },
@@ -63,6 +65,8 @@ const PRODUCT_CONFIGS = {
     name: 'Framed Print',
     description: 'Professional frame included',
     icon: Package,
+    image: '/mpg/product-types/framed.png',
+    image2: '/mpg/product-types/framed-2.webp',
     basePrice: 119.99,
     sizes: [
       { value: '8x10', label: '8×10"', price: 69.99 },
@@ -77,6 +81,7 @@ const PRODUCT_CONFIGS = {
     name: 'Acrylic Print',
     description: 'Crystal-clear, ultra-modern',
     icon: Sparkles,
+    image: '/mpg/product-types/acrylic.png',
     basePrice: 179.99,
     sizes: [
       { value: '12x16', label: '12×16"', price: 139.99 },
@@ -90,6 +95,7 @@ const PRODUCT_CONFIGS = {
     name: 'Metal Print',
     description: 'Sleek aluminum finish',
     icon: Sparkles,
+    image: '/mpg/product-types/metal.png',
     basePrice: 169.99,
     sizes: [
       { value: '12x16', label: '12×16"', price: 129.99 },
@@ -104,6 +110,7 @@ const PRODUCT_CONFIGS = {
 
 export function MPGKonvaExportOptions() {
   const [isExporting, setIsExporting] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const { data: session } = useSession();
 
   const {
@@ -118,6 +125,17 @@ export function MPGKonvaExportOptions() {
   // Check if user is superadmin
   const userRole = (session?.user as any)?.role;
   const isSuperAdmin = userRole === 'superadmin';
+
+  // Handle escape key to close lightbox
+  React.useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && lightboxImage) {
+        setLightboxImage(null);
+      }
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [lightboxImage]);
 
   const currentProduct = PRODUCT_CONFIGS[productType];
   const currentSize = currentProduct.sizes.find(s => s.value === productSize);
@@ -296,16 +314,109 @@ export function MPGKonvaExportOptions() {
 
         {/* Product Description */}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-          <h4 className="text-sm font-semibold text-charcoal mb-2">{currentProduct.name}</h4>
-          <p className="text-xs text-medium-gray mb-3">{currentProduct.description}</p>
-          <ul className="grid grid-cols-2 gap-2">
-            {currentProduct.features.map((feature, idx) => (
-              <li key={idx} className="flex items-start gap-2 text-xs text-gray-600">
-                <Check className="w-3 h-3 text-charcoal mt-0.5 flex-shrink-0" />
-                <span>{feature}</span>
-              </li>
-            ))}
-          </ul>
+          {'image2' in currentProduct && currentProduct.image2 ? (
+            // Framed product with two images - flanking layout
+            <div className="flex gap-4 items-center">
+              {/* Left: First Product Image */}
+              <div className="relative flex-shrink-0 w-48 h-48 rounded-lg overflow-hidden bg-white shadow-sm group cursor-pointer">
+                <img
+                  src={currentProduct.image!}
+                  alt={`${currentProduct.name} - View 1`}
+                  className="w-full h-full object-cover"
+                />
+                {/* Zoom overlay */}
+                <div
+                  className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center"
+                  onClick={() => setLightboxImage(currentProduct.image!)}
+                >
+                  <div className="bg-white rounded-full p-3 shadow-lg">
+                    <ZoomIn className="w-5 h-5 text-charcoal" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Center: Product Details */}
+              <div className="flex-1 min-w-0">
+                <h4 className="text-sm font-semibold text-charcoal mb-1">{currentProduct.name}</h4>
+                <p className="text-xs text-medium-gray mb-3">{currentProduct.description}</p>
+                <ul className="space-y-1.5">
+                  {currentProduct.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-xs text-gray-600">
+                      <Check className="w-3 h-3 text-charcoal mt-0.5 flex-shrink-0" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Right: Second Product Image */}
+              <div className="relative flex-shrink-0 w-48 h-48 rounded-lg overflow-hidden bg-white shadow-sm group cursor-pointer">
+                <img
+                  src={currentProduct.image2}
+                  alt={`${currentProduct.name} - View 2`}
+                  className="w-full h-full object-cover"
+                />
+                {/* Zoom overlay */}
+                <div
+                  className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center"
+                  onClick={() => setLightboxImage(currentProduct.image2!)}
+                >
+                  <div className="bg-white rounded-full p-3 shadow-lg">
+                    <ZoomIn className="w-5 h-5 text-charcoal" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : 'image' in currentProduct && currentProduct.image ? (
+            // Physical product with single image - split layout
+            <div className="flex gap-4">
+              {/* Left: Product Image */}
+              <div className="relative flex-shrink-0 w-64 h-64 rounded-lg overflow-hidden bg-white shadow-sm group cursor-pointer">
+                <img
+                  src={currentProduct.image}
+                  alt={currentProduct.name}
+                  className="w-full h-full object-cover"
+                />
+                {/* Zoom overlay */}
+                <div
+                  className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center"
+                  onClick={() => setLightboxImage(currentProduct.image!)}
+                >
+                  <div className="bg-white rounded-full p-3 shadow-lg">
+                    <ZoomIn className="w-6 h-6 text-charcoal" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: Product Details */}
+              <div className="flex-1 min-w-0">
+                <h4 className="text-sm font-semibold text-charcoal mb-1">{currentProduct.name}</h4>
+                <p className="text-xs text-medium-gray mb-3">{currentProduct.description}</p>
+                <ul className="space-y-1.5">
+                  {currentProduct.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-xs text-gray-600">
+                      <Check className="w-3 h-3 text-charcoal mt-0.5 flex-shrink-0" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ) : (
+            // Digital download - no image
+            <>
+              <h4 className="text-sm font-semibold text-charcoal mb-2">{currentProduct.name}</h4>
+              <p className="text-xs text-medium-gray mb-3">{currentProduct.description}</p>
+              <ul className="grid grid-cols-2 gap-2">
+                {currentProduct.features.map((feature, idx) => (
+                  <li key={idx} className="flex items-start gap-2 text-xs text-gray-600">
+                    <Check className="w-3 h-3 text-charcoal mt-0.5 flex-shrink-0" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       </div>
 
@@ -476,6 +587,35 @@ export function MPGKonvaExportOptions() {
                 <span className="font-medium">💾 Save for Later:</span> Keep this JSON file to recreate your exact design in the future.
               </p>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Lightbox Modal */}
+      {lightboxImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 animate-in fade-in duration-200"
+          onClick={() => setLightboxImage(null)}
+        >
+          {/* Close button */}
+          <button
+            onClick={() => setLightboxImage(null)}
+            className="absolute top-4 right-4 bg-white hover:bg-gray-100 rounded-full p-3 shadow-lg transition-colors z-10"
+            aria-label="Close lightbox"
+          >
+            <X className="w-6 h-6 text-charcoal" />
+          </button>
+
+          {/* Image container */}
+          <div
+            className="relative max-w-5xl max-h-[90vh] animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={lightboxImage}
+              alt="Product preview"
+              className="w-full h-full object-contain rounded-lg shadow-2xl"
+            />
           </div>
         </div>
       )}
