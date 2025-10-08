@@ -8,7 +8,7 @@ import { getTemplateData } from '@/lib/mpg/MPG-templates';
 import { loadMapSnapshot } from '@/lib/mpg/MPG-json-export';
 import { useToast } from '@/hooks/use-toast';
 import { MPGBasicPersonalize } from './MPG-basic-personalize';
-import { MPGBasicDownload } from './MPG-basic-download';
+import { MPGKonvaExportOptions } from './MPG-konva-export-options';
 import { MPGKonvaPreview } from './MPG-konva-preview';
 
 interface MPGBasicEditorProps {
@@ -179,7 +179,7 @@ export function MPGBasicEditor({ templateId }: MPGBasicEditorProps) {
               {currentPage === 1 ? (
                 <MPGBasicPersonalize />
               ) : (
-                <MPGBasicDownload />
+                <MPGKonvaExportOptions />
               )}
 
               {/* Navigation */}

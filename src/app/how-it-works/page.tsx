@@ -387,18 +387,21 @@ export default function HowItWorksPage() {
             </div>
 
             <div className="relative">
-              <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl p-8 lg:p-12">
-                <div className="bg-white rounded-2xl p-6 shadow-xl">
-                  <div className="space-y-4">
-                    <div className="h-8 bg-gray-200 rounded-lg w-3/4"></div>
-                    <div className="h-64 bg-gradient-to-br from-gray-300 to-gray-400 rounded-xl flex items-center justify-center">
-                      <MapPin className="w-20 h-20 text-white opacity-50" />
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="h-8 bg-gray-200 rounded-lg"></div>
-                      <div className="h-8 bg-gray-200 rounded-lg"></div>
-                    </div>
-                  </div>
+              <div className="bg-gray-100/50 p-6 rounded-3xl">
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3]">
+                  <video
+                    className="w-full h-full object-cover"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    disablePictureInPicture
+                    controlsList="nodownload nofullscreen noremoteplayback"
+                    onContextMenu={(e) => e.preventDefault()}
+                  >
+                    <source src="/videos/walls-video.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
                 </div>
               </div>
               <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-gray-300/50 to-transparent rounded-full blur-2xl"></div>

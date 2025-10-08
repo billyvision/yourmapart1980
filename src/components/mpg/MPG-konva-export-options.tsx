@@ -1,11 +1,12 @@
 'use client'
 import React, { useState, useRef } from 'react';
-import { Download, FileImage, Loader2, Package, Check, Sparkles, ShoppingCart } from 'lucide-react';
+import { Download, FileImage, Loader2, Package, Check, Sparkles, ShoppingCart, FileJson } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useMPGStore } from '@/lib/mpg/MPG-store';
 import { exportMapPosterKonva } from '@/lib/mpg/MPG-konva-export';
+import { downloadMapJSON } from '@/lib/mpg/MPG-json-export';
 import { MPGKonvaPreview } from './MPG-konva-preview';
 import { MPG_BASE_CANVAS } from '@/lib/mpg/MPG-konva-constants';
 import { MPGSaveTemplateButton } from './MPG-save-template-button';
@@ -113,6 +114,10 @@ export function MPGKonvaExportOptions() {
     setProductSize,
     city
   } = useMPGStore();
+
+  // Check if user is superadmin
+  const userRole = (session?.user as any)?.role;
+  const isSuperAdmin = userRole === 'superadmin';
 
   const currentProduct = PRODUCT_CONFIGS[productType];
   const currentSize = currentProduct.sizes.find(s => s.value === productSize);
@@ -426,6 +431,54 @@ export function MPGKonvaExportOptions() {
           Save as draft to continue editing later or create variations
         </p>
       </div>
+
+      {/* JSON Export - Superadmin Only */}
+      {isSuperAdmin && (
+        <div className="pt-4 border-t border-gray-200">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-3">
+              <FileJson className="w-5 h-5 text-blue-600" />
+              <h4 className="text-sm font-semibold text-charcoal">Data Export (Admin)</h4>
+            </div>
+
+            {/* JSON Export Info */}
+            <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg">
+              <p className="text-xs text-blue-800 mb-2">
+                Export your complete map design configuration as a JSON file. This includes all settings:
+                location, text, styles, colors, and preferences.
+              </p>
+              <div className="bg-white p-2 rounded border border-blue-200 mb-2">
+                <code className="text-xs text-gray-700">
+                  <span className="text-blue-600">{"{"}</span><br />
+                  <span className="ml-2 text-green-600">"version"</span>: "1.0",<br />
+                  <span className="ml-2 text-green-600">"location"</span>: {"{ city, coordinates... }"},<br />
+                  <span className="ml-2 text-green-600">"text"</span>: {"{ headline, custom... }"},<br />
+                  <span className="ml-2 text-green-600">"style"</span>: {"{ map, frame, glow... }"},<br />
+                  <span className="ml-2">...</span><br />
+                  <span className="text-blue-600">{"}"}</span>
+                </code>
+              </div>
+            </div>
+
+            {/* Download Button */}
+            <Button
+              onClick={downloadMapJSON}
+              variant="outline"
+              className="w-full border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors"
+            >
+              <FileJson className="w-4 h-4 mr-2" />
+              Download JSON Snapshot
+            </Button>
+
+            {/* Info Note */}
+            <div className="p-2 bg-amber-50 rounded-lg">
+              <p className="text-xs text-amber-700">
+                <span className="font-medium">💾 Save for Later:</span> Keep this JSON file to recreate your exact design in the future.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
