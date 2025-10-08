@@ -61,8 +61,14 @@ interface MPGState {
   isExporting: boolean;
 
   // Product selection
-  productType: 'digital' | 'poster' | 'canvas' | 'framed' | 'acrylic' | 'metal';
+  productType: 'digital' | 'poster' | 'canvas-wrap' | 'floating-canvas' | 'framed' | 'acrylic' | 'metal';
   productSize: string;
+
+  // Product variations
+  posterFinish: 'matte' | 'semi-gloss';
+  frameColor: 'black' | 'natural' | 'dark-brown' | 'oak' | 'ash';
+  canvasThickness: 'slim' | 'thick';
+  paperWeight: '170gsm' | '200gsm' | '250gsm';
   
   // Map instance reference
   mapInstance: any | null;
@@ -125,8 +131,12 @@ interface MPGState {
   setExportSize: (size: string) => void;
   setExportQuality: (quality: number) => void;
   setIsExporting: (isExporting: boolean) => void;
-  setProductType: (type: 'digital' | 'poster' | 'canvas' | 'framed' | 'acrylic' | 'metal') => void;
+  setProductType: (type: 'digital' | 'poster' | 'canvas-wrap' | 'floating-canvas' | 'framed' | 'acrylic' | 'metal') => void;
   setProductSize: (size: string) => void;
+  setPosterFinish: (finish: 'matte' | 'semi-gloss') => void;
+  setFrameColor: (color: 'black' | 'natural' | 'dark-brown' | 'oak' | 'ash') => void;
+  setCanvasThickness: (thickness: 'slim' | 'thick') => void;
+  setPaperWeight: (weight: '170gsm' | '200gsm' | '250gsm') => void;
   setMapInstance: (instance: any) => void;
   setUseVectorMaps: (use: boolean) => void;
   setShowMapLabels: (show: boolean) => void;
@@ -173,8 +183,14 @@ export const useMPGStore = create<MPGState>((set, get) => ({
   mapInstance: null,
   mapOffsetX: 0,
   mapOffsetY: 0,
-  productType: 'digital' as 'digital' | 'poster' | 'canvas' | 'framed' | 'acrylic' | 'metal',
+  productType: 'digital' as 'digital' | 'poster' | 'canvas-wrap' | 'floating-canvas' | 'framed' | 'acrylic' | 'metal',
   productSize: '8x10', // Default to 8x10 for digital downloads
+
+  // Product variation defaults
+  posterFinish: 'matte' as 'matte' | 'semi-gloss',
+  frameColor: 'natural' as 'black' | 'natural' | 'dark-brown' | 'oak' | 'ash',
+  canvasThickness: 'thick' as 'slim' | 'thick',
+  paperWeight: '250gsm' as '170gsm' | '200gsm' | '250gsm', // Default to museum quality
   frameStyle: 'square' as 'square' | 'circle' | 'heart' | 'house', // Explicitly set square as default
   showFrameBorder: false, // Default to false for square frame (default frame style)
   useVectorMaps: true, // Default to vector maps (better quality)
@@ -268,6 +284,10 @@ export const useMPGStore = create<MPGState>((set, get) => ({
   setIsExporting: (isExporting) => set({ isExporting }),
   setProductType: (productType) => set({ productType }),
   setProductSize: (productSize) => set({ productSize }),
+  setPosterFinish: (posterFinish) => set({ posterFinish }),
+  setFrameColor: (frameColor) => set({ frameColor }),
+  setCanvasThickness: (canvasThickness) => set({ canvasThickness }),
+  setPaperWeight: (paperWeight) => set({ paperWeight }),
   setMapInstance: (mapInstance) => set({ mapInstance }),
   setUseVectorMaps: (useVectorMaps) => set({ useVectorMaps }),
   setShowMapLabels: (showMapLabels) => set({ showMapLabels }),
