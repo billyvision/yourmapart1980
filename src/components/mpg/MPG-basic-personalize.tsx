@@ -47,6 +47,7 @@ export function MPGBasicPersonalize() {
     setCity,
     setHeadlineText,
     setCustomText,
+    setCurrentStep,
   } = useMPGStore();
 
   // Initialize search with current city
@@ -179,6 +180,8 @@ export function MPGBasicPersonalize() {
   };
 
   const handleOpenAdvancedEditor = () => {
+    // Reset to step 1 so user always starts at the beginning of the full wizard
+    setCurrentStep(1);
     router.push('/mpg');
   };
 

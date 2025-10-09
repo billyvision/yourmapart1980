@@ -25,7 +25,7 @@ export function MPGBasicEditor({ templateId }: MPGBasicEditorProps) {
   // Get searchParams to check for templateId from URL
   const searchParams = useSearchParams();
   const savedTemplateId = searchParams.get('templateId');
-  const { loadTemplate, loadFromTemplateData } = useMPGStore();
+  const { loadTemplate, loadFromTemplateData, setCurrentStep } = useMPGStore();
 
   // Load template if provided (from static templates or saved templates)
   useEffect(() => {
@@ -95,6 +95,8 @@ export function MPGBasicEditor({ templateId }: MPGBasicEditorProps) {
   };
 
   const handleOpenAdvancedEditor = () => {
+    // Reset to step 1 so user starts at the beginning of the full wizard
+    setCurrentStep(1);
     // Navigate to the advanced editor WITHOUT template ID to preserve current state
     // Both editors share the same store, so all changes are preserved
     router.push('/mpg');
