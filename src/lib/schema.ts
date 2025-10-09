@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean, serial, json, integer, index } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, serial, json, integer, index, real } from "drizzle-orm/pg-core";
 
 // ============================================
 // Better Auth Tables
@@ -191,4 +191,67 @@ export const mpgCategories = pgTable("mpg_categories", {
 }, (table) => ({
   slugIdx: index("mpg_categories_slug_idx").on(table.slug),
   displayOrderIdx: index("mpg_categories_display_order_idx").on(table.displayOrder),
+}));
+
+// ============================================
+// MPG Product Management Tables
+// ============================================
+
+export const mpgProducts = pgTable("mpg_products", {
+  id: serial("id").primaryKey(),
+  productType: text("product_type").notNull().unique(), // digital, poster, canvas-wrap, etc.
+  name: text("name").notNull(),
+  description: text("description"),
+  icon: text("icon"), // lucide icon name
+  image: text("image"), // product reference image URL
+  image2: text("image_2"), // optional second image
+  basePrice: real("base_price"), // base price for products without size-specific pricing
+  isActive: boolean("is_active").default(true).notNull(),
+  displayOrder: integer("display_order").default(0).notNull(),
+  features: json("features").$type<string[]>(), // array of feature strings
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => ({
+  productTypeIdx: index("mpg_products_product_type_idx").on(table.productType),
+  isActiveIdx: index("mpg_products_is_active_idx").on(table.isActive),
+  displayOrderIdx: index("mpg_products_display_order_idx").on(table.displayOrder),
+}));
+
+export const mpgProductSizes = pgTable("mpg_product_sizes", {
+  id: serial("id").primaryKey(),
+  productId: integer("product_id")
+    .notNull()
+    .references(() => mpgProducts.id, { onDelete: "cascade" }),
+  sizeValue: text("size_value").notNull(), // 8x10, 11x14, etc.
+  sizeLabel: text("size_label").notNull(), // Display label
+  dimensions: text("dimensions"), // e.g., "8×10\""
+  price: real("price"), // size-specific price (overrides base price if set)
+  isPopular: boolean("is_popular").default(false).notNull(),
+  displayOrder: integer("display_order").default(0).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => ({
+  productIdIdx: index("mpg_product_sizes_product_id_idx").on(table.productId),
+  displayOrderIdx: index("mpg_product_sizes_display_order_idx").on(table.displayOrder),
+}));
+
+export const mpgProductVariations = pgTable("mpg_product_variations", {
+  id: serial("id").primaryKey(),
+  productId: integer("product_id")
+    .notNull()
+    .references(() => mpgProducts.id, { onDelete: "cascade" }),
+  variationType: text("variation_type").notNull(), // posterFinish, frameColor, canvasThickness, paperWeight
+  variationValue: text("variation_value").notNull(), // matte, black, slim, 170gsm
+  variationLabel: text("variation_label").notNull(), // Display label
+  variationDescription: text("variation_description"), // Optional description
+  priceModifier: real("price_modifier").default(0).notNull(), // Price adjustment (+ or -)
+  isActive: boolean("is_active").default(true).notNull(),
+  displayOrder: integer("display_order").default(0).notNull(),
+  metadata: json("metadata").$type<Record<string, unknown>>(), // For extra data like color codes
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => ({
+  productIdIdx: index("mpg_product_variations_product_id_idx").on(table.productId),
+  variationTypeIdx: index("mpg_product_variations_variation_type_idx").on(table.variationType),
+  isActiveIdx: index("mpg_product_variations_is_active_idx").on(table.isActive),
 }));

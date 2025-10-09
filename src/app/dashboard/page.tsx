@@ -123,12 +123,12 @@ export default function DashboardPage() {
           </div>
 
           <div className="border rounded-lg p-6">
-            <h3 className="text-xl font-semibold mb-4">Template Management</h3>
+            <h3 className="text-xl font-semibold mb-4">Product Management</h3>
             <p className="text-muted-foreground mb-4">
-              Browse and manage curated admin templates for users
+              Manage products, pricing, sizes, and variations
             </p>
-            <Button onClick={() => router.push('/admin/mpg/templates')} variant="outline" className="w-full">
-              Manage Templates
+            <Button onClick={() => router.push('/admin/products')} variant="outline" className="w-full">
+              Manage Products
             </Button>
           </div>
 

@@ -81,8 +81,7 @@ All User permissions **PLUS**:
 #### Available Pages:
 All User pages **PLUS**:
 - `/dashboard` - Shows admin dashboard with stats
-- `/admin/mpg/template-generator` - Create/edit templates
-- `/admin/mpg/templates` - Manage all templates
+- `/admin/mpg/template-generator` - Create/edit/manage templates
 - `/admin/mpg/analytics` - Usage analytics
 - `/admin/users` - View all users (read-only)
 
@@ -170,18 +169,19 @@ Admin Dashboard (/dashboard)
 View Stats (templates, exports, events)
     ↓
 ┌─────────────┬──────────────┬─────────────┐
-↓             ↓              ↓             ↓
-Template      Template       Analytics     User
-Generator     Management                   Management
-    ↓             ↓              ↓             ↓
-Create/Edit   Browse/Edit    View Stats    View Users
-Templates     Templates      & Trends      (Read-only)
+↓             ↓              ↓
+Template      Analytics     User
+Generator                   Management
+    ↓             ↓              ↓
+Create/Edit   View Stats    View Users
+Browse/Delete & Trends      (Read-only)
+Templates
 ```
 
 **Admin Capabilities:**
 1. **Dashboard** - Overview of system stats
-2. **Template Generator** - Create templates with JSON import
-3. **Template Management** - Edit, toggle visibility, delete
+2. **Template Generator** - Create, edit, browse, toggle visibility, and delete templates with JSON import
+3. **Product Management** - Manage products, pricing, sizes, and variations
 4. **Analytics** - Track usage patterns and popular designs
 5. **User Management** - View all users (read-only)
 
@@ -318,8 +318,9 @@ ADMIN_EMAIL="admin@yourdomain.com" # Auto-promoted to admin
 | Page | Route | Description | Access |
 |------|-------|-------------|--------|
 | Admin Dashboard | `/dashboard` | Stats overview, quick actions | Admin, SuperAdmin |
-| Template Generator | `/admin/mpg/template-generator` | Create/edit templates with JSON | Admin, SuperAdmin |
-| Template Management | `/admin/mpg/templates` | Browse, edit, delete templates | Admin, SuperAdmin |
+| Template Generator | `/admin/mpg/template-generator` | Create/edit/manage templates with JSON | Admin, SuperAdmin |
+| Product Management | `/admin/products` | Manage products, pricing, sizes, variations | Admin, SuperAdmin |
+| Product Edit | `/admin/products/[id]` | Edit product details with size/variation management | Admin, SuperAdmin |
 | Analytics | `/admin/mpg/analytics` | Usage stats and trends | Admin, SuperAdmin |
 | User Management | `/admin/users` | View/manage users | Admin (read), SuperAdmin (full) |
 
@@ -364,13 +365,26 @@ ADMIN_EMAIL="admin@yourdomain.com" # Auto-promoted to admin
 #### Admin Templates
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/api/admin/mpg/templates` | List all admin templates |
-| POST | `/api/admin/mpg/templates` | Create admin template |
-| GET | `/api/admin/mpg/templates/[id]` | Get specific admin template |
-| PUT | `/api/admin/mpg/templates/[id]` | Update admin template |
+| POST | `/api/admin/mpg/templates/save` | Save/create admin template with JSON |
 | DELETE | `/api/admin/mpg/templates/delete` | Delete admin template |
-| POST | `/api/admin/mpg/templates/save` | Save admin template |
 | POST | `/api/admin/mpg/templates/toggle-visibility` | Toggle template visibility |
+
+#### Product Management
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/admin/products` | List all products with sizes and variations |
+| POST | `/api/admin/products` | Create new product |
+| GET | `/api/admin/products/[id]` | Get product details with sizes/variations |
+| PATCH | `/api/admin/products/[id]` | Update product |
+| DELETE | `/api/admin/products/[id]` | Delete product (cascade deletes sizes/variations) |
+| GET | `/api/admin/products/[id]/sizes` | List product sizes |
+| POST | `/api/admin/products/[id]/sizes` | Add product size |
+| PATCH | `/api/admin/products/[id]/sizes/[sizeId]` | Update product size |
+| DELETE | `/api/admin/products/[id]/sizes/[sizeId]` | Delete product size |
+| GET | `/api/admin/products/[id]/variations` | List product variations |
+| POST | `/api/admin/products/[id]/variations` | Add product variation |
+| PATCH | `/api/admin/products/[id]/variations/[variationId]` | Update product variation |
+| DELETE | `/api/admin/products/[id]/variations/[variationId]` | Delete product variation |
 
 #### Analytics
 | Method | Endpoint | Description |

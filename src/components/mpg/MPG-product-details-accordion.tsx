@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/accordion';
 
 interface ProductDetailsAccordionProps {
-  productType: 'digital' | 'poster' | 'canvas-wrap' | 'floating-canvas' | 'framed' | 'acrylic' | 'metal';
+  productType: string;
   productName: string;
 }
 

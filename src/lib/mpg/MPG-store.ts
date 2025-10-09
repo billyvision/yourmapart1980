@@ -4,24 +4,63 @@ import { MPG_DEFAULT_CONFIG, MPG_MAP_STYLES } from './MPG-constants';
 import { MPG_MAP_IMAGE } from './MPG-konva-constants';
 import { isMaptilerConfigured } from './MPG-maplibre-service';
 
+// Product database types
+interface ProductSize {
+  id: number;
+  sizeValue: string;
+  sizeLabel: string;
+  dimensions?: string | null;
+  price?: number | null;
+  isPopular: boolean;
+  displayOrder: number;
+}
+
+interface ProductVariation {
+  id: number;
+  variationType: string;
+  variationValue: string;
+  variationLabel: string;
+  variationDescription?: string | null;
+  priceModifier: number;
+  isActive: boolean;
+  displayOrder: number;
+  metadata?: Record<string, unknown> | null;
+}
+
+interface Product {
+  id: number;
+  productType: string;
+  name: string;
+  description?: string | null;
+  icon?: string | null;
+  image?: string | null;
+  image2?: string | null;
+  basePrice?: number | null;
+  isActive: boolean;
+  displayOrder: number;
+  features?: string[] | null;
+  sizes: ProductSize[];
+  variations: ProductVariation[];
+}
+
 interface MPGState {
   // Wizard state
   currentStep: 1 | 2 | 3 | 4;
-  
+
   // Editor mode
   editorMode: 'basic' | 'advanced';
-  
+
   // Location data
   city: string;
   lat: number;
   lng: number;
   country: string;
   zoom: number;
-  
+
   // Map offset for fine-tuning position
   mapOffsetX: number;
   mapOffsetY: number;
-  
+
   // Style settings
   style: string;
   frameStyle: 'square' | 'circle' | 'heart' | 'house';
@@ -32,7 +71,7 @@ interface MPGState {
   backgroundColor: string;
   textColor: string;
   useCustomBackground: boolean;
-  
+
   // Text settings
   showCityName: boolean;
   showCoordinates: boolean;
@@ -53,42 +92,44 @@ interface MPGState {
   subtitleFont: string;
   letterSpacing: number;
   textSpacing: number;
-  
+
   // Export settings
   exportFormat: 'png' | 'jpg' | 'pdf';
   exportSize: string;
   exportQuality: number;
   isExporting: boolean;
 
+  // Product database state
+  products: Product[];
+  productsLoading: boolean;
+  productsError: string | null;
+
   // Product selection
-  productType: 'digital' | 'poster' | 'canvas-wrap' | 'floating-canvas' | 'framed' | 'acrylic' | 'metal';
+  productType: string;
   productSize: string;
 
-  // Product variations
-  posterFinish: 'matte' | 'semi-gloss';
-  frameColor: 'black' | 'natural' | 'dark-brown' | 'oak' | 'ash';
-  canvasThickness: 'slim' | 'thick';
-  paperWeight: '170gsm' | '200gsm' | '250gsm';
-  
+  // Product variations (dynamic based on selected variations)
+  selectedVariations: Record<string, string>;
+
   // Map instance reference
   mapInstance: any | null;
-  
+
   // Map rendering mode
   useVectorMaps: boolean;
-  
+
   // Vector map feature toggles
   showMapLabels: boolean;
   showMapBuildings: boolean;
   showMapParks: boolean;
   showMapWater: boolean;
   showMapRoads: boolean;
-  
+
   // Pin settings
   showPin: boolean;
   pinStyle: 'basic' | 'fave' | 'lolli' | 'heart' | 'home';
   pinColor: string;
   pinSize: 'S' | 'M' | 'L';
-  
+
   // Font color override settings
   useCustomFontColor: boolean;
   customFontColor: string;
@@ -131,12 +172,14 @@ interface MPGState {
   setExportSize: (size: string) => void;
   setExportQuality: (quality: number) => void;
   setIsExporting: (isExporting: boolean) => void;
-  setProductType: (type: 'digital' | 'poster' | 'canvas-wrap' | 'floating-canvas' | 'framed' | 'acrylic' | 'metal') => void;
+  // Product actions
+  fetchProducts: () => Promise<void>;
+  setProductType: (type: string) => void;
   setProductSize: (size: string) => void;
-  setPosterFinish: (finish: 'matte' | 'semi-gloss') => void;
-  setFrameColor: (color: 'black' | 'natural' | 'dark-brown' | 'oak' | 'ash') => void;
-  setCanvasThickness: (thickness: 'slim' | 'thick') => void;
-  setPaperWeight: (weight: '170gsm' | '200gsm' | '250gsm') => void;
+  setVariation: (variationType: string, variationValue: string) => void;
+  getSelectedProduct: () => Product | undefined;
+  getSelectedSize: () => ProductSize | undefined;
+  getCurrentPrice: () => number;
   setMapInstance: (instance: any) => void;
   setUseVectorMaps: (use: boolean) => void;
   setShowMapLabels: (show: boolean) => void;
@@ -183,14 +226,15 @@ export const useMPGStore = create<MPGState>((set, get) => ({
   mapInstance: null,
   mapOffsetX: 0,
   mapOffsetY: 0,
-  productType: 'digital' as 'digital' | 'poster' | 'canvas-wrap' | 'floating-canvas' | 'framed' | 'acrylic' | 'metal',
-  productSize: '8x10', // Default to 8x10 for digital downloads
 
-  // Product variation defaults
-  posterFinish: 'matte' as 'matte' | 'semi-gloss',
-  frameColor: 'natural' as 'black' | 'natural' | 'dark-brown' | 'oak' | 'ash',
-  canvasThickness: 'thick' as 'slim' | 'thick',
-  paperWeight: '250gsm' as '170gsm' | '200gsm' | '250gsm', // Default to museum quality
+  // Product database state
+  products: [],
+  productsLoading: false,
+  productsError: null,
+  productType: 'digital',
+  productSize: '8x10',
+  selectedVariations: {},
+
   frameStyle: 'square' as 'square' | 'circle' | 'heart' | 'house', // Explicitly set square as default
   showFrameBorder: false, // Default to false for square frame (default frame style)
   useVectorMaps: true, // Default to vector maps (better quality)
@@ -282,12 +326,96 @@ export const useMPGStore = create<MPGState>((set, get) => ({
   setExportSize: (exportSize) => set({ exportSize }),
   setExportQuality: (exportQuality) => set({ exportQuality }),
   setIsExporting: (isExporting) => set({ isExporting }),
-  setProductType: (productType) => set({ productType }),
+
+  // Product actions
+  fetchProducts: async () => {
+    set({ productsLoading: true, productsError: null });
+    try {
+      const response = await fetch('/api/products');
+      if (!response.ok) {
+        throw new Error('Failed to fetch products');
+      }
+      const data = await response.json();
+      const products = data.products || [];
+      set({ products, productsLoading: false });
+
+      // Set first product and size as defaults if available
+      if (products.length > 0) {
+        const firstProduct = products[0];
+        const firstSize = firstProduct.sizes[0]?.sizeValue || '8x10';
+        set({
+          productType: firstProduct.productType,
+          productSize: firstSize
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      set({
+        productsError: error instanceof Error ? error.message : 'Unknown error',
+        productsLoading: false
+      });
+    }
+  },
+
+  setProductType: (productType) => {
+    const { products } = get();
+    const product = products.find(p => p.productType === productType);
+    if (product && product.sizes.length > 0) {
+      const firstSize = product.sizes[0].sizeValue;
+      set({ productType, productSize: firstSize, selectedVariations: {} });
+    } else {
+      set({ productType, selectedVariations: {} });
+    }
+  },
+
   setProductSize: (productSize) => set({ productSize }),
-  setPosterFinish: (posterFinish) => set({ posterFinish }),
-  setFrameColor: (frameColor) => set({ frameColor }),
-  setCanvasThickness: (canvasThickness) => set({ canvasThickness }),
-  setPaperWeight: (paperWeight) => set({ paperWeight }),
+
+  setVariation: (variationType, variationValue) => {
+    const { selectedVariations } = get();
+    set({
+      selectedVariations: {
+        ...selectedVariations,
+        [variationType]: variationValue
+      }
+    });
+  },
+
+  getSelectedProduct: () => {
+    const { products, productType } = get();
+    return products.find(p => p.productType === productType);
+  },
+
+  getSelectedSize: () => {
+    const product = get().getSelectedProduct();
+    const { productSize } = get();
+    return product?.sizes.find(s => s.sizeValue === productSize);
+  },
+
+  getCurrentPrice: () => {
+    const product = get().getSelectedProduct();
+    const size = get().getSelectedSize();
+    const { selectedVariations } = get();
+
+    if (!product || !size) return 0;
+
+    // Start with size price or base price
+    let price = size.price || product.basePrice || 0;
+
+    // Add variation price modifiers
+    if (product.variations) {
+      Object.entries(selectedVariations).forEach(([type, value]) => {
+        const variation = product.variations.find(
+          v => v.variationType === type && v.variationValue === value
+        );
+        if (variation) {
+          price += variation.priceModifier;
+        }
+      });
+    }
+
+    return price;
+  },
+
   setMapInstance: (mapInstance) => set({ mapInstance }),
   setUseVectorMaps: (useVectorMaps) => set({ useVectorMaps }),
   setShowMapLabels: (showMapLabels) => set({ showMapLabels }),

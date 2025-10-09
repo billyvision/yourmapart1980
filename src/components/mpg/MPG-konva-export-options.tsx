@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Download, FileImage, Loader2, Package, Check, Sparkles, ShoppingCart, FileJson, ZoomIn, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -14,137 +14,11 @@ import { MPGProductDetailsAccordion } from './MPG-product-details-accordion';
 import { useSession } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 
-// Variation pricing modifiers
-const VARIATION_PRICING = {
-  posterFinish: {
-    matte: 0,
-    'semi-gloss': 2
-  },
-  paperWeight: {
-    '170gsm': -5,
-    '200gsm': 0,
-    '250gsm': 8
-  },
-  frameColor: {
-    black: 0,
-    natural: 0,
-    'dark-brown': 0,
-    oak: 5,
-    ash: 5
-  },
-  canvasThickness: {
-    slim: -10,
-    thick: 0
-  }
-};
-
-// Product configurations with sizes and pricing
-const PRODUCT_CONFIGS = {
-  digital: {
-    name: 'Digital Download',
-    description: 'Instant high-resolution PNG + PDF',
-    icon: FileImage,
-    price: 9.99,
-    sizes: [
-      { value: '8x10', label: '8×10"', dimensions: '8×10"', popular: true },
-      { value: '11x14', label: '11×14"', dimensions: '11×14"', popular: true },
-      { value: '12x16', label: '12×16"', dimensions: '12×16"' },
-      { value: '16x20', label: '16×20"', dimensions: '16×20"', popular: true },
-      { value: '18x24', label: '18×24"', dimensions: '18×24"' },
-      { value: '24x36', label: '24×36"', dimensions: '24×36"' },
-    ],
-    features: ['300 DPI PNG + PDF', 'Print-ready files', 'Instant download', 'No watermark'],
-  },
-  poster: {
-    name: 'Paper Poster',
-    description: 'Premium matte or semi-gloss finish',
-    icon: Package,
-    image: '/mpg/product-types/poster.png',
-    basePrice: 34.99,
-    sizes: [
-      { value: '8x10', label: '8×10"', price: 24.99 },
-      { value: '11x14', label: '11×14"', price: 34.99, popular: true },
-      { value: '12x16', label: '12×16"', price: 39.99 },
-      { value: '16x20', label: '16×20"', price: 49.99, popular: true },
-      { value: '18x24', label: '18×24"', price: 59.99 },
-      { value: '24x36', label: '24×36"', price: 79.99 },
-    ],
-    features: ['Museum-quality paper (170-250 GSM)', 'Acid-free, pH above 7', 'Matte or semi-gloss finish', 'FSC-certified sustainable paper'],
-  },
-  'canvas-wrap': {
-    name: 'Canvas Print',
-    description: 'Gallery-wrapped, ready to hang',
-    icon: Package,
-    image: '/mpg/product-types/canvas.png',
-    basePrice: 89.99,
-    sizes: [
-      { value: '12x16', label: '12×16"', price: 74.99 },
-      { value: '16x20', label: '16×20"', price: 89.99, popular: true },
-      { value: '18x24', label: '18×24"', price: 109.99, popular: true },
-      { value: '20x24', label: '20×24"', price: 129.99 },
-      { value: '24x36', label: '24×36"', price: 159.99 },
-    ],
-    features: ['FSC-certified wood stretcher bars', 'Cotton-polyester blend (300-350gsm)', 'Slim (2cm) or Thick (4cm) options', 'Hanging kit included'],
-  },
-  'floating-canvas': {
-    name: 'Floating Canvas',
-    description: 'Framed canvas with depth effect',
-    icon: Package,
-    image: '/mpg/product-types/floating-canvas.png',
-    basePrice: 119.99,
-    sizes: [
-      { value: '12x16', label: '12×16"', price: 99.99 },
-      { value: '16x20', label: '16×20"', price: 119.99, popular: true },
-      { value: '18x24', label: '18×24"', price: 139.99, popular: true },
-      { value: '20x24', label: '20×24"', price: 159.99 },
-    ],
-    features: ['FSC-certified poplar/pine frames', 'Frame colors: Black, Natural, Dark Brown', '12mm gap between canvas and frame', 'Hanging kit included'],
-  },
-  framed: {
-    name: 'Framed Print',
-    description: 'Premium wooden frame included',
-    icon: Package,
-    image: '/mpg/product-types/framed.png',
-    image2: '/mpg/product-types/framed-2.webp',
-    basePrice: 119.99,
-    sizes: [
-      { value: '8x10', label: '8×10"', price: 69.99 },
-      { value: '11x14', label: '11×14"', price: 89.99 },
-      { value: '12x16', label: '12×16"', price: 99.99 },
-      { value: '16x20', label: '16×20"', price: 119.99, popular: true },
-      { value: '18x24', label: '18×24"', price: 149.99 },
-    ],
-    features: ['Responsibly sourced oak/ash wood', '20mm thick frame (wider profile)', 'Shatterproof plexiglass protection', 'Ready-to-hang kit included'],
-  },
-  acrylic: {
-    name: 'Acrylic Print',
-    description: 'Crystal-clear, ultra-modern',
-    icon: Sparkles,
-    image: '/mpg/product-types/acrylic.png',
-    basePrice: 179.99,
-    sizes: [
-      { value: '12x16', label: '12×16"', price: 139.99 },
-      { value: '16x20', label: '16×20"', price: 179.99, popular: true },
-      { value: '20x24', label: '20×24"', price: 229.99 },
-      { value: '24x32', label: '24×32"', price: 289.99 },
-    ],
-    features: ['4mm crystal-clear acrylic', 'Glossy glass-like finish', 'Straight-cut corners', 'Corner mounting hardware included'],
-  },
-  metal: {
-    name: 'Aluminum Print',
-    description: 'Sleek aluminum DIBOND® finish',
-    icon: Sparkles,
-    image: '/mpg/product-types/metal.png',
-    basePrice: 169.99,
-    sizes: [
-      { value: '12x16', label: '12×16"', price: 129.99 },
-      { value: '16x20', label: '16×20"', price: 169.99, popular: true },
-      { value: '18x24', label: '18×24"', price: 199.99 },
-      { value: '20x24', label: '20×24"', price: 229.99 },
-      { value: '24x36', label: '24×36"', price: 289.99 },
-    ],
-    features: ['Premium aluminum DIBOND®', '3mm thickness, rigid base', 'Matte, glare-free finish', 'White-coated with silky gloss'],
-  },
+// Icon mapping for dynamic products
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  FileImage,
+  Package,
+  Sparkles,
 };
 
 export function MPGKonvaExportOptions() {
@@ -153,28 +27,62 @@ export function MPGKonvaExportOptions() {
   const { data: session } = useSession();
 
   const {
-    exportFormat,
+    products,
+    productsLoading,
+    fetchProducts,
     productType,
     productSize,
-    posterFinish,
-    frameColor,
-    canvasThickness,
-    paperWeight,
+    selectedVariations,
     setProductType,
     setProductSize,
-    setPosterFinish,
-    setFrameColor,
-    setCanvasThickness,
-    setPaperWeight,
+    setVariation,
+    getSelectedProduct,
+    getSelectedSize,
+    getCurrentPrice,
     city
   } = useMPGStore();
+
+  // Get current product info
+  const currentProduct = getSelectedProduct();
+  const currentSize = getSelectedSize();
+  const currentPrice = getCurrentPrice();
 
   // Check if user is superadmin
   const userRole = (session?.user as any)?.role;
   const isSuperAdmin = userRole === 'superadmin';
 
+  // Fetch products on mount
+  useEffect(() => {
+    if (products.length === 0 && !productsLoading) {
+      fetchProducts();
+    }
+  }, [products.length, productsLoading, fetchProducts]);
+
+  // Initialize default variations when product changes
+  useEffect(() => {
+    if (!currentProduct || !currentProduct.variations) return;
+
+    // Group variations by type to set defaults
+    const variationsByType = currentProduct.variations.reduce((acc, variation) => {
+      if (!acc[variation.variationType]) {
+        acc[variation.variationType] = [];
+      }
+      acc[variation.variationType].push(variation);
+      return acc;
+    }, {} as Record<string, typeof currentProduct.variations>);
+
+    // Set default (first) variation for each type if not already selected
+    Object.entries(variationsByType).forEach(([variationType, variations]) => {
+      if (!selectedVariations[variationType] && variations.length > 0) {
+        // Sort by displayOrder and pick first
+        const sortedVariations = [...variations].sort((a, b) => a.displayOrder - b.displayOrder);
+        setVariation(variationType, sortedVariations[0].variationValue);
+      }
+    });
+  }, [productType, currentProduct, selectedVariations, setVariation]);
+
   // Handle escape key to close lightbox
-  React.useEffect(() => {
+  useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && lightboxImage) {
         setLightboxImage(null);
@@ -184,46 +92,29 @@ export function MPGKonvaExportOptions() {
     return () => window.removeEventListener('keydown', handleEscape);
   }, [lightboxImage]);
 
-  const currentProduct = PRODUCT_CONFIGS[productType];
-  const currentSize = currentProduct.sizes.find(s => s.value === productSize);
+  // Show loading state while products are being fetched
+  if (productsLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+        <span className="ml-3 text-gray-600">Loading products...</span>
+      </div>
+    );
+  }
 
-  // Calculate dynamic price with variations
-  const calculatePrice = () => {
-    let basePrice = (currentSize && 'price' in currentSize ? currentSize.price : undefined) ||
-                    ('basePrice' in currentProduct ? currentProduct.basePrice : undefined) ||
-                    ('price' in currentProduct ? currentProduct.price : 0);
-
-    // Add variation modifiers
-    if (productType === 'poster') {
-      basePrice += VARIATION_PRICING.posterFinish[posterFinish];
-      basePrice += VARIATION_PRICING.paperWeight[paperWeight];
-    }
-
-    if (productType === 'framed' || productType === 'floating-canvas') {
-      basePrice += VARIATION_PRICING.frameColor[frameColor];
-    }
-
-    if (productType === 'canvas-wrap') {
-      basePrice += VARIATION_PRICING.canvasThickness[canvasThickness];
-    }
-
-    return basePrice;
-  };
-
-  const currentPrice = calculatePrice();
-
-  // Auto-set first size when product type changes
-  React.useEffect(() => {
-    const firstSize = currentProduct.sizes[0]?.value;
-    if (firstSize && !currentProduct.sizes.find(s => s.value === productSize)) {
-      setProductSize(firstSize);
-    }
-  }, [productType, currentProduct.sizes, productSize, setProductSize]);
+  // Show error if products failed to load
+  if (!currentProduct || products.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-600">No products available. Please contact support.</p>
+      </div>
+    );
+  }
 
   const handleExport = async () => {
     if (productType !== 'digital') {
       // For physical products, show "Add to Cart" or redirect to checkout
-      alert(`Add to Cart: ${currentProduct.name} - ${currentSize?.label || productSize} - $${currentPrice.toFixed(2)}`);
+      alert(`Add to Cart: ${currentProduct.name} - ${currentSize?.sizeLabel || productSize} - $${currentPrice.toFixed(2)}`);
       return;
     }
 
@@ -333,15 +224,14 @@ export function MPGKonvaExportOptions() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          {(Object.keys(PRODUCT_CONFIGS) as Array<keyof typeof PRODUCT_CONFIGS>).map((type) => {
-            const config = PRODUCT_CONFIGS[type];
-            const Icon = config.icon;
-            const isSelected = productType === type;
+          {products.map((product) => {
+            const IconComponent = product.icon ? ICON_MAP[product.icon] || Package : Package;
+            const isSelected = productType === product.productType;
 
             return (
               <button
-                key={type}
-                onClick={() => setProductType(type)}
+                key={product.productType}
+                onClick={() => setProductType(product.productType)}
                 className={cn(
                   "relative flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-300 hover:shadow-md group",
                   isSelected
@@ -360,7 +250,7 @@ export function MPGKonvaExportOptions() {
                   "w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-all",
                   "bg-gray-100 group-hover:bg-gray-200"
                 )}>
-                  <Icon className={cn(
+                  <IconComponent className={cn(
                     "w-6 h-6 transition-colors",
                     isSelected ? "text-charcoal" : "text-gray-600 group-hover:text-charcoal"
                   )} />
@@ -370,160 +260,102 @@ export function MPGKonvaExportOptions() {
                   "text-xs font-semibold text-center transition-colors",
                   isSelected ? "text-charcoal" : "text-gray-700"
                 )}>
-                  {config.name}
+                  {product.name}
                 </span>
 
-                {type === 'digital' && 'price' in config && (
-                  <span className="text-xs text-gray-500 mt-1">${config.price}</span>
+                {product.basePrice && (
+                  <span className="text-xs text-gray-500 mt-1">${product.basePrice}</span>
                 )}
               </button>
             );
           })}
         </div>
 
-        {/* Product Variations */}
-        {productType === 'poster' && (
-          <div className="space-y-4 bg-blue-50/30 border border-blue-100 rounded-lg p-4">
-            {/* Poster Finish */}
-            <div>
-              <Label className="text-sm font-semibold text-charcoal mb-3 block">Paper Finish</Label>
-              <div className="grid grid-cols-2 gap-3">
-                {['matte', 'semi-gloss'].map((finish) => (
-                  <button
-                    key={finish}
-                    onClick={() => setPosterFinish(finish as 'matte' | 'semi-gloss')}
-                    className={cn(
-                      "relative px-4 py-3 rounded-lg border-2 transition-all duration-300 text-left",
-                      posterFinish === finish
-                        ? "border-charcoal bg-gray-50 shadow-md"
-                        : "border-gray-200 hover:border-gray-400 bg-white/50"
-                    )}
-                  >
-                    {posterFinish === finish && (
-                      <div className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-md animate-in zoom-in-50 duration-300">
-                        <Check className="w-3.5 h-3.5 text-white animate-in fade-in duration-200" strokeWidth={3} />
-                      </div>
-                    )}
-                    <div className="text-sm font-medium text-charcoal capitalize">{finish}</div>
-                    <div className="text-xs text-gray-500 mt-0.5">
-                      {finish === 'matte' ? 'Natural, uncoated finish' : 'Subtle silk shine'}
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
+        {/* Dynamic Product Variations */}
+        {currentProduct.variations && currentProduct.variations.length > 0 && (() => {
+          // Group variations by type
+          const variationsByType = currentProduct.variations.reduce((acc, variation) => {
+            if (!acc[variation.variationType]) {
+              acc[variation.variationType] = [];
+            }
+            acc[variation.variationType].push(variation);
+            return acc;
+          }, {} as Record<string, typeof currentProduct.variations>);
 
-            {/* Paper Weight */}
-            <div>
-              <Label className="text-sm font-semibold text-charcoal mb-3 block">Paper Weight</Label>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { value: '170gsm', label: '170 GSM', desc: 'Classic' },
-                  { value: '200gsm', label: '200 GSM', desc: 'Premium' },
-                  { value: '250gsm', label: '250 GSM', desc: 'Museum', badge: true }
-                ].map((weight) => (
-                  <button
-                    key={weight.value}
-                    onClick={() => setPaperWeight(weight.value as '170gsm' | '200gsm' | '250gsm')}
-                    className={cn(
-                      "relative px-3 py-2.5 rounded-lg border-2 transition-all duration-300",
-                      paperWeight === weight.value
-                        ? "border-charcoal bg-gray-50 shadow-md"
-                        : "border-gray-200 hover:border-gray-400 bg-white/50"
-                    )}
-                  >
-                    {paperWeight === weight.value && (
-                      <div className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-md animate-in zoom-in-50 duration-300">
-                        <Check className="w-3 h-3 text-white animate-in fade-in duration-200" strokeWidth={3} />
-                      </div>
-                    )}
-                    {weight.badge && (
-                      <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-xs px-2 py-0.5 rounded-full font-medium shadow-sm whitespace-nowrap">
-                        Museum
-                      </div>
-                    )}
-                    <div className="text-xs font-semibold text-charcoal">{weight.label}</div>
-                    <div className="text-xs text-gray-500 mt-0.5">{weight.desc}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+          return Object.entries(variationsByType).map(([variationType, variations]) => {
+            const variationTypeLabel = variations[0]?.variationType === 'posterFinish' ? 'Paper Finish'
+              : variations[0]?.variationType === 'paperWeight' ? 'Paper Weight'
+              : variations[0]?.variationType === 'frameColor' ? 'Frame Color'
+              : variations[0]?.variationType === 'canvasThickness' ? 'Canvas Thickness'
+              : variationType.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
 
-        {/* Frame Color Selector for Framed and Floating Canvas */}
-        {(productType === 'framed' || productType === 'floating-canvas') && (
-          <div className="space-y-4 bg-amber-50/30 border border-amber-100 rounded-lg p-4">
-            <div>
-              <Label className="text-sm font-semibold text-charcoal mb-3 block">Frame Color</Label>
-              <div className="grid grid-cols-5 gap-3">
-                {[
-                  { value: 'black', label: 'Black', color: '#1a1a1a' },
-                  { value: 'natural', label: 'Natural Wood', color: '#d4a574' },
-                  { value: 'dark-brown', label: 'Dark Brown', color: '#3e2723' },
-                  { value: 'oak', label: 'Oak', color: '#c19a6b' },
-                  { value: 'ash', label: 'Ash', color: '#e8d5c4' }
-                ].map((frame) => (
-                  <button
-                    key={frame.value}
-                    onClick={() => setFrameColor(frame.value as any)}
-                    className={cn(
-                      "relative flex flex-col items-center p-3 rounded-lg border-2 transition-all duration-300",
-                      frameColor === frame.value
-                        ? "border-charcoal bg-gray-50 shadow-md"
-                        : "border-gray-200 hover:border-gray-400 bg-white/50"
-                    )}
-                  >
-                    {frameColor === frame.value && (
-                      <div className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-md animate-in zoom-in-50 duration-300">
-                        <Check className="w-3.5 h-3.5 text-white animate-in fade-in duration-200" strokeWidth={3} />
-                      </div>
-                    )}
-                    <div
-                      className="w-10 h-10 rounded-full mb-2 border-2 border-gray-300 shadow-sm"
-                      style={{ backgroundColor: frame.color }}
-                    />
-                    <div className="text-xs font-medium text-charcoal text-center">{frame.label}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+            const hasColorMetadata = variations.some(v => v.metadata && 'color' in v.metadata);
+            const gridCols = hasColorMetadata ? 'grid-cols-5' : variations.length <= 2 ? 'grid-cols-2' : 'grid-cols-3';
 
-        {/* Canvas Thickness Selector */}
-        {productType === 'canvas-wrap' && (
-          <div className="space-y-4 bg-green-50/30 border border-green-100 rounded-lg p-4">
-            <div>
-              <Label className="text-sm font-semibold text-charcoal mb-3 block">Canvas Thickness</Label>
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  { value: 'slim', label: 'Slim (2cm)', desc: 'Modern, lightweight profile' },
-                  { value: 'thick', label: 'Thick (4cm)', desc: 'Gallery depth, bold presence' }
-                ].map((thickness) => (
-                  <button
-                    key={thickness.value}
-                    onClick={() => setCanvasThickness(thickness.value as 'slim' | 'thick')}
-                    className={cn(
-                      "relative px-4 py-3 rounded-lg border-2 transition-all duration-300 text-left",
-                      canvasThickness === thickness.value
-                        ? "border-charcoal bg-gray-50 shadow-md"
-                        : "border-gray-200 hover:border-gray-400 bg-white/50"
-                    )}
-                  >
-                    {canvasThickness === thickness.value && (
-                      <div className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-md animate-in zoom-in-50 duration-300">
-                        <Check className="w-3.5 h-3.5 text-white animate-in fade-in duration-200" strokeWidth={3} />
-                      </div>
-                    )}
-                    <div className="text-sm font-medium text-charcoal">{thickness.label}</div>
-                    <div className="text-xs text-gray-500 mt-0.5">{thickness.desc}</div>
-                  </button>
-                ))}
+            return (
+              <div key={variationType} className="space-y-4 bg-blue-50/30 border border-blue-100 rounded-lg p-4">
+                <div>
+                  <Label className="text-sm font-semibold text-charcoal mb-3 block">{variationTypeLabel}</Label>
+                  <div className={cn("grid gap-3", gridCols)}>
+                    {variations.map((variation) => {
+                      const isSelected = selectedVariations[variationType] === variation.variationValue;
+                      const hasColor = variation.metadata && 'color' in variation.metadata;
+
+                      return (
+                        <button
+                          key={variation.id}
+                          onClick={() => setVariation(variationType, variation.variationValue)}
+                          className={cn(
+                            "relative rounded-lg border-2 transition-all duration-300",
+                            hasColor ? "flex flex-col items-center p-3" : "px-4 py-3 text-left",
+                            isSelected
+                              ? "border-charcoal bg-gray-50 shadow-md"
+                              : "border-gray-200 hover:border-gray-400 bg-white/50"
+                          )}
+                        >
+                          {isSelected && (
+                            <div className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-md animate-in zoom-in-50 duration-300">
+                              <Check className="w-3.5 h-3.5 text-white animate-in fade-in duration-200" strokeWidth={3} />
+                            </div>
+                          )}
+
+                          {hasColor && (
+                            <div
+                              className="w-10 h-10 rounded-full mb-2 border-2 border-gray-300 shadow-sm"
+                              style={{ backgroundColor: (variation.metadata as any).color }}
+                            />
+                          )}
+
+                          <div className={cn(
+                            "font-medium text-charcoal",
+                            hasColor ? "text-xs text-center" : "text-sm"
+                          )}>
+                            {variation.variationLabel}
+                          </div>
+
+                          {variation.variationDescription && (
+                            <div className="text-xs text-gray-500 mt-0.5">
+                              {variation.variationDescription}
+                            </div>
+                          )}
+
+                          {variation.priceModifier !== 0 && (
+                            <div className={cn(
+                              "text-xs font-semibold mt-1",
+                              variation.priceModifier > 0 ? "text-green-600" : "text-blue-600"
+                            )}>
+                              {variation.priceModifier > 0 ? '+' : ''}${Math.abs(variation.priceModifier)}
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        )}
+            );
+          });
+        })()}
 
         {/* Product Description */}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
@@ -553,7 +385,7 @@ export function MPGKonvaExportOptions() {
                 <h4 className="text-sm font-semibold text-charcoal mb-1">{currentProduct.name}</h4>
                 <p className="text-xs text-medium-gray mb-3">{currentProduct.description}</p>
                 <ul className="space-y-1.5">
-                  {currentProduct.features.map((feature, idx) => (
+                  {(currentProduct.features || []).map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-2 text-xs text-gray-600">
                       <Check className="w-3 h-3 text-charcoal mt-0.5 flex-shrink-0" />
                       <span>{feature}</span>
@@ -606,7 +438,7 @@ export function MPGKonvaExportOptions() {
                 <h4 className="text-sm font-semibold text-charcoal mb-1">{currentProduct.name}</h4>
                 <p className="text-xs text-medium-gray mb-3">{currentProduct.description}</p>
                 <ul className="space-y-1.5">
-                  {currentProduct.features.map((feature, idx) => (
+                  {(currentProduct.features || []).map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-2 text-xs text-gray-600">
                       <Check className="w-3 h-3 text-charcoal mt-0.5 flex-shrink-0" />
                       <span>{feature}</span>
@@ -621,7 +453,7 @@ export function MPGKonvaExportOptions() {
               <h4 className="text-sm font-semibold text-charcoal mb-2">{currentProduct.name}</h4>
               <p className="text-xs text-medium-gray mb-3">{currentProduct.description}</p>
               <ul className="grid grid-cols-2 gap-2">
-                {currentProduct.features.map((feature, idx) => (
+                {(currentProduct.features || []).map((feature, idx) => (
                   <li key={idx} className="flex items-start gap-2 text-xs text-gray-600">
                     <Check className="w-3 h-3 text-charcoal mt-0.5 flex-shrink-0" />
                     <span>{feature}</span>
@@ -643,20 +475,19 @@ export function MPGKonvaExportOptions() {
           className="grid grid-cols-2 sm:grid-cols-3 gap-3"
         >
           {currentProduct.sizes.map((size) => {
-            const isPopular = 'popular' in size && size.popular;
-            const sizePrice = 'price' in size ? size.price : ('price' in currentProduct ? currentProduct.price : undefined);
-
-            const isSelected = productSize === size.value;
+            const isPopular = size.isPopular;
+            const sizePrice = size.price || currentProduct.basePrice;
+            const isSelected = productSize === size.sizeValue;
 
             return (
-              <div key={size.value} className="relative">
+              <div key={size.sizeValue} className="relative">
                 <RadioGroupItem
-                  value={size.value}
-                  id={`size-${size.value}`}
+                  value={size.sizeValue}
+                  id={`size-${size.sizeValue}`}
                   className="peer sr-only"
                 />
                 <Label
-                  htmlFor={`size-${size.value}`}
+                  htmlFor={`size-${size.sizeValue}`}
                   className={cn(
                     "relative flex flex-col p-4 border-2 rounded-lg cursor-pointer transition-all duration-300 hover:border-gray-400",
                     isSelected
@@ -680,15 +511,15 @@ export function MPGKonvaExportOptions() {
                     </span>
                   )}
 
-                  <span className="font-semibold text-charcoal text-sm">{size.label}</span>
+                  <span className="font-semibold text-charcoal text-sm">{size.sizeLabel}</span>
 
-                  {'dimensions' in size && (
+                  {size.dimensions && (
                     <span className="text-xs text-gray-500 mt-1">{size.dimensions}</span>
                   )}
 
                   {sizePrice && (
                     <span className="text-charcoal font-bold text-base mt-2">
-                      ${sizePrice}
+                      ${sizePrice.toFixed(2)}
                     </span>
                   )}
                 </Label>
@@ -719,77 +550,40 @@ export function MPGKonvaExportOptions() {
             </div>
           </div>
 
-          {/* Poster Variations */}
-          {productType === 'poster' && (
-            <>
-              <div className="flex items-center gap-3 bg-white rounded-lg px-3 py-2 border border-gray-200">
+          {/* Dynamic Variations Display */}
+          {currentProduct.variations && currentProduct.variations.length > 0 && Object.entries(selectedVariations).map(([variationType, selectedValue]) => {
+            const variation = currentProduct.variations.find(
+              v => v.variationType === variationType && v.variationValue === selectedValue
+            );
+
+            if (!variation) return null;
+
+            const variationTypeLabel = variationType === 'posterFinish' ? 'Finish'
+              : variationType === 'paperWeight' ? 'Paper Weight'
+              : variationType === 'frameColor' ? 'Frame Color'
+              : variationType === 'canvasThickness' ? 'Canvas Thickness'
+              : variationType.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+
+            return (
+              <div key={variationType} className="flex items-center gap-3 bg-white rounded-lg px-3 py-2 border border-gray-200">
                 <div className="w-5 h-5 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center flex-shrink-0 shadow-sm">
                   <Check className="w-3 h-3 text-white" strokeWidth={3} />
                 </div>
                 <div className="flex-1">
-                  <span className="text-xs text-gray-500 block">Finish</span>
-                  <span className="text-sm font-medium text-charcoal capitalize">{posterFinish}</span>
+                  <span className="text-xs text-gray-500 block">{variationTypeLabel}</span>
+                  <span className="text-sm font-medium text-charcoal">{variation.variationLabel}</span>
                 </div>
-                {VARIATION_PRICING.posterFinish[posterFinish] > 0 && (
-                  <span className="text-xs font-semibold text-green-600">+${VARIATION_PRICING.posterFinish[posterFinish]}</span>
-                )}
-              </div>
-              <div className="flex items-center gap-3 bg-white rounded-lg px-3 py-2 border border-gray-200">
-                <div className="w-5 h-5 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center flex-shrink-0 shadow-sm">
-                  <Check className="w-3 h-3 text-white" strokeWidth={3} />
-                </div>
-                <div className="flex-1">
-                  <span className="text-xs text-gray-500 block">Paper Weight</span>
-                  <span className="text-sm font-medium text-charcoal">{paperWeight.toUpperCase()}</span>
-                </div>
-                {VARIATION_PRICING.paperWeight[paperWeight] !== 0 && (
+                {variation.priceModifier !== 0 && (
                   <span className={cn(
                     "text-xs font-semibold",
-                    VARIATION_PRICING.paperWeight[paperWeight] > 0 ? "text-green-600" : "text-blue-600"
+                    variation.priceModifier > 0 ? "text-green-600" : "text-blue-600"
                   )}>
-                    {VARIATION_PRICING.paperWeight[paperWeight] > 0 ? '+' : ''}${VARIATION_PRICING.paperWeight[paperWeight]}
+                    {variation.priceModifier > 0 ? '+' : ''}${Math.abs(variation.priceModifier)}
                   </span>
                 )}
               </div>
-            </>
-          )}
-
-          {/* Frame Color for Framed & Floating Canvas */}
-          {(productType === 'framed' || productType === 'floating-canvas') && (
-            <div className="flex items-center gap-3 bg-white rounded-lg px-3 py-2 border border-gray-200">
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center flex-shrink-0 shadow-sm">
-                <Check className="w-3 h-3 text-white" strokeWidth={3} />
-              </div>
-              <div className="flex-1">
-                <span className="text-xs text-gray-500 block">Frame Color</span>
-                <span className="text-sm font-medium text-charcoal capitalize">{frameColor.replace('-', ' ')}</span>
-              </div>
-              {VARIATION_PRICING.frameColor[frameColor] > 0 && (
-                <span className="text-xs font-semibold text-green-600">+${VARIATION_PRICING.frameColor[frameColor]}</span>
-              )}
-            </div>
-          )}
-
-          {/* Canvas Thickness */}
-          {productType === 'canvas-wrap' && (
-            <div className="flex items-center gap-3 bg-white rounded-lg px-3 py-2 border border-gray-200">
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center flex-shrink-0 shadow-sm">
-                <Check className="w-3 h-3 text-white" strokeWidth={3} />
-              </div>
-              <div className="flex-1">
-                <span className="text-xs text-gray-500 block">Canvas Thickness</span>
-                <span className="text-sm font-medium text-charcoal capitalize">{canvasThickness}</span>
-              </div>
-              {VARIATION_PRICING.canvasThickness[canvasThickness] !== 0 && (
-                <span className={cn(
-                  "text-xs font-semibold",
-                  VARIATION_PRICING.canvasThickness[canvasThickness] > 0 ? "text-green-600" : "text-blue-600"
-                )}>
-                  {VARIATION_PRICING.canvasThickness[canvasThickness] > 0 ? '+' : ''}${VARIATION_PRICING.canvasThickness[canvasThickness]}
-                </span>
-              )}
-            </div>
-          )}
+            );
+          })}
 
           {/* Size */}
           <div className="flex items-center gap-3 bg-white rounded-lg px-3 py-2 border border-gray-200">
@@ -798,7 +592,7 @@ export function MPGKonvaExportOptions() {
             </div>
             <div className="flex-1">
               <span className="text-xs text-gray-500 block">Size</span>
-              <span className="text-sm font-medium text-charcoal">{currentSize?.label || productSize}</span>
+              <span className="text-sm font-medium text-charcoal">{currentSize?.sizeLabel || productSize}</span>
             </div>
           </div>
         </div>
@@ -812,7 +606,7 @@ export function MPGKonvaExportOptions() {
               {currentProduct.name}
             </h4>
             <p className="text-sm text-medium-gray">
-              {currentSize?.label || productSize}
+              {currentSize?.sizeLabel || productSize}
             </p>
           </div>
           <div className="text-right">

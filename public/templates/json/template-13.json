@@ -1,0 +1,95 @@
+{
+  "id": "template-13",
+  "name": "Tokyo Dark",
+  "city": "Tokyo",
+  "style": "sanFrancisco",
+  "hidden": false,
+  "thumbnail": "/template-previews/template-13.jpg",
+  "jsonData": {
+    "version": "1.0",
+    "created": "2025-10-09T03:23:59.474Z",
+    "application": "YourMapArt",
+    "snapshot": {
+      "location": {
+        "city": "Tokyo",
+        "lat": 35.6768601,
+        "lng": 139.7638947,
+        "country": "Japan",
+        "zoom": 10,
+        "mapOffsetX": 0,
+        "mapOffsetY": 0
+      },
+      "text": {
+        "headline": {
+          "text": "",
+          "font": "Montserrat",
+          "size": "M",
+          "allCaps": true
+        },
+        "city": {
+          "show": true,
+          "font": "opensans",
+          "size": "L"
+        },
+        "coordinates": {
+          "show": false,
+          "font": "roboto",
+          "size": "M"
+        },
+        "country": {
+          "show": true,
+          "font": "roboto",
+          "size": "L"
+        },
+        "custom": {
+          "text": "",
+          "font": "Montserrat",
+          "size": "M"
+        },
+        "typography": {
+          "letterSpacing": 8,
+          "textSpacing": 1.2
+        }
+      },
+      "style": {
+        "mapStyle": "sanFrancisco",
+        "frame": {
+          "style": "square",
+          "showBorder": false
+        },
+        "glow": {
+          "enabled": false,
+          "style": "silverGrey",
+          "intensity": 0.4
+        },
+        "background": {
+          "color": "#1a1a2e",
+          "useCustom": false,
+          "textColor": "#ffc000"
+        },
+        "features": {
+          "labels": false,
+          "buildings": false,
+          "parks": false,
+          "water": true,
+          "roads": true
+        },
+        "pin": {
+          "show": false,
+          "style": "heart",
+          "color": "#FF6B6B",
+          "size": "L"
+        },
+        "fontColor": {
+          "useCustom": true,
+          "color": "#FFFFFF"
+        }
+      },
+      "export": {
+        "format": "png",
+        "size": "A4",
+        "quality": 0.95
+      }
+    }
+  }
+}
