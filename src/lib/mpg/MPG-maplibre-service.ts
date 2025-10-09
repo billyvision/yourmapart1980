@@ -99,11 +99,11 @@ export async function createMapLibreInstance(
       console.error('MapLibre error:', e);
       reject(e);
     });
-    
-    // Timeout after 10 seconds
+
+    // Timeout after 30 seconds (increased to handle slower connections)
     setTimeout(() => {
-      reject(new Error('Map loading timeout'));
-    }, 10000);
+      reject(new Error('Map loading timeout - please check your internet connection and try again'));
+    }, 30000);
   });
 }
 

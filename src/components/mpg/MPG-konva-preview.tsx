@@ -6,6 +6,7 @@ import { fetchStaticMapImage } from '@/lib/mpg/MPG-map-service';
 import { applyStyleFilters } from '@/lib/mpg/MPG-konva-filters';
 import { useMapLibreImage, isMapLibreAvailable } from '@/lib/mpg/MPG-maplibre-renderer';
 import { getSnazzyStyle } from '@/lib/mpg/MPG-snazzy-styles';
+import { loadFonts, getFontFamilyWithFallback } from '@/lib/mpg/MPG-font-loader';
 import {
   MPG_BASE_CANVAS,
   MPG_BASE_MAP,
@@ -75,10 +76,12 @@ export function MPGKonvaPreview({
     customText,
     customTextFont,
     customTextSize,
+    customTextFontWeight,
     headlineText,
     headlineFont,
     headlineSize,
     headlineAllCaps,
+    headlineFontWeight,
     titleFont,
     titleSize,
     coordinatesFont,
@@ -162,215 +165,48 @@ export function MPGKonvaPreview({
   
   // Load fonts
   useEffect(() => {
-    const loadFonts = async () => {
+    const loadAllFonts = async () => {
       setShowContent(false);
       setFontsLoaded(false);
-      
-      // Comprehensive font mapping for all headline fonts (moved to top level)
-      const headlineFontFiles: Record<string, string | null> = {
-        // Modern Sans-Serif
-        'Montserrat': '/mpg/fonts/Montserrat-Regular.ttf',  // Using TTF (woff2 is empty)
-        'Raleway': null,  // Use Google Fonts (local file is empty)
-        'Roboto': '/mpg/fonts/roboto-400.woff2',
-        'Lato': null,  // Use Google Fonts (local file is empty)
-        'Oswald': null,  // Use Google Fonts (local file is empty)
-        
-        // Display & Impact
-        'Bebas Neue': '/mpg/fonts/BebasNeue-Regular.ttf',
-        'Anton': '/mpg/fonts/Anton-Regular.ttf',
-        'Archivo Black': '/mpg/fonts/ArchivoBlack-Regular.ttf',
-        'Ultra': '/mpg/fonts/Ultra-Regular.ttf',
-        'Titan One': '/mpg/fonts/TitanOne-Regular.ttf',
-        'Fredoka One': '/mpg/fonts/FredokaOne-Regular.ttf',
-        'Righteous': '/mpg/fonts/Righteous-Regular.ttf',
-        'Bungee': '/mpg/fonts/Bungee-Regular.ttf',
-        'Black Ops One': '/mpg/fonts/BlackOpsOne-Regular.ttf',
-        
-        // Tech & Gaming
-        'Orbitron': '/mpg/fonts/Orbitron-Regular.ttf',
-        'Russo One': '/mpg/fonts/RussoOne-Regular.ttf',
-        'Press Start 2P': '/mpg/fonts/PressStart2P-Regular.ttf',
-        
-        // Elegant Serif
-        'Playfair Display': '/mpg/fonts/playfair-display-400.woff2',
-        
-        // Script & Handwritten
-        'Pacifico': '/mpg/fonts/Pacifico-Regular.ttf',
-        'Lobster': '/mpg/fonts/Lobster-Regular.ttf',
-        'Dancing Script': '/mpg/fonts/DancingScript-Regular.ttf',
-        'Kaushan Script': '/mpg/fonts/KaushanScript-Regular.ttf',
-        'Satisfy': '/mpg/fonts/satisfy-400.woff2',
-        'Caveat': '/mpg/fonts/Caveat-Regular.ttf',
-        'Courgette': '/mpg/fonts/Courgette-Regular.ttf',
-        'Yellowtail': '/mpg/fonts/Yellowtail-Regular.ttf',
-        'Alex Brush': '/mpg/fonts/AlexBrush-Regular.ttf',
-        'Sacramento': '/mpg/fonts/Sacramento-Regular.ttf',
-        'Cookie': '/mpg/fonts/Cookie-Regular.ttf',
-        'Tangerine': '/mpg/fonts/TangeriNE-Regular.ttf',
-        'Pinyon Script': '/mpg/fonts/PinyonScript-Regular.ttf',
-        'Great Vibes': '/mpg/fonts/great-vibes-400.woff2',
-        'Allura': '/mpg/fonts/allura-400.woff2',
-        
-        // Fun & Playful
-        'Amatic SC': '/mpg/fonts/AmaticSC-Bold.ttf',
-        'Kalam': '/mpg/fonts/kalam-400.woff2'
-      };
-      
-      // Load title font
-      const titleFontDef = MPG_KONVA_FONTS.title[titleFont as keyof typeof MPG_KONVA_FONTS.title];
-      if (titleFontDef && titleFontDef.googleFont) {
-        const linkId = `mpg-font-${titleFontDef.family.replace(/ /g, '-')}-${titleFontDef.weight}`;
-        if (!document.getElementById(linkId)) {
-          const link = document.createElement('link');
-          link.id = linkId;
-          link.rel = 'stylesheet';
-          link.href = `https://fonts.googleapis.com/css2?family=${titleFontDef.family.replace(/ /g, '+')}:wght@${titleFontDef.weight}&display=swap`;
-          document.head.appendChild(link);
-        }
-      }
-      
-      // Load headline font if headline text exists
+
+      // Collect all fonts that need to be loaded
+      const fontsToLoad: string[] = [];
+
+      // Add headline font if present
       if (headlineText && headlineFont) {
-        const headlineFontLinkId = `mpg-headline-font-${headlineFont.replace(/ /g, '-')}`;
-        
-        if (!document.getElementById(headlineFontLinkId)) {
-          const localFontFile = headlineFontFiles[headlineFont];
-          
-          if (localFontFile) {
-            // Use local font file
-            const style = document.createElement('style');
-            style.id = headlineFontLinkId;
-            const isWoff2 = localFontFile.endsWith('.woff2');
-            style.textContent = `
-              @font-face {
-                font-family: '${headlineFont}';
-                src: url('${localFontFile}') format('${isWoff2 ? 'woff2' : 'truetype'}');
-                font-weight: normal;
-                font-style: normal;
-                font-display: swap;
-              }
-            `;
-            document.head.appendChild(style);
-          } else {
-            // Use Google Fonts for fonts with empty local files
-            const link = document.createElement('link');
-            link.id = headlineFontLinkId;
-            link.rel = 'stylesheet';
-            
-            // Map fonts to their Google Fonts URLs with appropriate weights
-            const googleFontUrls: Record<string, string> = {
-              'Raleway': 'https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap',
-              'Lato': 'https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap',
-              'Oswald': 'https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap'
-            };
-            
-            if (googleFontUrls[headlineFont]) {
-              link.href = googleFontUrls[headlineFont];
-              document.head.appendChild(link);
-            }
-          }
-        }
+        fontsToLoad.push(headlineFont);
       }
-      
-      // Helper function to load any font
-      const loadFont = (fontName: string, fontType: 'title' | 'body' = 'title') => {
-        if (!fontName) return;
-        
-        const fontLinkId = `mpg-font-link-${fontName.replace(/ /g, '-')}`;
-        
-        // Skip if already loaded
-        if (document.getElementById(fontLinkId)) return;
-        
-        // First check if it's a local font file
-        const localFontFile = headlineFontFiles[fontName];
-        
-        if (localFontFile) {
-          // Use local font file
-          const style = document.createElement('style');
-          style.id = fontLinkId;
-          const isWoff2 = localFontFile.endsWith('.woff2');
-          style.textContent = `
-            @font-face {
-              font-family: '${fontName}';
-              src: url('${localFontFile}') format('${isWoff2 ? 'woff2' : 'truetype'}');
-              font-weight: normal;
-              font-style: normal;
-              font-display: swap;
-            }
-          `;
-          document.head.appendChild(style);
-        } else {
-          // Use Google Fonts
-          const link = document.createElement('link');
-          link.id = fontLinkId;
-          link.rel = 'stylesheet';
-          
-          // Map fonts to their Google Fonts URLs
-          const googleFontUrls: Record<string, string> = {
-            'Raleway': 'https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap',
-            'Lato': 'https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap',
-            'Oswald': 'https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap',
-            'Roboto': 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap',
-            'Open Sans': 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap'
-          };
-          
-          if (googleFontUrls[fontName]) {
-            link.href = googleFontUrls[fontName];
-            document.head.appendChild(link);
-          } else {
-            // For any other Google Font not explicitly mapped
-            link.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(/ /g, '+')}:wght@400;500;600;700&display=swap`;
-            document.head.appendChild(link);
-          }
-        }
-      };
-      
-      // Load all fonts being used
-      loadFont(titleFont);
-      loadFont(coordinatesFont);
-      loadFont(countryFont);
-      loadFont(customTextFont);
-      
-      // Wait for fonts to load
-      await document.fonts.ready;
-      
-      // Try to load specific fonts
-      const loadPromises = [];
-      if (titleFontDef) {
-        const fontWeight = titleFontDef.weight === 400 ? 'normal' : titleFontDef.weight === 700 ? 'bold' : titleFontDef.weight.toString();
-        loadPromises.push(document.fonts.load(`${fontWeight} 1px "${titleFontDef.family}"`).catch(() => {}));
-      }
-      if (headlineText && headlineFont) {
-        loadPromises.push(document.fonts.load(`700 1px "${headlineFont}"`).catch(() => {}));
-      }
-      if (titleFont) {
-        loadPromises.push(document.fonts.load(`400 1px "${titleFont}"`).catch(() => {}));
-      }
-      if (coordinatesFont) {
-        loadPromises.push(document.fonts.load(`400 1px "${coordinatesFont}"`).catch(() => {}));
-      }
-      if (countryFont) {
-        loadPromises.push(document.fonts.load(`400 1px "${countryFont}"`).catch(() => {}));
-      }
+
+      // Add location detail fonts
+      if (titleFont) fontsToLoad.push(titleFont);
+      if (coordinatesFont) fontsToLoad.push(coordinatesFont);
+      if (countryFont) fontsToLoad.push(countryFont);
+
+      // Add custom text font if present
       if (customText && customTextFont) {
-        loadPromises.push(document.fonts.load(`italic 1px "${customTextFont}"`).catch(() => {}));
+        fontsToLoad.push(customTextFont);
       }
-      
-      await Promise.all(loadPromises);
-      
+
+      // Load all fonts using the centralized font loader
+      await loadFonts(fontsToLoad);
+
+      // Wait for browser font API to be ready
+      await document.fonts.ready;
+
       // Small delay to ensure proper rendering
       await new Promise(resolve => setTimeout(resolve, 300));
+
       setFontsLoaded(true);
       setShowContent(true);
-      
+
       // Force redraw after fonts loaded
       if (stageRef.current) {
         stageRef.current.batchDraw();
       }
     };
-    
-    loadFonts();
-  }, [titleFont, coordinatesFont, countryFont, customTextFont, customText, headlineFont, headlineText, headlineAllCaps]);
+
+    loadAllFonts();
+  }, [titleFont, coordinatesFont, countryFont, customTextFont, customText, headlineFont, headlineText, headlineAllCaps, headlineFontWeight]);
   
   // Update scale based on container size
   useEffect(() => {
@@ -646,24 +482,27 @@ export function MPGKonvaPreview({
             const sizeMultipliers = { S: 1.04, M: 1.3, L: 1.56 }; // Increased by 30%: S: 0.8*1.3, M: 1.0*1.3, L: 1.2*1.3
             const baseFontSize = 62; // Increased base by 30% (was 48, now 62)
             const fontSize = baseFontSize * sizeMultipliers[headlineSize];
-            
+
+            // Smart dynamic spacing based on headline size - Solution 3
+            const headlineGap = headlineSize === 'L' ? 180 : headlineSize === 'M' ? 160 : 145;
+
             // Position above the frame - different positioning for square
             const squareFrame = getSquareFrameDimensions();
-            const yPosition = frameStyle === 'square' 
+            const yPosition = frameStyle === 'square'
               ? squareFrame.y - 100  // Above square frame with proper spacing
-              : MPG_BASE_MAP.y - 138; // Standard position for other frames
-            
+              : MPG_BASE_MAP.y - headlineGap; // Dynamic spacing based on size
+
             // Apply all caps if toggle is on
             const displayText = headlineAllCaps ? headlineText.toUpperCase() : headlineText;
-            
+
             return (
               <Text
                 x={baseDimensions.width / 2}
                 y={yPosition}
                 text={displayText}
                 fontSize={fontSize}
-                fontFamily={`${headlineFont}, cursive, serif`}
-                fontStyle="700"
+                fontFamily={getFontFamilyWithFallback(headlineFont)}
+                fontStyle={headlineFontWeight}
                 fill={colorScheme.text}
                 letterSpacing={4}
                 listening={false}
@@ -1263,35 +1102,14 @@ export function MPGKonvaPreview({
             const textPositions = (window as any).__mpgTextPositions || {};
             const yPosition = textPositions.customText || MPG_KONVA_TEXT_LAYOUT.customTextY;
             
-            // Get the font family
-            const getCustomFontFamily = () => {
-              const fontMap: Record<string, string> = {
-                'Montserrat': 'Montserrat, sans-serif',
-                'Playfair Display': 'Playfair Display, serif',
-                'Roboto': 'Roboto, sans-serif',
-                'Dancing Script': 'Dancing Script, cursive',
-                'Bebas Neue': 'Bebas Neue, cursive',
-                'Alex Brush': 'Alex Brush, cursive',
-                'Kaushan Script': 'Kaushan Script, cursive',
-                'Pacifico': 'Pacifico, cursive',
-                'Sacramento': 'Sacramento, cursive',
-                'Yellowtail': 'Yellowtail, cursive',
-                'Cookie': 'Cookie, cursive',
-                'Satisfy': 'Satisfy, cursive',
-                'Great Vibes': 'Great Vibes, cursive',
-                'Allura': 'Allura, cursive',
-                'Tangerine': 'Tangerine, cursive'
-              };
-              return fontMap[customTextFont] || 'Roboto, sans-serif';
-            };
-            
             return (
               <Text
                 x={baseDimensions.width / 2}
                 y={yPosition}
                 text={customText}
                 fontSize={fontSize}
-                fontFamily={getCustomFontFamily()}
+                fontFamily={getFontFamilyWithFallback(customTextFont)}
+                fontStyle={customTextFontWeight}
                 fill={colorScheme.customText || colorScheme.country}
                 listening={false}
                 perfectDrawEnabled={false}

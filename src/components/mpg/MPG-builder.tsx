@@ -34,6 +34,7 @@ export function MPGBuilder({ templateId }: MPGBuilderProps) {
   const nextStep = useMPGStore(state => state.nextStep);
   const previousStep = useMPGStore(state => state.previousStep);
   const canProceed = useMPGStore(state => state.canProceed);
+  const fetchProducts = useMPGStore(state => state.fetchProducts);
   
   // Load template if provided
   useEffect(() => {
@@ -63,7 +64,12 @@ export function MPGBuilder({ templateId }: MPGBuilderProps) {
       });
     }
   }, [templateId, toast]);
-  
+
+  // Preload products in background when wizard loads
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
   // Step definitions
   const steps = [
     {

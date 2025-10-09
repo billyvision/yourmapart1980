@@ -192,6 +192,7 @@ export const MPG_DEFAULT_CONFIG = {
   customText: '',
   customTextFont: 'Montserrat',
   customTextSize: 'M' as 'S' | 'M' | 'L',
+  customTextFontWeight: '400' as '400' | '700',
   titleFont: 'playfair',
   subtitleFont: 'roboto',
   letterSpacing: 8,

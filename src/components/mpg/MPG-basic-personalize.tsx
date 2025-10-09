@@ -1,14 +1,17 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Search, MapPin, Type, MessageSquare, X, Sparkles, ArrowRight } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Search, MapPin, Type, MessageSquare, X, Sparkles, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useMPGStore } from '@/lib/mpg/MPG-store';
 import { useDebounce } from '@/hooks/useDebounce';
 import { MPGAccordionSection } from './ui/MPG-accordion-section';
 import { MPGAccordionManager } from './ui/MPG-accordion-manager';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { MPG_HEADLINE_FONTS } from '@/lib/mpg/MPG-constants';
 
 interface SearchResult {
   place_id: string;
@@ -44,11 +47,23 @@ export function MPGBasicPersonalize() {
     city,
     headlineText,
     customText,
+    customTextFont,
+    customTextSize,
+    customTextFontWeight,
     setCity,
     setHeadlineText,
     setCustomText,
+    setCustomTextFont,
+    setCustomTextSize,
+    setCustomTextFontWeight,
     setCurrentStep,
   } = useMPGStore();
+
+  // Available fonts for custom message - same as full editor
+  const customFonts = MPG_HEADLINE_FONTS.map(font => ({
+    id: font.family,
+    name: font.name
+  }));
 
   // Initialize search with current city
   useEffect(() => {
@@ -300,16 +315,137 @@ export function MPGBasicPersonalize() {
           icon={MessageSquare}
           colorTheme="purple"
         >
-          <div className="space-y-2">
-        <Input
-          value={customText || ''}
-          onChange={(e) => setCustomText(e.target.value)}
-          placeholder="e.g., Est. 2024, Home Sweet Home"
-          className="w-full"
-        />
-        <p className="text-xs text-gray-500">
-          Add a special date, quote, or message
-        </p>
+          <div className="space-y-3">
+            <div>
+              <Label className="text-sm font-medium text-charcoal mb-2 block">
+                Custom Text (Optional)
+              </Label>
+              <Textarea
+                value={customText || ''}
+                onChange={(e) => setCustomText(e.target.value)}
+                placeholder="e.g., Where our story began..."
+                className="w-full min-h-[80px] resize-none"
+                maxLength={100}
+              />
+              <p className="text-xs text-medium-gray mt-1">
+                {customText?.length || 0}/100 characters
+              </p>
+            </div>
+
+            {/* Emoji Picker */}
+            <div>
+              <Label className="text-xs font-medium text-medium-gray mb-2 block">
+                Quick Emojis
+              </Label>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { emoji: '❤️', label: 'Heart' },
+                  { emoji: '🏠', label: 'House' },
+                  { emoji: '⭐', label: 'Star' },
+                  { emoji: '📍', label: 'Pin' },
+                  { emoji: '✈️', label: 'Plane' },
+                  { emoji: '🌍', label: 'Globe' }
+                ].map(({ emoji, label }) => (
+                  <button
+                    key={emoji}
+                    type="button"
+                    onClick={() => {
+                      const newText = (customText || '') + emoji;
+                      if (newText.length <= 100) {
+                        setCustomText(newText);
+                      }
+                    }}
+                    className="px-3 py-2 text-xl bg-gray-50 hover:bg-sage-green/10 border border-gray-200 rounded-lg transition-colors"
+                    title={`Add ${label}`}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {customText && (
+              <div className="animate-in slide-in-from-top-2 duration-300">
+                <Label className="text-xs font-medium text-medium-gray mb-2 block">
+                  Message Settings
+                </Label>
+                <div className="flex items-center gap-3">
+                  {/* Bold Toggle */}
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="custom-bold-weight" className="text-xs text-medium-gray cursor-pointer">
+                      Bold
+                    </Label>
+                    <Switch
+                      id="custom-bold-weight"
+                      checked={customTextFontWeight === '700'}
+                      onCheckedChange={(checked) => setCustomTextFontWeight(checked ? '700' : '400')}
+                      className="data-[state=checked]:bg-sage-green"
+                    />
+                  </div>
+
+                  {/* Divider */}
+                  <div className="w-px h-6 bg-gray-200" />
+
+                  {/* Font Selector with Arrows */}
+                  <div className="flex-1 flex items-center gap-1">
+                    <button
+                      onClick={() => {
+                        const currentIndex = customFonts.findIndex(f => f.id === customTextFont);
+                        const prevIndex = currentIndex > 0 ? currentIndex - 1 : customFonts.length - 1;
+                        setCustomTextFont(customFonts[prevIndex].id);
+                      }}
+                      className="p-1.5 rounded-md bg-gray-50 hover:bg-sage-green/10 border border-gray-200 transition-colors"
+                      title="Previous font"
+                    >
+                      <ChevronLeft className="w-4 h-4 text-charcoal" />
+                    </button>
+
+                    <select
+                      value={customTextFont}
+                      onChange={(e) => setCustomTextFont(e.target.value)}
+                      className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-sage-green"
+                    >
+                      {customFonts.map(font => (
+                        <option key={font.id} value={font.id}>{font.name}</option>
+                      ))}
+                    </select>
+
+                    <button
+                      onClick={() => {
+                        const currentIndex = customFonts.findIndex(f => f.id === customTextFont);
+                        const nextIndex = currentIndex < customFonts.length - 1 ? currentIndex + 1 : 0;
+                        setCustomTextFont(customFonts[nextIndex].id);
+                      }}
+                      className="p-1.5 rounded-md bg-gray-50 hover:bg-sage-green/10 border border-gray-200 transition-colors"
+                      title="Next font"
+                    >
+                      <ChevronRight className="w-4 h-4 text-charcoal" />
+                    </button>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="w-px h-6 bg-gray-200" />
+
+                  {/* Size Buttons */}
+                  <div className="flex items-center gap-1">
+                    {(['S', 'M', 'L'] as const).map((size) => (
+                      <button
+                        key={size}
+                        onClick={() => setCustomTextSize(size)}
+                        className={`px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                          customTextSize === size
+                            ? 'bg-gray-200 text-charcoal font-bold italic border-2 border-charcoal'
+                            : 'bg-gray-50 hover:bg-gray-100 text-charcoal font-medium border border-gray-200'
+                        }`}
+                        title={`${size === 'S' ? 'Small' : size === 'M' ? 'Medium' : 'Large'} size`}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </MPGAccordionSection>
       </MPGAccordionManager>

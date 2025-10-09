@@ -1,0 +1,95 @@
+{
+  "id": "template-15",
+  "name": "Where it all began - San Diego",
+  "city": "San Diego",
+  "style": "neon",
+  "hidden": false,
+  "thumbnail": "/template-previews/template-15.jpg",
+  "jsonData": {
+    "version": "1.0",
+    "created": "2025-10-09T18:26:38.801Z",
+    "application": "YourMapArt",
+    "snapshot": {
+      "location": {
+        "city": "San Diego",
+        "lat": 32.7174202,
+        "lng": -117.162772,
+        "country": "United States",
+        "zoom": 12,
+        "mapOffsetX": 0,
+        "mapOffsetY": 0
+      },
+      "text": {
+        "headline": {
+          "text": "where it all began",
+          "font": "Pacifico",
+          "size": "M",
+          "allCaps": false
+        },
+        "city": {
+          "show": true,
+          "font": "Sacramento",
+          "size": "L"
+        },
+        "coordinates": {
+          "show": false,
+          "font": "roboto",
+          "size": "M"
+        },
+        "country": {
+          "show": false,
+          "font": "roboto",
+          "size": "L"
+        },
+        "custom": {
+          "text": "Jane & mark\n\n⭐ 02-10-2015 ⭐",
+          "font": "Oswald",
+          "size": "L"
+        },
+        "typography": {
+          "letterSpacing": 5,
+          "textSpacing": 0.9
+        }
+      },
+      "style": {
+        "mapStyle": "neon",
+        "frame": {
+          "style": "square",
+          "showBorder": false
+        },
+        "glow": {
+          "enabled": false,
+          "style": "amber",
+          "intensity": 0.4
+        },
+        "background": {
+          "color": "#ff0090",
+          "useCustom": true,
+          "textColor": "#FFFFFF"
+        },
+        "features": {
+          "labels": false,
+          "buildings": true,
+          "parks": false,
+          "water": true,
+          "roads": true
+        },
+        "pin": {
+          "show": false,
+          "style": "heart",
+          "color": "#FF6B6B",
+          "size": "L"
+        },
+        "fontColor": {
+          "useCustom": true,
+          "color": "#FFFFFF"
+        }
+      },
+      "export": {
+        "format": "png",
+        "size": "A4",
+        "quality": 0.95
+      }
+    }
+  }
+}

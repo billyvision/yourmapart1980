@@ -79,10 +79,12 @@ interface MPGState {
   customText: string;
   customTextFont: string;
   customTextSize: 'S' | 'M' | 'L';
+  customTextFontWeight: '400' | '700';
   headlineText: string;
   headlineFont: string;
   headlineSize: 'S' | 'M' | 'L';
   headlineAllCaps: boolean;
+  headlineFontWeight: '400' | '700';
   titleFont: string;
   titleSize: 'S' | 'M' | 'L';
   coordinatesFont: string;
@@ -155,10 +157,12 @@ interface MPGState {
   setCustomText: (text: string) => void;
   setCustomTextFont: (font: string) => void;
   setCustomTextSize: (size: 'S' | 'M' | 'L') => void;
+  setCustomTextFontWeight: (weight: '400' | '700') => void;
   setHeadlineText: (text: string) => void;
   setHeadlineFont: (font: string) => void;
   setHeadlineSize: (size: 'S' | 'M' | 'L') => void;
   setHeadlineAllCaps: (allCaps: boolean) => void;
+  setHeadlineFontWeight: (weight: '400' | '700') => void;
   setTitleFont: (font: string) => void;
   setTitleSize: (size: 'S' | 'M' | 'L') => void;
   setCoordinatesFont: (font: string) => void;
@@ -263,6 +267,7 @@ export const useMPGStore = create<MPGState>((set, get) => ({
   headlineFont: 'Montserrat', // Modern, clean default font
   headlineSize: 'M' as 'S' | 'M' | 'L',
   headlineAllCaps: true,
+  headlineFontWeight: '400' as '400' | '700', // Default to normal weight for better appearance
   useCustomFontColor: false, // Default to using automatic text color
   customFontColor: '#333333', // Default font color when custom is enabled
   
@@ -309,10 +314,12 @@ export const useMPGStore = create<MPGState>((set, get) => ({
   setCustomText: (customText) => set({ customText }),
   setCustomTextFont: (customTextFont) => set({ customTextFont }),
   setCustomTextSize: (customTextSize) => set({ customTextSize }),
+  setCustomTextFontWeight: (customTextFontWeight) => set({ customTextFontWeight }),
   setHeadlineText: (headlineText) => set({ headlineText }),
   setHeadlineFont: (headlineFont) => set({ headlineFont }),
   setHeadlineSize: (headlineSize) => set({ headlineSize }),
   setHeadlineAllCaps: (headlineAllCaps) => set({ headlineAllCaps }),
+  setHeadlineFontWeight: (headlineFontWeight) => set({ headlineFontWeight }),
   setTitleFont: (titleFont) => set({ titleFont }),
   setTitleSize: (titleSize) => set({ titleSize }),
   setCoordinatesFont: (coordinatesFont) => set({ coordinatesFont }),
@@ -331,12 +338,24 @@ export const useMPGStore = create<MPGState>((set, get) => ({
   fetchProducts: async () => {
     set({ productsLoading: true, productsError: null });
     try {
-      const response = await fetch('/api/products');
-      if (!response.ok) {
-        throw new Error('Failed to fetch products');
-      }
+      const response = await fetch('/api/products', {
+        signal: AbortSignal.timeout(20000) // 20 second timeout
+      });
+
       const data = await response.json();
       const products = data.products || [];
+
+      // Check if there was a retryable error
+      if (data.error && data.retryable) {
+        console.warn('Database connection issue:', data.error);
+        set({
+          products: [], // Empty array for now
+          productsLoading: false,
+          productsError: data.error
+        });
+        return;
+      }
+
       set({ products, productsLoading: false });
 
       // Set first product and size as defaults if available
@@ -350,8 +369,10 @@ export const useMPGStore = create<MPGState>((set, get) => ({
       }
     } catch (error) {
       console.error('Error fetching products:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Connection timeout';
       set({
-        productsError: error instanceof Error ? error.message : 'Unknown error',
+        products: [], // Return empty array instead of failing
+        productsError: `${errorMessage}. Using default options.`,
         productsLoading: false
       });
     }
@@ -456,7 +477,8 @@ export const useMPGStore = create<MPGState>((set, get) => ({
     headlineText: '',
     headlineFont: 'Montserrat',
     headlineSize: 'M' as 'S' | 'M' | 'L',
-    headlineAllCaps: true
+    headlineAllCaps: true,
+    headlineFontWeight: '400' as '400' | '700'
   }),
   
   // Editor mode actions
@@ -550,6 +572,12 @@ export const useMPGStore = create<MPGState>((set, get) => ({
         subtitleFont: state.subtitleFont,
         coordinatesFont: state.coordinatesFont,
         customTextFont: state.customTextFont,
+        customTextSize: state.customTextSize,
+        customTextFontWeight: state.customTextFontWeight,
+        headlineFont: state.headlineFont,
+        headlineSize: state.headlineSize,
+        headlineAllCaps: state.headlineAllCaps,
+        headlineFontWeight: state.headlineFontWeight,
       },
     };
   },
@@ -590,6 +618,14 @@ export const useMPGStore = create<MPGState>((set, get) => ({
       subtitleFont: data.fonts?.subtitleFont || 'roboto',
       coordinatesFont: data.fonts?.coordinatesFont || 'roboto',
       customTextFont: data.fonts?.customTextFont || 'roboto',
+      customTextSize: data.fonts?.customTextSize || 'M',
+      // Backward compatibility: default to '400' for better appearance if not specified
+      customTextFontWeight: data.fonts?.customTextFontWeight || '400',
+      headlineFont: data.fonts?.headlineFont || 'Montserrat',
+      headlineSize: data.fonts?.headlineSize || 'M',
+      headlineAllCaps: data.fonts?.headlineAllCaps !== undefined ? data.fonts.headlineAllCaps : true,
+      // Backward compatibility: default to '400' for better appearance if not specified
+      headlineFontWeight: data.fonts?.headlineFontWeight || '400',
     });
   },
 

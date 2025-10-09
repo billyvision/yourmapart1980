@@ -51,13 +51,6 @@ export function MPGKonvaExportOptions() {
   const userRole = (session?.user as any)?.role;
   const isSuperAdmin = userRole === 'superadmin';
 
-  // Fetch products on mount
-  useEffect(() => {
-    if (products.length === 0 && !productsLoading) {
-      fetchProducts();
-    }
-  }, [products.length, productsLoading, fetchProducts]);
-
   // Initialize default variations when product changes
   useEffect(() => {
     if (!currentProduct || !currentProduct.variations) return;
@@ -92,21 +85,41 @@ export function MPGKonvaExportOptions() {
     return () => window.removeEventListener('keydown', handleEscape);
   }, [lightboxImage]);
 
-  // Show loading state while products are being fetched
-  if (productsLoading) {
+  // Show error if products completely failed to load (no defaults)
+  if (!productsLoading && !currentProduct && products.length === 0) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
-        <span className="ml-3 text-gray-600">Loading products...</span>
+      <div className="text-center py-12">
+        <p className="text-gray-600">No products available. Please refresh and try again.</p>
+        <Button onClick={() => fetchProducts()} variant="outline" className="mt-4">
+          Retry Loading Products
+        </Button>
       </div>
     );
   }
 
-  // Show error if products failed to load
-  if (!currentProduct || products.length === 0) {
+  // Provide fallback product while loading
+  if (!currentProduct) {
+    // Show a loading skeleton or default product
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-600">No products available. Please contact support.</p>
+      <div className="space-y-6">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-gray-900 to-black text-white">
+            <ShoppingCart className="w-5 h-5" />
+          </div>
+          <div>
+            <h3 className="text-xl font-heading font-semibold text-charcoal">
+              Choose Your Product
+            </h3>
+            <p className="text-medium-gray text-sm mt-1 flex items-center gap-2">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Loading product options...
+            </p>
+          </div>
+        </div>
+        <div className="animate-pulse space-y-4">
+          <div className="h-32 bg-gray-200 rounded-xl" />
+          <div className="h-48 bg-gray-200 rounded-xl" />
+        </div>
       </div>
     );
   }
@@ -197,10 +210,18 @@ export function MPGKonvaExportOptions() {
         <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-gray-900 to-black text-white">
           <ShoppingCart className="w-5 h-5" />
         </div>
-        <div>
-          <h3 className="text-xl font-heading font-semibold text-charcoal">
-            Choose Your Product
-          </h3>
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <h3 className="text-xl font-heading font-semibold text-charcoal">
+              Choose Your Product
+            </h3>
+            {productsLoading && (
+              <span className="inline-flex items-center gap-1.5 text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">
+                <Loader2 className="w-3 h-3 animate-spin" />
+                Loading options...
+              </span>
+            )}
+          </div>
           <p className="text-medium-gray text-sm mt-1">
             Select format and size for your custom map
           </p>

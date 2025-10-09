@@ -1,0 +1,95 @@
+{
+  "id": "template-14",
+  "name": "Where it all began - San Diego",
+  "city": "San Diego",
+  "style": "sanFrancisco",
+  "hidden": false,
+  "thumbnail": "/template-previews/template-14.jpg",
+  "jsonData": {
+    "version": "1.0",
+    "created": "2025-10-09T16:17:10.546Z",
+    "application": "YourMapArt",
+    "snapshot": {
+      "location": {
+        "city": "San Diego",
+        "lat": 32.7174202,
+        "lng": -117.162772,
+        "country": "United States",
+        "zoom": 12,
+        "mapOffsetX": 0,
+        "mapOffsetY": 0
+      },
+      "text": {
+        "headline": {
+          "text": "where it all began",
+          "font": "Pacifico",
+          "size": "L",
+          "allCaps": false
+        },
+        "city": {
+          "show": false,
+          "font": "opensans",
+          "size": "L"
+        },
+        "coordinates": {
+          "show": false,
+          "font": "roboto",
+          "size": "M"
+        },
+        "country": {
+          "show": false,
+          "font": "roboto",
+          "size": "L"
+        },
+        "custom": {
+          "text": "Jane ❤️mark\n\n02-10-2015",
+          "font": "Pinyon Script",
+          "size": "L"
+        },
+        "typography": {
+          "letterSpacing": 5,
+          "textSpacing": 0.9
+        }
+      },
+      "style": {
+        "mapStyle": "sanFrancisco",
+        "frame": {
+          "style": "circle",
+          "showBorder": false
+        },
+        "glow": {
+          "enabled": true,
+          "style": "amber",
+          "intensity": 0.4
+        },
+        "background": {
+          "color": "#1a1a2e",
+          "useCustom": false,
+          "textColor": "#ffc000"
+        },
+        "features": {
+          "labels": false,
+          "buildings": false,
+          "parks": false,
+          "water": true,
+          "roads": true
+        },
+        "pin": {
+          "show": false,
+          "style": "heart",
+          "color": "#FF6B6B",
+          "size": "L"
+        },
+        "fontColor": {
+          "useCustom": true,
+          "color": "#FFFFFF"
+        }
+      },
+      "export": {
+        "format": "png",
+        "size": "A4",
+        "quality": 0.95
+      }
+    }
+  }
+}

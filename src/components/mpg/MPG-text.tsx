@@ -26,10 +26,12 @@ export function MPGText() {
     customText,
     customTextFont,
     customTextSize,
+    customTextFontWeight,
     headlineText,
     headlineFont,
     headlineSize,
     headlineAllCaps,
+    headlineFontWeight,
     titleFont,
     titleSize,
     coordinatesFont,
@@ -44,10 +46,12 @@ export function MPGText() {
     setCustomText,
     setCustomTextFont,
     setCustomTextSize,
+    setCustomTextFontWeight,
     setHeadlineText,
     setHeadlineFont,
     setHeadlineSize,
     setHeadlineAllCaps,
+    setHeadlineFontWeight,
     setTitleFont,
     setTitleSize,
     setCoordinatesFont,
@@ -147,6 +151,22 @@ export function MPGText() {
                     id="all-caps"
                     checked={headlineAllCaps}
                     onCheckedChange={setHeadlineAllCaps}
+                    className="data-[state=checked]:bg-sage-green"
+                  />
+                </div>
+
+                {/* Divider */}
+                <div className="w-px h-6 bg-gray-200" />
+
+                {/* Bold Toggle */}
+                <div className="flex items-center gap-2">
+                  <Label htmlFor="bold-weight" className="text-xs text-medium-gray cursor-pointer">
+                    Bold
+                  </Label>
+                  <Switch
+                    id="bold-weight"
+                    checked={headlineFontWeight === '700'}
+                    onCheckedChange={(checked) => setHeadlineFontWeight(checked ? '700' : '400')}
                     className="data-[state=checked]:bg-sage-green"
                   />
                 </div>
@@ -498,17 +518,55 @@ export function MPGText() {
             </p>
           </div>
 
+          {/* Emoji Picker */}
+          <div>
+            <Label className="text-xs font-medium text-medium-gray mb-2 block">
+              Quick Emojis
+            </Label>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { emoji: '❤️', label: 'Heart' },
+                { emoji: '🏠', label: 'House' },
+                { emoji: '⭐', label: 'Star' },
+                { emoji: '📍', label: 'Pin' },
+                { emoji: '✈️', label: 'Plane' },
+                { emoji: '🌍', label: 'Globe' }
+              ].map(({ emoji, label }) => (
+                <button
+                  key={emoji}
+                  type="button"
+                  onClick={() => {
+                    const newText = (customText || '') + emoji;
+                    if (newText.length <= 100) {
+                      setCustomText(newText);
+                    }
+                  }}
+                  className="px-3 py-2 text-xl bg-gray-50 hover:bg-sage-green/10 border border-gray-200 rounded-lg transition-colors"
+                  title={`Add ${label}`}
+                >
+                  {emoji}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {customText && (
             <div className="animate-in slide-in-from-top-2 duration-300">
               <Label className="text-xs font-medium text-medium-gray mb-2 block">
                 Message Settings
               </Label>
               <div className="flex items-center gap-3">
-                {/* Font Style Label */}
+                {/* Bold Toggle */}
                 <div className="flex items-center gap-2">
-                  <Label className="text-xs text-medium-gray whitespace-nowrap">
-                    Font Style
+                  <Label htmlFor="custom-bold-weight" className="text-xs text-medium-gray cursor-pointer">
+                    Bold
                   </Label>
+                  <Switch
+                    id="custom-bold-weight"
+                    checked={customTextFontWeight === '700'}
+                    onCheckedChange={(checked) => setCustomTextFontWeight(checked ? '700' : '400')}
+                    className="data-[state=checked]:bg-sage-green"
+                  />
                 </div>
 
                 {/* Divider */}

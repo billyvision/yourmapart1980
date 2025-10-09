@@ -25,7 +25,12 @@ export function MPGBasicEditor({ templateId }: MPGBasicEditorProps) {
   // Get searchParams to check for templateId from URL
   const searchParams = useSearchParams();
   const savedTemplateId = searchParams.get('templateId');
-  const { loadTemplate, loadFromTemplateData, setCurrentStep } = useMPGStore();
+  const { loadTemplate, loadFromTemplateData, setCurrentStep, fetchProducts } = useMPGStore();
+
+  // Preload products in background when editor loads
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   // Load template if provided (from static templates or saved templates)
   useEffect(() => {
