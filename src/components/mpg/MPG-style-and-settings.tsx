@@ -52,6 +52,8 @@ export function MPGStyleAndSettings() {
     pinColor,
     pinSize,
     backgroundColor,
+    backgroundImage,
+    backgroundImageOpacity,
     textColor,
     useCustomBackground,
     useCustomFontColor,
@@ -67,6 +69,8 @@ export function MPGStyleAndSettings() {
     setGlowStyle,
     setGlowIntensity,
     setBackgroundColor,
+    setBackgroundImage,
+    setBackgroundImageOpacity,
     setTextColor,
     setUseCustomBackground,
     setShowMapLabels,
@@ -639,7 +643,50 @@ export function MPGStyleAndSettings() {
                 </p>
               )}
             </div>
-            
+
+            {/* Background Image/Texture Section */}
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <Label className="text-xs font-medium text-medium-gray mb-2 block">
+                BACKGROUND IMAGE / TEXTURE
+              </Label>
+              <select
+                value={backgroundImage}
+                onChange={(e) => setBackgroundImage(e.target.value as 'none' | 'vintage-paper' | 'torn-paper' | 'marble')}
+                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-sage-green bg-white"
+              >
+                <option value="none">None (Solid Color Only)</option>
+                <option value="vintage-paper">Vintage Paper Texture</option>
+                <option value="torn-paper" disabled>Torn Paper (Coming Soon)</option>
+                <option value="marble" disabled>Marble Texture (Coming Soon)</option>
+              </select>
+
+              {backgroundImage !== 'none' && (
+                <div className="mt-3 space-y-2 animate-in slide-in-from-top-2 duration-300">
+                  <Label className="text-xs font-medium text-medium-gray block">
+                    TEXTURE OPACITY: {backgroundImageOpacity}%
+                  </Label>
+                  <Slider
+                    value={[backgroundImageOpacity]}
+                    onValueChange={(value) => setBackgroundImageOpacity(value[0])}
+                    min={0}
+                    max={100}
+                    step={5}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-xs text-medium-gray">
+                    <span>Transparent</span>
+                    <span>50%</span>
+                    <span>Solid</span>
+                  </div>
+                  <div className="p-2 bg-orange-50 rounded-lg mt-2">
+                    <p className="text-xs text-orange-700">
+                      🎨 <span className="font-medium">Tip:</span> Lower opacity lets your background color show through the texture
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Background Tip */}
             <div className="p-2 bg-gray-50 rounded-lg mt-3">
               <p className="text-xs text-gray-600">

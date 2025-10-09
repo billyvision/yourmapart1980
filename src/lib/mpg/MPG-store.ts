@@ -69,6 +69,8 @@ interface MPGState {
   glowStyle: 'silverGrey' | 'turquoise' | 'lavender' | 'royalBlue' | 'forestGreen' | 'amber' | 'rosePink' | 'coral' | 'deepViolet' | 'teal' | 'emerald' | 'crimson' | 'sunsetOrange' | 'electricBlue' | 'limeGreen' | 'silverGradient';
   glowIntensity: number;
   backgroundColor: string;
+  backgroundImage: 'none' | 'vintage-paper' | 'torn-paper' | 'marble';
+  backgroundImageOpacity: number;
   textColor: string;
   useCustomBackground: boolean;
 
@@ -149,6 +151,8 @@ interface MPGState {
   setGlowStyle: (style: 'silverGrey' | 'turquoise' | 'lavender' | 'royalBlue' | 'forestGreen' | 'amber' | 'rosePink' | 'coral' | 'deepViolet' | 'teal' | 'emerald' | 'crimson' | 'sunsetOrange' | 'electricBlue' | 'limeGreen' | 'silverGradient') => void;
   setGlowIntensity: (intensity: number) => void;
   setBackgroundColor: (color: string) => void;
+  setBackgroundImage: (image: 'none' | 'vintage-paper' | 'torn-paper' | 'marble') => void;
+  setBackgroundImageOpacity: (opacity: number) => void;
   setTextColor: (color: string) => void;
   setUseCustomBackground: (use: boolean) => void;
   setShowCityName: (show: boolean) => void;
@@ -256,6 +260,8 @@ export const useMPGStore = create<MPGState>((set, get) => ({
   glowStyle: 'silverGrey' as 'silverGrey' | 'turquoise' | 'lavender' | 'royalBlue' | 'forestGreen' | 'amber' | 'rosePink' | 'coral' | 'deepViolet' | 'teal' | 'emerald' | 'crimson' | 'sunsetOrange' | 'electricBlue' | 'limeGreen' | 'silverGradient',
   glowIntensity: 0.4, // Default to 40% intensity
   backgroundColor: '#ffffff',
+  backgroundImage: 'none' as 'none' | 'vintage-paper' | 'torn-paper' | 'marble',
+  backgroundImageOpacity: 100, // Default to full opacity
   textColor: '#333333',
   useCustomBackground: false,
   titleSize: 'M' as 'S' | 'M' | 'L',
@@ -306,6 +312,8 @@ export const useMPGStore = create<MPGState>((set, get) => ({
   setGlowStyle: (glowStyle) => set({ glowStyle }),
   setGlowIntensity: (glowIntensity) => set({ glowIntensity }),
   setBackgroundColor: (backgroundColor) => set({ backgroundColor }),
+  setBackgroundImage: (backgroundImage) => set({ backgroundImage }),
+  setBackgroundImageOpacity: (backgroundImageOpacity) => set({ backgroundImageOpacity }),
   setTextColor: (textColor) => set({ textColor }),
   setUseCustomBackground: (useCustomBackground) => set({ useCustomBackground }),
   setShowCityName: (showCityName) => set({ showCityName }),
@@ -469,6 +477,8 @@ export const useMPGStore = create<MPGState>((set, get) => ({
     pinColor: '#FF6B6B',
     pinSize: 'M' as 'S' | 'M' | 'L',
     backgroundColor: '#ffffff',
+    backgroundImage: 'none' as 'none' | 'vintage-paper' | 'torn-paper' | 'marble',
+    backgroundImageOpacity: 100,
     textColor: '#333333',
     useCustomBackground: false,
     glowEffect: false,
@@ -556,6 +566,8 @@ export const useMPGStore = create<MPGState>((set, get) => ({
       style: {
         mapStyle: state.style,
         colorScheme: state.backgroundColor,
+        backgroundImage: state.backgroundImage,
+        backgroundImageOpacity: state.backgroundImageOpacity,
         tileProvider: state.useVectorMaps ? 'maptiler' : 'osm',
       },
       settings: {
@@ -601,6 +613,8 @@ export const useMPGStore = create<MPGState>((set, get) => ({
       // Style
       style: data.style?.mapStyle || 'midnight',
       backgroundColor: data.style?.colorScheme || '#ffffff',
+      backgroundImage: data.style?.backgroundImage || 'none',
+      backgroundImageOpacity: data.style?.backgroundImageOpacity !== undefined ? data.style.backgroundImageOpacity : 100,
       useVectorMaps: data.style?.tileProvider === 'maptiler',
 
       // Settings

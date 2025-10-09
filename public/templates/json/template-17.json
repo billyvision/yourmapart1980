@@ -1,71 +1,71 @@
 {
-  "id": "template-14",
-  "name": "Where it all began - San Diego",
-  "city": "San Diego",
-  "style": "sanFrancisco",
+  "id": "template-17",
+  "name": "Vintage Paper Style",
+  "city": "520 Chestnut Street, Philadelphia",
+  "style": "terra",
   "hidden": false,
-  "thumbnail": "/template-previews/template-14.jpg",
+  "thumbnail": "/template-previews/template-17.jpg",
   "jsonData": {
     "version": "1.0",
-    "created": "2025-10-09T21:56:41.673Z",
+    "created": "2025-10-09T22:28:52.772Z",
     "application": "YourMapArt",
     "snapshot": {
       "location": {
-        "city": "San Diego",
-        "lat": 32.7174202,
-        "lng": -117.162772,
+        "city": "520 Chestnut Street, Philadelphia",
+        "lat": 39.9488873,
+        "lng": -75.150026,
         "country": "United States",
-        "zoom": 12,
+        "zoom": 11,
         "mapOffsetX": 0,
         "mapOffsetY": 0
       },
       "text": {
         "headline": {
-          "text": "where it all began",
-          "font": "Dancing Script",
+          "text": "",
+          "font": "Montserrat",
           "size": "M",
-          "allCaps": false
+          "allCaps": true
         },
         "city": {
-          "show": false,
-          "font": "opensans",
-          "size": "L"
-        },
-        "coordinates": {
-          "show": false,
-          "font": "roboto",
+          "show": true,
+          "font": "playfair",
           "size": "M"
         },
+        "coordinates": {
+          "show": true,
+          "font": "roboto",
+          "size": "L"
+        },
         "country": {
-          "show": false,
+          "show": true,
           "font": "roboto",
           "size": "L"
         },
         "custom": {
-          "text": "Jane ❤️mark\n\n02-10-2015",
-          "font": "Pinyon Script",
-          "size": "L"
+          "text": "",
+          "font": "Montserrat",
+          "size": "M"
         },
         "typography": {
-          "letterSpacing": 5,
-          "textSpacing": 0.9
+          "letterSpacing": 8,
+          "textSpacing": 1.2
         }
       },
       "style": {
-        "mapStyle": "sanFrancisco",
+        "mapStyle": "terra",
         "frame": {
-          "style": "circle",
+          "style": "square",
           "showBorder": false
         },
         "glow": {
-          "enabled": true,
-          "style": "lavender",
-          "intensity": 1
+          "enabled": false,
+          "style": "sunsetOrange",
+          "intensity": 0.9
         },
         "background": {
-          "color": "#1a1a2e",
+          "color": "#faf5f0",
           "useCustom": false,
-          "textColor": "#ffc000"
+          "textColor": "#5c4033"
         },
         "features": {
           "labels": false,
@@ -75,14 +75,14 @@
           "roads": true
         },
         "pin": {
-          "show": false,
+          "show": true,
           "style": "heart",
           "color": "#FF6B6B",
-          "size": "L"
+          "size": "M"
         },
         "fontColor": {
           "useCustom": true,
-          "color": "#FFFFFF"
+          "color": "#0f2137"
         }
       },
       "export": {

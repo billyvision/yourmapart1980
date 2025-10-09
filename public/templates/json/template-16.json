@@ -1,39 +1,39 @@
 {
-  "id": "template-14",
-  "name": "Where it all began - San Diego",
-  "city": "San Diego",
-  "style": "sanFrancisco",
+  "id": "template-16",
+  "name": "Two Souls 💞 One Map - Paris",
+  "city": "Paris",
+  "style": "crimsonSteel",
   "hidden": false,
-  "thumbnail": "/template-previews/template-14.jpg",
+  "thumbnail": "/template-previews/template-16.jpg",
   "jsonData": {
     "version": "1.0",
-    "created": "2025-10-09T21:56:41.673Z",
+    "created": "2025-10-09T21:45:38.631Z",
     "application": "YourMapArt",
     "snapshot": {
       "location": {
-        "city": "San Diego",
-        "lat": 32.7174202,
-        "lng": -117.162772,
-        "country": "United States",
-        "zoom": 12,
+        "city": "Paris",
+        "lat": 48.8566,
+        "lng": 2.3522,
+        "country": "France",
+        "zoom": 10,
         "mapOffsetX": 0,
         "mapOffsetY": 0
       },
       "text": {
         "headline": {
-          "text": "where it all began",
-          "font": "Dancing Script",
-          "size": "M",
-          "allCaps": false
+          "text": "Two Souls 💞 One Map",
+          "font": "Raleway",
+          "size": "S",
+          "allCaps": true
         },
         "city": {
-          "show": false,
-          "font": "opensans",
+          "show": true,
+          "font": "Roboto",
           "size": "L"
         },
         "coordinates": {
           "show": false,
-          "font": "roboto",
+          "font": "Orbitron",
           "size": "M"
         },
         "country": {
@@ -42,8 +42,8 @@
           "size": "L"
         },
         "custom": {
-          "text": "Jane ❤️mark\n\n02-10-2015",
-          "font": "Pinyon Script",
+          "text": "SARAH and JACOB \n\n⭐ 02-10-2015 ⭐",
+          "font": "Kaushan Script",
           "size": "L"
         },
         "typography": {
@@ -52,26 +52,26 @@
         }
       },
       "style": {
-        "mapStyle": "sanFrancisco",
+        "mapStyle": "crimsonSteel",
         "frame": {
-          "style": "circle",
-          "showBorder": false
+          "style": "heart",
+          "showBorder": true
         },
         "glow": {
           "enabled": true,
-          "style": "lavender",
-          "intensity": 1
+          "style": "rosePink",
+          "intensity": 0.9
         },
         "background": {
-          "color": "#1a1a2e",
+          "color": "#8b1a1a",
           "useCustom": false,
-          "textColor": "#ffc000"
+          "textColor": "#ffffff"
         },
         "features": {
           "labels": false,
           "buildings": false,
           "parks": false,
-          "water": true,
+          "water": false,
           "roads": true
         },
         "pin": {
@@ -81,7 +81,7 @@
           "size": "L"
         },
         "fontColor": {
-          "useCustom": true,
+          "useCustom": false,
           "color": "#FFFFFF"
         }
       },

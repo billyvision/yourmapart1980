@@ -48,6 +48,7 @@ export function MPGKonvaPreview({
   const [mapLoading, setMapLoading] = useState(false);
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [showContent, setShowContent] = useState(false);
+  const [backgroundImageElement, setBackgroundImageElement] = useState<HTMLImageElement | null>(null);
   
   // Always use base canvas dimensions for layout
   const baseDimensions = MPG_BASE_CANVAS;
@@ -95,6 +96,8 @@ export function MPGKonvaPreview({
     pinColor,
     pinSize,
     backgroundColor,
+    backgroundImage,
+    backgroundImageOpacity,
     textColor,
     useCustomBackground,
     useCustomFontColor,
@@ -161,8 +164,32 @@ export function MPGKonvaPreview({
       }
     }
   }, [lat, lng, zoom, style, mapLibreResult.image, mapLibreResult.isLoading, mapLibreResult.error]);
-  
-  
+
+  // Load background image
+  useEffect(() => {
+    if (backgroundImage === 'none') {
+      setBackgroundImageElement(null);
+      return;
+    }
+
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+
+    // Map background image selection to actual file path
+    const imagePath = `/mpg/backgrounds/${backgroundImage}.png`;
+
+    img.onload = () => {
+      setBackgroundImageElement(img);
+    };
+
+    img.onerror = (error) => {
+      console.error('Failed to load background image:', error);
+      setBackgroundImageElement(null);
+    };
+
+    img.src = imagePath;
+  }, [backgroundImage]);
+
   // Load fonts
   useEffect(() => {
     const loadAllFonts = async () => {
@@ -361,7 +388,7 @@ export function MPGKonvaPreview({
         pixelRatio={pixelRatio}
       >
         <Layer>
-          {/* Background */}
+          {/* Background Color */}
           <Rect
             x={0}
             y={0}
@@ -369,7 +396,19 @@ export function MPGKonvaPreview({
             height={baseDimensions.height}
             fill={colorScheme.background}
           />
-          
+
+          {/* Background Image/Texture - rendered on top of background color with opacity */}
+          {backgroundImageElement && backgroundImage !== 'none' && (
+            <KonvaImage
+              image={backgroundImageElement}
+              x={0}
+              y={0}
+              width={baseDimensions.width}
+              height={baseDimensions.height}
+              opacity={backgroundImageOpacity / 100}
+            />
+          )}
+
           {/* Glow effect BEHIND the map - using Konva's native shadow */}
           {glowEffect && frameStyle !== 'square' && (() => {
             const glowConfig = MPG_KONVA_GLOW_EFFECTS[glowStyle];
