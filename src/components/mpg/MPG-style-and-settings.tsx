@@ -446,11 +446,11 @@ export function MPGStyleAndSettings() {
         </div>
         </MPGAccordionSection>
 
-        {/* Background Color Section - Separate Accordion */}
+        {/* Background Options Section - Separate Accordion */}
         <MPGAccordionSection
-          id="background-color"
+          id="background-options"
           letter="E"
-          title="Background Color"
+          title="Background Options"
           description="Customize canvas background"
           icon={Palette}
           colorTheme="orange"
@@ -651,13 +651,18 @@ export function MPGStyleAndSettings() {
               </Label>
               <select
                 value={backgroundImage}
-                onChange={(e) => setBackgroundImage(e.target.value as 'none' | 'vintage-paper' | 'torn-paper' | 'marble')}
+                onChange={(e) => setBackgroundImage(e.target.value as 'none' | 'vintage-paper' | 'linen-dark' | 'marble-white' | 'canvas-cream' | 'chalkboard' | 'concrete-blue' | 'paper-gray' | 'crumpled-white')}
                 className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-sage-green bg-white"
               >
                 <option value="none">None (Solid Color Only)</option>
-                <option value="vintage-paper">Vintage Paper Texture</option>
-                <option value="torn-paper" disabled>Torn Paper (Coming Soon)</option>
-                <option value="marble" disabled>Marble Texture (Coming Soon)</option>
+                <option value="vintage-paper">Vintage Paper</option>
+                <option value="linen-dark">Linen Dark</option>
+                <option value="marble-white">Marble White</option>
+                <option value="canvas-cream">Canvas Cream</option>
+                <option value="chalkboard">Chalkboard</option>
+                <option value="concrete-blue">Concrete Blue</option>
+                <option value="paper-gray">Paper Gray</option>
+                <option value="crumpled-white">Crumpled White</option>
               </select>
 
               {backgroundImage !== 'none' && (
@@ -732,13 +737,14 @@ export function MPGStyleAndSettings() {
                   Use Automatic Text Color
                 </Button>
                 
-                {/* Light Colors (for light backgrounds) */}
+                {/* Dark Colors (for light backgrounds) */}
                 <div className="mb-3">
                   <Label className="text-xs font-medium text-medium-gray mb-2 block">
                     DARK COLORS (FOR LIGHT BACKGROUNDS)
                   </Label>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-4 gap-2">
                     {[
+                      { color: '#000000', name: 'Solid Black' },
                       { color: '#333333', name: 'Dark Gray' },
                       { color: '#555555', name: 'Medium Gray' },
                       { color: '#666666', name: 'Light Gray' },

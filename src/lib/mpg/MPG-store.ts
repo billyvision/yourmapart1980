@@ -69,7 +69,7 @@ interface MPGState {
   glowStyle: 'silverGrey' | 'turquoise' | 'lavender' | 'royalBlue' | 'forestGreen' | 'amber' | 'rosePink' | 'coral' | 'deepViolet' | 'teal' | 'emerald' | 'crimson' | 'sunsetOrange' | 'electricBlue' | 'limeGreen' | 'silverGradient';
   glowIntensity: number;
   backgroundColor: string;
-  backgroundImage: 'none' | 'vintage-paper' | 'torn-paper' | 'marble';
+  backgroundImage: 'none' | 'vintage-paper' | 'linen-dark' | 'marble-white' | 'canvas-cream' | 'chalkboard' | 'concrete-blue' | 'paper-gray' | 'crumpled-white';
   backgroundImageOpacity: number;
   textColor: string;
   useCustomBackground: boolean;
@@ -151,7 +151,7 @@ interface MPGState {
   setGlowStyle: (style: 'silverGrey' | 'turquoise' | 'lavender' | 'royalBlue' | 'forestGreen' | 'amber' | 'rosePink' | 'coral' | 'deepViolet' | 'teal' | 'emerald' | 'crimson' | 'sunsetOrange' | 'electricBlue' | 'limeGreen' | 'silverGradient') => void;
   setGlowIntensity: (intensity: number) => void;
   setBackgroundColor: (color: string) => void;
-  setBackgroundImage: (image: 'none' | 'vintage-paper' | 'torn-paper' | 'marble') => void;
+  setBackgroundImage: (image: 'none' | 'vintage-paper' | 'linen-dark' | 'marble-white' | 'canvas-cream' | 'chalkboard' | 'concrete-blue' | 'paper-gray' | 'crumpled-white') => void;
   setBackgroundImageOpacity: (opacity: number) => void;
   setTextColor: (color: string) => void;
   setUseCustomBackground: (use: boolean) => void;
@@ -260,7 +260,7 @@ export const useMPGStore = create<MPGState>((set, get) => ({
   glowStyle: 'silverGrey' as 'silverGrey' | 'turquoise' | 'lavender' | 'royalBlue' | 'forestGreen' | 'amber' | 'rosePink' | 'coral' | 'deepViolet' | 'teal' | 'emerald' | 'crimson' | 'sunsetOrange' | 'electricBlue' | 'limeGreen' | 'silverGradient',
   glowIntensity: 0.4, // Default to 40% intensity
   backgroundColor: '#ffffff',
-  backgroundImage: 'none' as 'none' | 'vintage-paper' | 'torn-paper' | 'marble',
+  backgroundImage: 'none' as 'none' | 'vintage-paper' | 'linen-dark' | 'marble-white' | 'canvas-cream' | 'chalkboard' | 'concrete-blue' | 'paper-gray' | 'crumpled-white',
   backgroundImageOpacity: 100, // Default to full opacity
   textColor: '#333333',
   useCustomBackground: false,
@@ -477,7 +477,7 @@ export const useMPGStore = create<MPGState>((set, get) => ({
     pinColor: '#FF6B6B',
     pinSize: 'M' as 'S' | 'M' | 'L',
     backgroundColor: '#ffffff',
-    backgroundImage: 'none' as 'none' | 'vintage-paper' | 'torn-paper' | 'marble',
+    backgroundImage: 'none' as 'none' | 'vintage-paper' | 'linen-dark' | 'marble-white' | 'canvas-cream' | 'chalkboard' | 'concrete-blue' | 'paper-gray' | 'crumpled-white',
     backgroundImageOpacity: 100,
     textColor: '#333333',
     useCustomBackground: false,

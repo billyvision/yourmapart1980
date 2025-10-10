@@ -18,10 +18,11 @@ interface MPGBasicEditorProps {
 export function MPGBasicEditor({ templateId }: MPGBasicEditorProps) {
   const { toast } = useToast();
   const [currentPage, setCurrentPage] = useState<1 | 2>(1);
+  const [templateLoading, setTemplateLoading] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>;
   const progressIndicatorRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  
+
   // Get searchParams to check for templateId from URL
   const searchParams = useSearchParams();
   const savedTemplateId = searchParams.get('templateId');
@@ -34,6 +35,14 @@ export function MPGBasicEditor({ templateId }: MPGBasicEditorProps) {
 
   // Load template if provided (from static templates or saved templates)
   useEffect(() => {
+    // Only set loading if we have a template to load
+    if (!savedTemplateId && !templateId) {
+      setTemplateLoading(false);
+      return;
+    }
+
+    setTemplateLoading(true);
+
     // Priority 1: Load from saved template ID
     if (savedTemplateId) {
       loadTemplate(parseInt(savedTemplateId))
@@ -42,6 +51,7 @@ export function MPGBasicEditor({ templateId }: MPGBasicEditorProps) {
             title: "Template Loaded",
             description: "Your saved template has been loaded.",
           });
+          setTemplateLoading(false);
         })
         .catch(() => {
           toast({
@@ -49,6 +59,7 @@ export function MPGBasicEditor({ templateId }: MPGBasicEditorProps) {
             description: "Could not load the saved template.",
             variant: "destructive",
           });
+          setTemplateLoading(false);
         });
     }
     // Priority 2: Load from static template ID
@@ -69,6 +80,9 @@ export function MPGBasicEditor({ templateId }: MPGBasicEditorProps) {
             });
           }
         }
+        setTemplateLoading(false);
+      }).catch(() => {
+        setTemplateLoading(false);
       });
     }
   }, [templateId, savedTemplateId, toast, loadTemplate]);
@@ -240,7 +254,14 @@ export function MPGBasicEditor({ templateId }: MPGBasicEditorProps) {
                 </div>
                 
                 <div className="bg-gray-50 rounded-xl p-4 flex justify-center items-center">
-                  <MPGKonvaPreview containerRef={previewRef} showWatermark={true} />
+                  {templateLoading ? (
+                    <div className="flex flex-col items-center justify-center py-12">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-4"></div>
+                      <p className="text-sm text-gray-600">Loading template...</p>
+                    </div>
+                  ) : (
+                    <MPGKonvaPreview containerRef={previewRef} showWatermark={true} />
+                  )}
                 </div>
               </div>
             </div>

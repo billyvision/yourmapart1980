@@ -65,7 +65,9 @@
         "background": {
           "color": "#faf5f0",
           "useCustom": false,
-          "textColor": "#5c4033"
+          "textColor": "#5c4033",
+          "image": "vintage-paper",
+          "imageOpacity": 60
         },
         "features": {
           "labels": false,

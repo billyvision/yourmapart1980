@@ -64,6 +64,8 @@ export interface MapPosterSnapshot {
         color: string;
         useCustom: boolean;
         textColor: string;
+        image?: 'none' | 'vintage-paper' | 'linen-dark' | 'marble-white' | 'canvas-cream' | 'chalkboard' | 'concrete-blue' | 'paper-gray' | 'crumpled-white';  // Optional for backward compatibility
+        imageOpacity?: number;  // Optional for backward compatibility
       };
       features: {
         labels: boolean;
@@ -157,7 +159,9 @@ export function generateMapSnapshot(): MapPosterSnapshot {
         background: {
           color: state.backgroundColor,
           useCustom: state.useCustomBackground,
-          textColor: state.textColor
+          textColor: state.textColor,
+          image: state.backgroundImage,
+          imageOpacity: state.backgroundImageOpacity
         },
         features: {
           labels: state.showMapLabels,
@@ -271,7 +275,20 @@ export function loadMapSnapshot(snapshot: MapPosterSnapshot): boolean {
     store.setBackgroundColor(data.style.background.color);
     store.setUseCustomBackground(data.style.background.useCustom);
     store.setTextColor(data.style.background.textColor);
-    
+
+    // Load background image settings (with backward compatibility)
+    if (data.style.background.image !== undefined) {
+      store.setBackgroundImage(data.style.background.image);
+    } else {
+      store.setBackgroundImage('none');
+    }
+
+    if (data.style.background.imageOpacity !== undefined) {
+      store.setBackgroundImageOpacity(data.style.background.imageOpacity);
+    } else {
+      store.setBackgroundImageOpacity(100);
+    }
+
     store.setShowMapLabels(data.style.features.labels);
     store.setShowMapBuildings(data.style.features.buildings);
     store.setShowMapParks(data.style.features.parks);
