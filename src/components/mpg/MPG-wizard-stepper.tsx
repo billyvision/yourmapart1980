@@ -26,8 +26,8 @@ const steps: Step[] = [
   },
   {
     id: 4,
-    title: "Export & Download",
-    description: "Download your map poster"
+    title: "Order",
+    description: "Order your map poster"
   }
 ];
 

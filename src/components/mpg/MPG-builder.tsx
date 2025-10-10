@@ -92,7 +92,7 @@ export function MPGBuilder({ templateId }: MPGBuilderProps) {
     },
     {
       id: 4,
-      title: 'Export & Download',
+      title: 'Order',
       icon: Download,
       component: MPGKonvaExportOptions
     }

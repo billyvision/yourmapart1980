@@ -191,7 +191,7 @@ export function MPGBasicEditor({ templateId }: MPGBasicEditorProps) {
                 <span className={`mt-2 text-xs font-semibold text-center whitespace-nowrap transition-all duration-300 ${
                   currentPage >= 2 ? 'text-black scale-105' : 'text-gray-400'
                 }`}>
-                  Download
+                  Order
                 </span>
               </div>
             </div>

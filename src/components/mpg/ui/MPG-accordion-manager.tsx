@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useRef } from 'react';
 import { Accordion } from '@/components/ui/accordion';
 
 interface AccordionManagerContextType {
@@ -25,6 +25,28 @@ interface MPGAccordionManagerProps {
 
 export function MPGAccordionManager({ children, className, defaultOpen }: MPGAccordionManagerProps) {
   const [openItem, setOpenItem] = useState<string | undefined>(defaultOpen?.[0]);
+  const scrollPositionRef = useRef<number>(0);
+  const isChangingRef = useRef<boolean>(false);
+
+  // Store scroll position before accordion change
+  const handleValueChange = (value: string | undefined) => {
+    // Store current scroll position
+    scrollPositionRef.current = window.scrollY;
+    isChangingRef.current = true;
+
+    setOpenItem(value);
+
+    // Restore scroll position after a brief delay to let animation start
+    requestAnimationFrame(() => {
+      if (isChangingRef.current) {
+        window.scrollTo({
+          top: scrollPositionRef.current,
+          behavior: 'instant'
+        });
+        isChangingRef.current = false;
+      }
+    });
+  };
 
   return (
     <AccordionManagerContext.Provider value={{ openItem, setOpenItem }}>
@@ -32,7 +54,7 @@ export function MPGAccordionManager({ children, className, defaultOpen }: MPGAcc
         type="single"
         collapsible
         value={openItem}
-        onValueChange={setOpenItem}
+        onValueChange={handleValueChange}
         className={className}
       >
         {children}
