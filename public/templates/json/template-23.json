@@ -1,0 +1,97 @@
+{
+  "id": "template-23",
+  "name": "Sunshine Home",
+  "city": "520 Chestnut Street, Philadelphia",
+  "style": "sunshine",
+  "hidden": false,
+  "thumbnail": "/template-previews/template-23.jpg",
+  "jsonData": {
+    "version": "1.0",
+    "created": "2025-10-10T19:25:53.100Z",
+    "application": "YourMapArt",
+    "snapshot": {
+      "location": {
+        "city": "520 Chestnut Street, Philadelphia",
+        "lat": 39.9488873,
+        "lng": -75.150026,
+        "country": "United States",
+        "zoom": 11,
+        "mapOffsetX": 0,
+        "mapOffsetY": 0
+      },
+      "text": {
+        "headline": {
+          "text": "",
+          "font": "Montserrat",
+          "size": "M",
+          "allCaps": true
+        },
+        "city": {
+          "show": true,
+          "font": "playfair",
+          "size": "M"
+        },
+        "coordinates": {
+          "show": true,
+          "font": "roboto",
+          "size": "L"
+        },
+        "country": {
+          "show": true,
+          "font": "roboto",
+          "size": "L"
+        },
+        "custom": {
+          "text": "",
+          "font": "Montserrat",
+          "size": "M"
+        },
+        "typography": {
+          "letterSpacing": 8,
+          "textSpacing": 1.2
+        }
+      },
+      "style": {
+        "mapStyle": "sunshine",
+        "frame": {
+          "style": "house",
+          "showBorder": true
+        },
+        "glow": {
+          "enabled": false,
+          "style": "crimson",
+          "intensity": 0.2
+        },
+        "background": {
+          "color": "#FFFACD",
+          "useCustom": true,
+          "textColor": "#333333",
+          "image": "none",
+          "imageOpacity": 30
+        },
+        "features": {
+          "labels": false,
+          "buildings": false,
+          "parks": false,
+          "water": true,
+          "roads": true
+        },
+        "pin": {
+          "show": true,
+          "style": "heart",
+          "color": "#FF6B6B",
+          "size": "M"
+        },
+        "fontColor": {
+          "useCustom": true,
+          "color": "#000000"
+        }
+      },
+      "export": {
+        "format": "png",
+        "size": "A4",
+        "quality": 0.95
+      }
+    }
+  }
+}
