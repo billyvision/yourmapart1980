@@ -9541,8 +9541,504 @@ export const SNAZZY_MAP_STYLES: Record<string, SnazzyMapStyle> = {
         stylers: [{ color: '#ffc000' }]  // Golden yellow water
       }
     ]
+  },
+
+  butter: {
+    name: 'Butter',
+    description: 'Warm creamy palette with soft yellow tones and white roads',
+    tags: ['light', 'warm', 'minimal', 'soft', 'yellow', 'cream'],
+    background: '#fffcf0',  // Very light warm cream
+    textColor: '#4a4a3a',   // Dark olive-brown for contrast
+    defaultFeatures: {
+      showMapLabels: true,    // ON - show all street names and labels
+      showBuildings: true,    // ON
+      showParks: true,        // ON - show parks
+      showWater: true,        // ON - nice contrast with blue
+      showRoads: true         // ON - white roads are key feature
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#fff8af'
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            gamma: 0.01
+          },
+          {
+            lightness: 20
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.text.stroke',
+        stylers: [
+          {
+            saturation: -31
+          },
+          {
+            lightness: -33
+          },
+          {
+            weight: 2
+          },
+          {
+            gamma: 0.8
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.icon',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'labels.text',
+        stylers: [
+          {
+            visibility: 'simplified'
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'geometry',
+        stylers: [
+          {
+            lightness: 30
+          },
+          {
+            saturation: 30
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'labels.text',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'geometry',
+        stylers: [
+          {
+            saturation: 20
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'labels.text',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [
+          {
+            lightness: 20
+          },
+          {
+            saturation: -20
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry.fill',
+        stylers: [
+          {
+            color: '#efebc1'
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'labels.text',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [
+          {
+            lightness: 10
+          },
+          {
+            saturation: -30
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.fill',
+        stylers: [
+          {
+            color: '#ffffff'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            saturation: 25
+          },
+          {
+            lightness: 25
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'labels.text',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'geometry.fill',
+        stylers: [
+          {
+            color: '#d2d1ce'
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'labels.text',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'all',
+        stylers: [
+          {
+            lightness: -20
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry.fill',
+        stylers: [
+          {
+            color: '#87ceeb'
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels.text',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      }
+    ]
+  },
+
+  sunshine: {
+    name: 'Sunshine',
+    description: 'Vibrant bright yellow with blue water and black road outlines',
+    tags: ['yellow', 'bright', 'bold', 'vibrant', 'blue', 'energetic'],
+    background: '#ffe631',  // Vibrant yellow canvas background
+    textColor: '#000000',   // Black text for strong contrast on yellow
+    defaultFeatures: {
+      showMapLabels: false,   // OFF
+      showBuildings: false,   // OFF
+      showParks: false,       // OFF
+      showWater: true,        // ON - blue water is key feature
+      showRoads: true         // ON - black road outlines
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#ffe52c'
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            gamma: 0.01
+          },
+          {
+            lightness: 20
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.text.stroke',
+        stylers: [
+          {
+            saturation: -31
+          },
+          {
+            lightness: -33
+          },
+          {
+            weight: 2
+          },
+          {
+            gamma: 0.8
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.icon',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'geometry.fill',
+        stylers: [
+          {
+            hue: '#ffe000'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            weight: 0.01
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'labels.text',
+        stylers: [
+          {
+            weight: 0.01
+          },
+          {
+            visibility: 'simplified'
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'simplified'
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'labels.text',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'labels.icon',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'geometry',
+        stylers: [
+          {
+            saturation: 20
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [
+          {
+            lightness: 20
+          },
+          {
+            saturation: -20
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [
+          {
+            lightness: 10
+          },
+          {
+            saturation: -30
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.fill',
+        stylers: [
+          {
+            visibility: 'off'
+          },
+          {
+            weight: 0.01
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            color: '#000000'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'simplified'
+          },
+          {
+            weight: 0.01
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'labels.icon',
+        stylers: [
+          {
+            visibility: 'simplified'
+          },
+          {
+            hue: '#ffc900'
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'all',
+        stylers: [
+          {
+            lightness: -20
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#0096d7'
+          },
+          {
+            visibility: 'simplified'
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels.text',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      }
+    ]
   }
-  
+
   // More styles can be added here
 };
 
