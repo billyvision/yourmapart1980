@@ -1,0 +1,97 @@
+{
+  "id": "template-19",
+  "name": "From here to always - Miami",
+  "city": "Miami",
+  "style": "butter",
+  "hidden": false,
+  "thumbnail": "/template-previews/template-19.jpg",
+  "jsonData": {
+    "version": "1.0",
+    "created": "2025-10-10T04:10:45.877Z",
+    "application": "YourMapArt",
+    "snapshot": {
+      "location": {
+        "city": "Miami",
+        "lat": 25.7741728,
+        "lng": -80.19362,
+        "country": "United States",
+        "zoom": 12,
+        "mapOffsetX": 0,
+        "mapOffsetY": 0
+      },
+      "text": {
+        "headline": {
+          "text": "from here to always",
+          "font": "Kalam",
+          "size": "M",
+          "allCaps": true
+        },
+        "city": {
+          "show": true,
+          "font": "playfair",
+          "size": "M"
+        },
+        "coordinates": {
+          "show": true,
+          "font": "roboto",
+          "size": "M"
+        },
+        "country": {
+          "show": true,
+          "font": "roboto",
+          "size": "M"
+        },
+        "custom": {
+          "text": "",
+          "font": "Montserrat",
+          "size": "M"
+        },
+        "typography": {
+          "letterSpacing": 8,
+          "textSpacing": 1.2
+        }
+      },
+      "style": {
+        "mapStyle": "butter",
+        "frame": {
+          "style": "square",
+          "showBorder": false
+        },
+        "glow": {
+          "enabled": false,
+          "style": "amber",
+          "intensity": 0.1
+        },
+        "background": {
+          "color": "#fffcf0",
+          "useCustom": false,
+          "textColor": "#4a4a3a",
+          "image": "none",
+          "imageOpacity": 100
+        },
+        "features": {
+          "labels": true,
+          "buildings": true,
+          "parks": true,
+          "water": true,
+          "roads": false
+        },
+        "pin": {
+          "show": false,
+          "style": "basic",
+          "color": "#FF6B6B",
+          "size": "M"
+        },
+        "fontColor": {
+          "useCustom": true,
+          "color": "#000000"
+        }
+      },
+      "export": {
+        "format": "png",
+        "size": "A4",
+        "quality": 0.95
+      }
+    }
+  }
+}
