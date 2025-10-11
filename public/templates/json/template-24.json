@@ -1,0 +1,97 @@
+{
+  "id": "template-24",
+  "name": "Black Magic",
+  "city": "Singapore",
+  "style": "noir",
+  "hidden": false,
+  "thumbnail": "/template-previews/template-24.jpg",
+  "jsonData": {
+    "version": "1.0",
+    "created": "2025-10-11T02:45:50.243Z",
+    "application": "YourMapArt",
+    "snapshot": {
+      "location": {
+        "city": "Singapore",
+        "lat": 1.3521,
+        "lng": 103.8198,
+        "country": "Singapore",
+        "zoom": 13,
+        "mapOffsetX": 0,
+        "mapOffsetY": 0
+      },
+      "text": {
+        "headline": {
+          "text": "",
+          "font": "Montserrat",
+          "size": "M",
+          "allCaps": true
+        },
+        "city": {
+          "show": true,
+          "font": "playfair",
+          "size": "M"
+        },
+        "coordinates": {
+          "show": true,
+          "font": "roboto",
+          "size": "M"
+        },
+        "country": {
+          "show": true,
+          "font": "roboto",
+          "size": "M"
+        },
+        "custom": {
+          "text": "",
+          "font": "Montserrat",
+          "size": "M"
+        },
+        "typography": {
+          "letterSpacing": 8,
+          "textSpacing": 1.2
+        }
+      },
+      "style": {
+        "mapStyle": "noir",
+        "frame": {
+          "style": "square",
+          "showBorder": false
+        },
+        "glow": {
+          "enabled": false,
+          "style": "silverGrey",
+          "intensity": 0.4
+        },
+        "background": {
+          "color": "#000000",
+          "useCustom": false,
+          "textColor": "#ffffff",
+          "image": "none",
+          "imageOpacity": 100
+        },
+        "features": {
+          "labels": false,
+          "buildings": false,
+          "parks": false,
+          "water": false,
+          "roads": true
+        },
+        "pin": {
+          "show": false,
+          "style": "heart",
+          "color": "#FF6B6B",
+          "size": "M"
+        },
+        "fontColor": {
+          "useCustom": false,
+          "color": "#333333"
+        }
+      },
+      "export": {
+        "format": "png",
+        "size": "A4",
+        "quality": 0.95
+      }
+    }
+  }
+}

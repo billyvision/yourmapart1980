@@ -49,7 +49,7 @@ export function MPGProductDetailsAccordion({ productType, productName }: Product
           specs: [
             { label: 'Material', value: 'Cotton-polyester blend canvas' },
             { label: 'Weight', value: '300-350 GSM' },
-            { label: 'Thickness Options', value: 'Slim (2cm) or Thick (4cm)' },
+            { label: 'Thickness Options', value: 'Slim (2cm / 0.75") or Thick (4cm / 1.5")' },
             { label: 'Frame', value: 'FSC-certified wood stretcher bars' },
             { label: 'Mounting Kit', value: 'Included (varies by region)' },
             { label: 'Certification', value: 'FSC-certified sustainable wood' },

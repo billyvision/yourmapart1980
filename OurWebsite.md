@@ -807,6 +807,75 @@ pnpm run db:reset     # Reset database (drop all)
 
 ---
 
+## Database Management
+
+### Browser Console Method (Preferred)
+
+When database updates are needed (e.g., updating product details, variations, or other records), the **browser console method** is the preferred approach as it leverages the existing authenticated admin session.
+
+#### How It Works:
+1. Log in to the superadmin panel in Chrome/Edge browser
+2. Open Developer Tools (F12)
+3. Navigate to the Console tab
+4. Paste and run JavaScript code that makes API calls to update the database
+5. Verify success messages in the console
+6. Refresh the page to see changes
+
+#### Benefits:
+- ✅ No environment variable configuration needed
+- ✅ Uses existing authenticated session
+- ✅ Works directly from the browser
+- ✅ Instant feedback via console logs
+- ✅ Easy to verify changes immediately
+
+#### Example Use Cases:
+- Updating product features or descriptions
+- Modifying product variation labels
+- Changing product pricing or sizes
+- Bulk updates to multiple records
+- One-time data migrations
+
+#### Sample Script Structure:
+```javascript
+(async function updateDatabase() {
+  try {
+    // Fetch current data
+    const response = await fetch('/api/admin/products');
+    const data = await response.json();
+
+    // Make updates via API
+    const updateResponse = await fetch('/api/admin/products/[id]', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ /* updates */ })
+    });
+
+    if (updateResponse.ok) {
+      console.log('✅ Update successful!');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+})();
+```
+
+### Alternative Methods
+
+#### Method 1: Direct SQL
+For complex updates, run SQL directly in the database:
+```sql
+UPDATE mpg_products SET features = '...' WHERE product_type = 'canvas-wrap';
+```
+
+#### Method 2: Migration Scripts
+For repeatable updates, create migration scripts in `/scripts/`:
+```bash
+npx tsx scripts/your-migration-script.ts
+```
+*Note: Requires proper `.env` configuration with database credentials.*
+
+---
+
 ## Security Considerations
 
 ### Authentication

@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
       image: '/mpg/product-types/canvas.png',
       isActive: true,
       displayOrder: 3,
-      features: ['FSC-certified wood stretcher bars', 'Cotton-polyester blend (300-350gsm)', 'Slim (2cm) or Thick (4cm) options', 'Hanging kit included'],
+      features: ['FSC-certified wood stretcher bars', 'Cotton-polyester blend (300-350gsm)', 'Slim (2cm / 0.75") or Thick (4cm / 1.5") options', 'Hanging kit included'],
     }).returning();
 
     await db.insert(mpgProductSizes).values([
@@ -81,8 +81,8 @@ export async function POST(req: NextRequest) {
     ]);
 
     await db.insert(mpgProductVariations).values([
-      { productId: canvasProduct.id, variationType: 'canvasThickness', variationValue: 'slim', variationLabel: 'Slim (2cm)', variationDescription: 'Modern, lightweight profile', priceModifier: -10, displayOrder: 1 },
-      { productId: canvasProduct.id, variationType: 'canvasThickness', variationValue: 'thick', variationLabel: 'Thick (4cm)', variationDescription: 'Gallery depth, bold presence', priceModifier: 0, displayOrder: 2 },
+      { productId: canvasProduct.id, variationType: 'canvasThickness', variationValue: 'slim', variationLabel: 'Slim (2cm / 0.75")', variationDescription: 'Modern, lightweight profile', priceModifier: -10, displayOrder: 1 },
+      { productId: canvasProduct.id, variationType: 'canvasThickness', variationValue: 'thick', variationLabel: 'Thick (4cm / 1.5")', variationDescription: 'Gallery depth, bold presence', priceModifier: 0, displayOrder: 2 },
     ]);
 
     // 4. Framed Print
