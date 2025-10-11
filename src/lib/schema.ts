@@ -375,9 +375,14 @@ export const orderItems = pgTable("order_items", {
 // Downloads - Digital delivery
 export const downloads = pgTable("downloads", {
   id: serial("id").primaryKey(),
+  orderId: integer("order_id")
+    .notNull()
+    .references(() => orders.id, { onDelete: "cascade" }),
   orderItemId: integer("order_item_id")
     .notNull()
     .references(() => orderItems.id, { onDelete: "cascade" }),
+  status: text("status").notNull().default("pending"), // pending, processing, ready, failed
+  format: text("format").notNull(), // pdf, png, jpg
   s3Key: text("s3_key").notNull(),
   fileName: text("file_name").notNull(),
   mimeType: text("mime_type").notNull(),
@@ -386,7 +391,9 @@ export const downloads = pgTable("downloads", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 }, (table) => ({
+  orderIdIdx: index("downloads_order_id_idx").on(table.orderId),
   orderItemIdIdx: index("downloads_order_item_id_idx").on(table.orderItemId),
+  statusIdx: index("downloads_status_idx").on(table.status),
 }));
 
 // Webhook Events - Idempotency

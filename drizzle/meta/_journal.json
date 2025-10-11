@@ -36,6 +36,13 @@
       "when": 1760195737216,
       "tag": "0004_slippery_butterfly",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1760198555432,
+      "tag": "0005_mute_catseye",
+      "breakpoints": true
     }
   ]
 }

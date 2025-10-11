@@ -5,6 +5,7 @@ import { db } from '@/lib/db';
 import { orders, webhookEvents, user } from '@/lib/schema';
 import { eq } from 'drizzle-orm';
 import { queryWithRetry } from '@/lib/db-retry';
+import { orderNeedsDigitalRendering } from '@/lib/digital-rendering';
 
 // IMPORTANT: Must run in Node.js runtime for webhook signature verification
 export const runtime = 'nodejs';
@@ -108,6 +109,22 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
   }
 
   console.log(`Order ${orderNumber} marked as paid`);
+
+  // Check if order needs digital rendering (client-side will handle actual rendering)
+  try {
+    const needsRendering = await orderNeedsDigitalRendering(order.id);
+
+    if (needsRendering) {
+      console.log(`Order ${orderNumber} ready for client-side rendering`);
+      // Client will trigger rendering via checkout success page
+      // Files will be uploaded to S3 via /api/orders/[id]/render-upload
+    } else {
+      console.log(`Order ${orderNumber} does not require digital rendering`);
+    }
+  } catch (renderError) {
+    // Log but don't fail the webhook
+    console.error(`Error checking rendering requirements for order ${orderNumber}:`, renderError);
+  }
 }
 
 async function handlePaymentIntentFailed(paymentIntent: Stripe.PaymentIntent) {
