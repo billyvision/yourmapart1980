@@ -412,7 +412,7 @@ Proposed steps for digital items on `checkout.session.completed`:
 - Email the purchaser with download links that call our API to mint pre-signed URLs (e.g., valid 24–48h). In account history, regenerate links on demand.
 - Admin/Superadmin can fetch files via pre-signed URLs from their dashboard.
 
-Environment variables (to be added later):
+Environment variables (add to `.env` file):
 
 - `AWS_REGION`
 - `AWS_S3_BUCKET`
@@ -488,13 +488,26 @@ RBAC alignment:
 
 ---
 
-## Environment Variables (to add later)
+## Environment Variables
 
-- `STRIPE_SECRET_KEY`
-- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
-- `STRIPE_WEBHOOK_SECRET` (one per environment)
-- `NEXT_PUBLIC_APP_URL` (already used by auth client; use for redirect URLs)
-- `AWS_*` (S3 credentials if not using IAM role)
+**All variables are configured in `.env` file** (not `.env.local`):
+
+**Stripe (Phase 1 - Week 2):**
+- `STRIPE_SECRET_KEY` - Get from https://dashboard.stripe.com/test/apikeys
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Get from https://dashboard.stripe.com/test/apikeys
+- `STRIPE_WEBHOOK_SECRET` - Generated after creating webhook endpoint
+
+**AWS S3 (Phase 2 - Week 3):**
+- `AWS_REGION` - e.g., `us-east-1`
+- `AWS_S3_BUCKET` - Your S3 bucket name
+- `AWS_ACCESS_KEY_ID` - IAM user access key
+- `AWS_SECRET_ACCESS_KEY` - IAM user secret key
+
+**Brevo Email (Phase 6 - Week 7):**
+- `BREVO_API_KEY` - Get from https://app.brevo.com/settings/keys/api
+
+**Already Configured:**
+- `NEXT_PUBLIC_APP_URL` - Already in `.env`, used for redirect URLs
 
 Configuration notes:
 
