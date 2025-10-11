@@ -47,7 +47,8 @@
       "Bash(npx tsc:*)",
       "Bash(rm:*)",
       "Bash(curl:*)",
-      "Bash(awk:*)"
+      "Bash(awk:*)",
+      "Bash(pnpm run db:generate:*)"
     ],
     "additionalDirectories": [
       "C:\\c\\Projects\\nextjs-better-auth-postgresql-starter-kit"

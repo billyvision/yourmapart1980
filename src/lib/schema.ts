@@ -13,6 +13,13 @@ export const user = pgTable("user", {
   role: text("role").default("user"), // user, admin, superadmin
   createdAt: timestamp("createdAt").notNull().defaultNow(),
   updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+  // Stripe Integration Extensions
+  isBlocked: boolean("is_blocked").default(false).notNull(),
+  totalSpent: integer("total_spent").default(0).notNull(), // lifetime value in cents
+  orderCount: integer("order_count").default(0).notNull(),
+  lastOrderAt: timestamp("last_order_at"),
+  blockedAt: timestamp("blocked_at"),
+  blockedReason: text("blocked_reason"),
 });
 
 export const session = pgTable("session", {
@@ -254,4 +261,167 @@ export const mpgProductVariations = pgTable("mpg_product_variations", {
   productIdIdx: index("mpg_product_variations_product_id_idx").on(table.productId),
   variationTypeIdx: index("mpg_product_variations_variation_type_idx").on(table.variationType),
   isActiveIdx: index("mpg_product_variations_is_active_idx").on(table.isActive),
+}));
+
+// ============================================
+// Stripe Integration Tables
+// ============================================
+
+// Cart item type for type safety
+export type CartItem = {
+  productId: number;
+  sizeId?: number;
+  variations?: Record<string, string>;
+  quantity: number;
+  templateId?: number;
+  templateData?: MPGTemplateData;
+};
+
+// Carts - Server-side persistent carts
+export const carts = pgTable("carts", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id").references(() => user.id, { onDelete: "cascade" }),
+  sessionToken: text("session_token").unique(),
+  email: text("email"),
+  items: json("items").$type<CartItem[]>().notNull(),
+  status: text("status").notNull().default("active"), // active, checked_out, abandoned
+  lastActivityAt: timestamp("last_activity_at").defaultNow().notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => ({
+  userIdIdx: index("carts_user_id_idx").on(table.userId),
+  sessionTokenIdx: index("carts_session_token_idx").on(table.sessionToken),
+  expiresAtIdx: index("carts_expires_at_idx").on(table.expiresAt),
+  lastActivityAtIdx: index("carts_last_activity_at_idx").on(table.lastActivityAt),
+}));
+
+// Shipping address type for type safety
+export type ShippingAddress = {
+  name: string;
+  line1: string;
+  line2?: string;
+  city: string;
+  state: string;
+  postal_code: string;
+  country: string;
+  phone?: string;
+};
+
+// Orders
+export const orders = pgTable("orders", {
+  id: serial("id").primaryKey(),
+  orderNumber: text("order_number").notNull().unique(),
+  userId: text("user_id").references(() => user.id),
+  email: text("email").notNull(),
+  status: text("status").notNull().default("pending"), // pending, paid, processing, fulfilled, partially_refunded, refunded, canceled
+  currency: text("currency").notNull().default("usd"),
+  amountSubtotal: integer("amount_subtotal").notNull(), // cents
+  amountDiscount: integer("amount_discount").default(0).notNull(), // cents
+  amountTax: integer("amount_tax").default(0).notNull(), // cents
+  amountShipping: integer("amount_shipping").default(0).notNull(), // cents
+  amountTotal: integer("amount_total").notNull(), // cents
+  taxCollected: boolean("tax_collected").default(false).notNull(),
+  fulfillmentType: text("fulfillment_type").notNull(), // digital, physical, mixed
+  shippingAddress: json("shipping_address").$type<ShippingAddress>(),
+  trackingNumber: text("tracking_number"),
+  trackingCarrier: text("tracking_carrier"), // USPS, UPS, FedEx, Gelato
+  trackingUrl: text("tracking_url"),
+  stripeCustomerId: text("stripe_customer_id"),
+  stripePaymentIntentId: text("stripe_payment_intent_id"),
+  stripeCheckoutSessionId: text("stripe_checkout_session_id"),
+  stripePromoCode: text("stripe_promo_code"),
+  clientReferenceId: text("client_reference_id"),
+  notes: text("notes"),
+  metadata: json("metadata").$type<Record<string, unknown>>(),
+  canceledAt: timestamp("canceled_at"),
+  fulfilledAt: timestamp("fulfilled_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => ({
+  orderNumberIdx: index("orders_order_number_idx").on(table.orderNumber),
+  userIdIdx: index("orders_user_id_idx").on(table.userId),
+  emailIdx: index("orders_email_idx").on(table.email),
+  statusIdx: index("orders_status_idx").on(table.status),
+  createdAtIdx: index("orders_created_at_idx").on(table.createdAt),
+  stripePaymentIntentIdIdx: index("orders_stripe_payment_intent_id_idx").on(table.stripePaymentIntentId),
+}));
+
+// Order Items
+export const orderItems = pgTable("order_items", {
+  id: serial("id").primaryKey(),
+  orderId: integer("order_id")
+    .notNull()
+    .references(() => orders.id, { onDelete: "cascade" }),
+  productId: integer("product_id")
+    .notNull()
+    .references(() => mpgProducts.id),
+  productType: text("product_type").notNull(),
+  sizeId: integer("size_id").references(() => mpgProductSizes.id),
+  variationSelections: json("variation_selections").$type<Record<string, string>>(),
+  quantity: integer("quantity").notNull(),
+  unitAmount: integer("unit_amount").notNull(), // cents
+  currency: text("currency").notNull().default("usd"),
+  titleSnapshot: text("title_snapshot"),
+  descriptionSnapshot: text("description_snapshot"),
+  templateRef: json("template_ref").$type<{ templateId?: number; templateData?: MPGTemplateData }>(),
+  metadata: json("metadata").$type<Record<string, unknown>>(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => ({
+  orderIdIdx: index("order_items_order_id_idx").on(table.orderId),
+  productIdIdx: index("order_items_product_id_idx").on(table.productId),
+}));
+
+// Downloads - Digital delivery
+export const downloads = pgTable("downloads", {
+  id: serial("id").primaryKey(),
+  orderItemId: integer("order_item_id")
+    .notNull()
+    .references(() => orderItems.id, { onDelete: "cascade" }),
+  s3Key: text("s3_key").notNull(),
+  fileName: text("file_name").notNull(),
+  mimeType: text("mime_type").notNull(),
+  fileSize: integer("file_size"), // bytes
+  expiresAt: timestamp("expires_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => ({
+  orderItemIdIdx: index("downloads_order_item_id_idx").on(table.orderItemId),
+}));
+
+// Webhook Events - Idempotency
+export const webhookEvents = pgTable("webhook_events", {
+  id: serial("id").primaryKey(),
+  stripeEventId: text("stripe_event_id").notNull().unique(),
+  type: text("type").notNull(),
+  payload: json("payload").$type<Record<string, unknown>>().notNull(),
+  processedAt: timestamp("processed_at").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => ({
+  stripeEventIdIdx: index("webhook_events_stripe_event_id_idx").on(table.stripeEventId),
+  typeIdx: index("webhook_events_type_idx").on(table.type),
+  createdAtIdx: index("webhook_events_created_at_idx").on(table.createdAt),
+}));
+
+// Promo Codes - Admin-managed
+export const promoCodes = pgTable("promo_codes", {
+  id: serial("id").primaryKey(),
+  code: text("code").notNull().unique(),
+  stripePromotionCodeId: text("stripe_promotion_code_id"),
+  stripeCouponId: text("stripe_coupon_id"),
+  discountType: text("discount_type").notNull(), // percentage, fixed_amount
+  discountValue: integer("discount_value").notNull(), // percentage (0-100) or amount in cents
+  currency: text("currency"), // required if fixed_amount
+  description: text("description"),
+  maxRedemptions: integer("max_redemptions"),
+  redemptionCount: integer("redemption_count").default(0).notNull(),
+  expiresAt: timestamp("expires_at"),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdBy: text("created_by").references(() => user.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => ({
+  codeIdx: index("promo_codes_code_idx").on(table.code),
+  isActiveIdx: index("promo_codes_is_active_idx").on(table.isActive),
+  expiresAtIdx: index("promo_codes_expires_at_idx").on(table.expiresAt),
 }));
