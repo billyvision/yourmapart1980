@@ -114,7 +114,7 @@ export function MPGStyleAndSettings() {
   // Handle style selection with default features and colors
   const handleStyleSelect = (styleId: string) => {
     setStyle(styleId);
-    
+
     // Apply default features for the style
     const defaultFeatures = getStyleDefaultFeatures(styleId);
     if (defaultFeatures) {
@@ -134,13 +134,30 @@ export function MPGStyleAndSettings() {
         setShowMapRoads(defaultFeatures.showRoads);
       }
     }
-    
+
     // Apply default background and text colors for the style
     const snazzyStyle = getSnazzyStyle(styleId);
-    if (snazzyStyle && snazzyStyle.background && snazzyStyle.textColor) {
-      setUseCustomBackground(false); // Reset to theme default
-      setBackgroundColor(snazzyStyle.background);
-      setTextColor(snazzyStyle.textColor);
+    if (snazzyStyle) {
+      if (snazzyStyle.background && snazzyStyle.textColor) {
+        setUseCustomBackground(false); // Reset to theme default
+        setBackgroundColor(snazzyStyle.background);
+        setTextColor(snazzyStyle.textColor);
+      }
+
+      // Apply default background image if specified
+      if (snazzyStyle.defaultBackgroundImage !== undefined) {
+        setBackgroundImage(snazzyStyle.defaultBackgroundImage);
+      }
+
+      // Apply default background image opacity if specified
+      if (snazzyStyle.defaultBackgroundImageOpacity !== undefined) {
+        setBackgroundImageOpacity(snazzyStyle.defaultBackgroundImageOpacity);
+      }
+
+      // Apply default pin visibility if specified
+      if (snazzyStyle.defaultShowPin !== undefined) {
+        setShowPin(snazzyStyle.defaultShowPin);
+      }
     }
   };
 

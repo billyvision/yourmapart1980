@@ -34,6 +34,9 @@ export interface SnazzyMapStyle {
   background?: string;  // Optimal background color for this style
   textColor?: string;   // Optimal text color for this style
   defaultFeatures?: MapFeatures;  // Default feature toggles for this style
+  defaultBackgroundImage?: 'none' | 'vintage-paper' | 'linen-dark' | 'marble-white' | 'canvas-cream' | 'chalkboard' | 'concrete-blue' | 'paper-gray' | 'crumpled-white';  // Default background texture
+  defaultBackgroundImageOpacity?: number;  // Default background texture opacity (0-100)
+  defaultShowPin?: boolean;  // Default pin visibility
 }
 
 /**
@@ -41,7 +44,347 @@ export interface SnazzyMapStyle {
  * Add new styles here by pasting the JSON from Snazzy Maps
  */
 export const SNAZZY_MAP_STYLES: Record<string, SnazzyMapStyle> = {
-  
+
+  cyanLight: {
+    name: 'Cyan Light',
+    description: 'Light cyan background with dark roads - elegant minimalist cartography',
+    tags: ['light', 'cyan', 'blue', 'elegant', 'minimal', 'sophisticated', 'modern'],
+    background: '#e0f7fa',  // Light cyan background
+    textColor: '#006064',   // Dark cyan text
+    defaultFeatures: {
+      showMapLabels: false,   // OFF - ultra clean
+      showBuildings: false,   // OFF - minimal elegance
+      showParks: false,       // OFF - clean
+      showWater: false,       // OFF - clean minimal
+      showRoads: true         // ON - dark roads
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#e0f7fa'  // Light cyan base
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'  // No labels
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'all',
+        stylers: [
+          {
+            color: '#b2ebf2'  // Lighter cyan land
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#1a1a1a'  // Dark water for contrast
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#263238'  // Dark gray roads
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#1a1a1a'  // Darkest roads (highest contrast)
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#263238'  // Dark gray arterial
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#37474f'  // Medium gray local roads
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      }
+    ]
+  },
+
+  tealLight: {
+    name: 'Teal Light',
+    description: 'Light teal background with dark roads - fresh minimalist cartography',
+    tags: ['light', 'teal', 'green', 'elegant', 'minimal', 'sophisticated', 'fresh'],
+    background: '#e0f2f1',  // Light teal background
+    textColor: '#004d40',   // Dark teal text
+    defaultFeatures: {
+      showMapLabels: false,   // OFF - ultra clean
+      showBuildings: false,   // OFF - minimal elegance
+      showParks: false,       // OFF - clean
+      showWater: false,       // OFF - clean minimal
+      showRoads: true         // ON - dark roads
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#e0f2f1'  // Light teal base
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'  // No labels
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'all',
+        stylers: [
+          {
+            color: '#b2dfdb'  // Lighter teal land
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#1a1a1a'  // Dark water for contrast
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#263238'  // Dark gray roads
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#1a1a1a'  // Darkest roads (highest contrast)
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#263238'  // Dark gray arterial
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#37474f'  // Medium gray local roads
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      }
+    ]
+  },
+
   avocado: {
     name: 'Avocado',
     description: 'A fresh, vibrant green theme inspired by nature and modern design',
@@ -9184,82 +9527,102 @@ export const SNAZZY_MAP_STYLES: Record<string, SnazzyMapStyle> = {
 
   emeraldNight: {
     name: 'Emerald Night',
-    description: 'Vibrant green land with dark water on midnight background - neon minimalist',
-    tags: ['green', 'dark', 'neon', 'night', 'modern', 'minimalist'],
-    background: '#1d1f33',  // Dark midnight blue background
-    textColor: '#F5F5F5',   // Off-white text for better readability
+    description: 'Deep emerald green with white roads on dark background - sophisticated dark theme',
+    tags: ['green', 'dark', 'emerald', 'night', 'modern', 'sophisticated'],
+    background: '#0d1f1a',  // Very dark forest green background
+    textColor: '#ffffff',   // White text
     defaultFeatures: {
-      showMapLabels: false,   // OFF
-      showBuildings: true,    // ON - only buildings
+      showMapLabels: false,   // OFF - clean
+      showBuildings: false,   // OFF - minimal
       showParks: false,       // OFF
-      showWater: true,        // ON - only water
-      showRoads: false        // OFF
+      showWater: false,       // OFF - clean minimal
+      showRoads: true         // ON - white roads
     },
     style: [
       {
         featureType: 'all',
-        elementType: 'labels.text.fill',
-        stylers: [{ color: '#ffffff' }]  // White text labels
+        elementType: 'geometry',
+        stylers: [{ color: '#0d1f1a' }]  // Very dark forest green
       },
       {
         featureType: 'all',
-        elementType: 'labels.text.stroke',
-        stylers: [{ visibility: 'off' }]
-      },
-      {
-        featureType: 'administrative',
-        elementType: 'geometry',
-        stylers: [{ visibility: 'off' }]
+        elementType: 'labels',
+        stylers: [{ visibility: 'off' }]  // No labels
       },
       {
         featureType: 'landscape',
         elementType: 'all',
-        stylers: [{ color: '#27ae60' }]  // Bright green land
-      },
-      {
-        featureType: 'poi',
-        elementType: 'all',
-        stylers: [{ color: '#229954' }]  // Darker green for POIs
-      },
-      {
-        featureType: 'poi.park',
-        elementType: 'geometry',
-        stylers: [{ color: '#229954' }]  // Darker green for parks
-      },
-      {
-        featureType: 'road',
-        elementType: 'geometry',
-        stylers: [{ color: '#2c3e50' }]  // Dark gray roads
-      },
-      {
-        featureType: 'road.highway',
-        elementType: 'geometry',
-        stylers: [{ color: '#2c3e50' }]
-      },
-      {
-        featureType: 'road.arterial',
-        elementType: 'geometry',
-        stylers: [{ color: '#2c3e50' }]
-      },
-      {
-        featureType: 'road.local',
-        elementType: 'geometry',
-        stylers: [{ color: '#34495e' }]  // Slightly lighter for local roads
-      },
-      {
-        featureType: 'transit',
-        elementType: 'all',
-        stylers: [{ visibility: 'simplified' }]
-      },
-      {
-        featureType: 'transit.line',
-        elementType: 'geometry',
-        stylers: [{ color: '#2c3e50' }]
+        stylers: [{ color: '#1a3d2e' }]  // Dark emerald green land
       },
       {
         featureType: 'water',
         elementType: 'geometry',
-        stylers: [{ color: '#1a1a2e' }]  // Dark navy/black water
+        stylers: [{ color: '#0a0a0a' }]  // Very dark water
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels',
+        stylers: [{ visibility: 'off' }]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [{ color: '#f0f0f0' }]  // Light gray roads
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [{ visibility: 'off' }]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [{ color: '#ffffff' }]  // Pure white highways
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [{ visibility: 'off' }]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [{ color: '#f0f0f0' }]  // Light gray arterial
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry.stroke',
+        stylers: [{ visibility: 'off' }]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry',
+        stylers: [{ color: '#d8d8d8' }]  // Medium gray local roads
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry.stroke',
+        stylers: [{ visibility: 'off' }]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'all',
+        stylers: [{ visibility: 'off' }]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [{ visibility: 'off' }]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [{ visibility: 'off' }]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'all',
+        stylers: [{ visibility: 'off' }]
       }
     ]
   },
@@ -10033,6 +10396,2366 @@ export const SNAZZY_MAP_STYLES: Record<string, SnazzyMapStyle> = {
         stylers: [
           {
             visibility: 'off'
+          }
+        ]
+      }
+    ]
+  },
+
+  charcoalElegance: {
+    name: 'Charcoal Elegance',
+    description: 'Elegant dark charcoal theme with warm gray roads - sophisticated and minimal',
+    tags: ['dark', 'charcoal', 'elegant', 'minimal', 'sophisticated', 'architectural'],
+    background: '#2e2e2e',  // Dark charcoal background
+    textColor: '#c4b5a0',   // Warm tan/beige text matching roads
+    defaultFeatures: {
+      showMapLabels: false,   // OFF - clean minimal look
+      showBuildings: false,   // OFF - architectural simplicity
+      showParks: false,       // OFF - minimal design
+      showWater: true,        // ON - subtle dark water
+      showRoads: true         // ON - prominent warm gray roads
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#2e2e2e'  // Dark charcoal base
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#c4b5a0'  // Warm tan text
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.text.stroke',
+        stylers: [
+          {
+            color: '#2e2e2e'  // Dark halo
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'all',
+        stylers: [
+          {
+            color: '#2e2e2e'  // Dark charcoal land
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#1f2429'  // Very dark navy/black water
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#c4b5a0'  // Warm tan/beige roads
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#c4b5a0'  // Same color - unified road appearance
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'  // No stroke for clean look
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#c4b5a0'  // Same unified road color
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#c4b5a0'  // Same unified road color
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'  // No street labels
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'  // Hide POIs
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [
+          {
+            visibility: 'off'  // Hide parks
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'  // Hide transit
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            color: '#3a3a3a',  // Subtle boundaries
+            visibility: 'on'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'  // Clean, no admin labels
+          }
+        ]
+      }
+    ]
+  },
+
+  crimsonNetwork: {
+    name: 'Crimson Network',
+    description: 'Dark urban network with crimson highways and gray streets - dramatic infrastructure visualization',
+    tags: ['dark', 'red', 'crimson', 'network', 'urban', 'dramatic', 'modern'],
+    background: '#2b2b2b',  // Dark charcoal background
+    textColor: '#ffffff',   // White text for high contrast
+    defaultFeatures: {
+      showMapLabels: true,    // ON - white labels for context
+      showBuildings: false,   // OFF - focus on network
+      showParks: false,       // OFF - clean urban focus
+      showWater: true,        // ON - very subtle dark water
+      showRoads: true         // ON - two-tier road system
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#2b2b2b'  // Dark background base
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#ffffff'  // White text
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.text.stroke',
+        stylers: [
+          {
+            color: '#2b2b2b',  // Dark text halo
+            visibility: 'on'
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'all',
+        stylers: [
+          {
+            color: '#2b2b2b'  // Dark land
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#1e1e1e'  // Very dark water (subtle)
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#ffffff'
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels.text.stroke',
+        stylers: [
+          {
+            color: '#1e1e1e'
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#e53935'  // Bright crimson red for highways
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'  // No stroke for clean look
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#ffffff'
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'labels.text.stroke',
+        stylers: [
+          {
+            color: '#2b2b2b'
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#d32f2f'  // Slightly darker red for arterial roads
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#ffffff'
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'labels.text.stroke',
+        stylers: [
+          {
+            color: '#2b2b2b'
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#6b6b6b'  // Light gray for local streets (grid pattern)
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'simplified'  // Simplified labels for local roads
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#ffffff'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'labels.text.stroke',
+        stylers: [
+          {
+            color: '#2b2b2b'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'  // Hide POIs
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [
+          {
+            visibility: 'off'  // Hide parks
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'  // Hide transit
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            color: '#3a3a3a',  // Subtle boundaries
+            visibility: 'on'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#ffffff'  // White admin labels
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'labels.text.stroke',
+        stylers: [
+          {
+            color: '#2b2b2b'
+          }
+        ]
+      }
+    ]
+  },
+
+  matrixGreen: {
+    name: 'Matrix Green',
+    description: 'Neon green matrix-style network on black - cyber tech aesthetic',
+    tags: ['dark', 'green', 'neon', 'matrix', 'cyber', 'tech', 'futuristic'],
+    background: '#0a1a0a',  // Very dark green/black
+    textColor: '#39ff14',   // Bright neon green
+    defaultFeatures: {
+      showMapLabels: true,    // ON - bright green labels
+      showBuildings: false,   // OFF - clean network
+      showParks: false,       // OFF - minimal
+      showWater: true,        // ON - very dark
+      showRoads: true         // ON - neon green network
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#0a1a0a'  // Very dark green/black base
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#39ff14'  // Bright neon green text
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.text.stroke',
+        stylers: [
+          {
+            color: '#0a1a0a',  // Dark halo
+            visibility: 'on'
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'all',
+        stylers: [
+          {
+            color: '#0d1f0d'  // Dark green land
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#0a1a0a'  // Very dark water (barely visible)
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#39ff14'
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#39ff14'  // Bright neon green highways
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#00ff00'  // Bright green arterial
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#228b22'  // Medium forest green for local
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            color: '#1a3a1a',
+            visibility: 'on'
+          }
+        ]
+      }
+    ]
+  },
+
+  pureContrast: {
+    name: 'Pure Contrast',
+    description: 'Extreme black and white - water and roads in white, land in black',
+    tags: ['black', 'white', 'minimal', 'contrast', 'abstract', 'artistic', 'figure-ground'],
+    background: '#000000',  // Pure black
+    textColor: '#ffffff',   // Pure white
+    defaultFeatures: {
+      showMapLabels: false,   // OFF - ultra minimal
+      showBuildings: false,   // OFF - abstract
+      showParks: false,       // OFF - minimal
+      showWater: true,        // ON - pure white
+      showRoads: true         // ON - white lines
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#000000'  // Pure black base
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'  // No labels for ultra minimal
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'all',
+        stylers: [
+          {
+            color: '#000000'  // Black land
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#ffffff'  // Pure white water (inverted)
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#ffffff'  // White roads
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#ffffff'  // White highways
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#ffffff'  // White arterial
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#ffffff'  // White local roads
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#ffffff',  // White POI blobs
+            visibility: 'on'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      }
+    ]
+  },
+
+  deepCyan: {
+    name: 'Deep Cyan',
+    description: 'Futuristic cyan network on dark navy - tech navigation aesthetic',
+    tags: ['dark', 'cyan', 'blue', 'teal', 'futuristic', 'tech', 'navigation'],
+    background: '#0a1420',  // Very dark navy/black
+    textColor: '#00d4ff',   // Bright cyan
+    defaultFeatures: {
+      showMapLabels: false,   // OFF - clean minimal
+      showBuildings: false,   // OFF - network focus
+      showParks: false,       // OFF - minimal
+      showWater: true,        // ON - very dark
+      showRoads: true         // ON - cyan network
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#0a1420'  // Very dark navy base
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#ffffff'  // White text
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.text.stroke',
+        stylers: [
+          {
+            color: '#0a1420',  // Dark halo
+            visibility: 'on'
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'all',
+        stylers: [
+          {
+            color: '#0d1824'  // Dark navy land
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#0a1420'  // Very dark water
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#00d4ff'  // Cyan water labels
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#00d4ff'  // Bright cyan highways
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#ffffff'
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#00bfff'  // Bright cyan arterial
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#2a5d6c'  // Dark teal local roads
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            color: '#1a3a4a',
+            visibility: 'on'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#ffffff'
+          }
+        ]
+      }
+    ]
+  },
+
+  emeraldClassic: {
+    name: 'Emerald Classic',
+    description: 'Sophisticated deep teal with white roads and water - elegant vintage cartography',
+    tags: ['dark', 'teal', 'green', 'elegant', 'vintage', 'sophisticated', 'classic'],
+    background: '#1a4d4d',  // Deep teal/emerald green
+    textColor: '#ffffff',   // Pure white
+    defaultFeatures: {
+      showMapLabels: false,   // OFF - ultra clean
+      showBuildings: false,   // OFF - minimal elegance
+      showParks: false,       // OFF - clean
+      showWater: false,       // OFF - clean minimal
+      showRoads: true         // ON - white roads
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#1a4d4d'  // Deep teal base
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'  // No labels for clean look
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'all',
+        stylers: [
+          {
+            color: '#2d5f5f'  // Rich emerald teal land
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#ffffff'  // Bright white water (inverted/prominent)
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#f5f5f5'  // Off-white roads
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'  // No stroke for clean look
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#ffffff'  // Pure white highways (most prominent)
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#f5f5f5'  // Off-white arterial
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#e8e8e8'  // Light gray local roads (subtle grid)
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'  // Hide POIs
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [
+          {
+            visibility: 'off'  // Hide parks
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'  // Hide transit
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'  // Clean, no admin features
+          }
+        ]
+      }
+    ]
+  },
+
+  shockingPink: {
+    name: 'Shocking Pink',
+    description: 'Bold vibrant magenta pink with white roads and water - modern statement piece',
+    tags: ['pink', 'magenta', 'bold', 'vibrant', 'modern', 'feminine', 'bright'],
+    background: '#b8336a',  // Deep magenta pink
+    textColor: '#ffffff',   // Pure white
+    defaultFeatures: {
+      showMapLabels: false,   // OFF - ultra clean
+      showBuildings: false,   // OFF - minimal bold
+      showParks: false,       // OFF - clean
+      showWater: false,       // OFF - clean minimal
+      showRoads: true         // ON - white roads
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#b8336a'  // Deep magenta pink base
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'  // No labels
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'all',
+        stylers: [
+          {
+            color: '#c94277'  // Rich vibrant pink land
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#ffffff'  // Bright white water
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#f5f5f5'  // Off-white roads
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#ffffff'  // Pure white highways
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#f5f5f5'  // Off-white arterial
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#e8e8e8'  // Light gray local roads
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      }
+    ]
+  },
+
+  vibrantOrange: {
+    name: 'Vibrant Orange',
+    description: 'Bold bright orange with white roads and water - energetic modern aesthetic',
+    tags: ['orange', 'bold', 'vibrant', 'modern', 'energetic', 'bright', 'warm'],
+    background: '#d95a28',  // Deep vibrant orange
+    textColor: '#ffffff',   // Pure white
+    defaultFeatures: {
+      showMapLabels: false,   // OFF - ultra clean
+      showBuildings: false,   // OFF - minimal bold
+      showParks: false,       // OFF - clean
+      showWater: false,       // OFF - clean minimal
+      showRoads: true         // ON - white roads
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#d95a28'  // Deep vibrant orange base
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'  // No labels
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'all',
+        stylers: [
+          {
+            color: '#e56b38'  // Rich bright orange land
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#ffffff'  // Bright white water
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#f5f5f5'  // Off-white roads
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#ffffff'  // Pure white highways
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#f5f5f5'  // Off-white arterial
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#e8e8e8'  // Light gray local roads
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      }
+    ]
+  },
+
+  vibrantYellow: {
+    name: 'Vibrant Yellow',
+    description: 'Bold bright yellow with dark contrast roads - sunny energetic aesthetic',
+    tags: ['yellow', 'bold', 'vibrant', 'modern', 'energetic', 'bright', 'sunny'],
+    background: '#ffd700',  // Gold yellow background
+    textColor: '#1a1a1a',   // Dark text for contrast
+    defaultFeatures: {
+      showMapLabels: false,   // OFF - ultra clean
+      showBuildings: false,   // OFF - minimal bold
+      showParks: false,       // OFF - clean
+      showWater: false,       // OFF - clean minimal
+      showRoads: true         // ON - dark contrast roads
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#ffd700'  // Gold yellow base
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'  // No labels
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'all',
+        stylers: [
+          {
+            color: '#ffdf00'  // Bright yellow land
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#1a1a1a'  // Dark water for contrast
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#333333'  // Dark gray roads for contrast
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#1a1a1a'  // Dark highways (highest contrast)
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#2a2a2a'  // Dark arterial
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#404040'  // Medium gray local roads
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      }
+    ]
+  },
+
+  electricCyan: {
+    name: 'Electric Cyan',
+    description: 'Bright electric cyan roads on pure black - TRON-inspired tech aesthetic',
+    tags: ['dark', 'cyan', 'aqua', 'electric', 'tech', 'tron', 'futuristic', 'minimal'],
+    background: '#000000',  // Pure black
+    textColor: '#00ffff',   // Bright cyan
+    defaultFeatures: {
+      showMapLabels: false,   // OFF - ultra minimal
+      showBuildings: false,   // OFF - clean tech
+      showParks: false,       // OFF - minimal
+      showWater: false,       // OFF - pure road network
+      showRoads: true         // ON - electric cyan roads
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#000000'  // Pure black base
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'  // No labels
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'all',
+        stylers: [
+          {
+            color: '#000000'  // Pure black land
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#0a0a0a'  // Very dark water (barely visible)
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#00e5e5'  // Bright cyan roads
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#00ffff'  // Electric cyan highways (brightest)
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#00e5e5'  // Bright cyan arterial
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#00cccc'  // Slightly darker cyan for local roads
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      }
+    ]
+  },
+
+  crimsonBlack: {
+    name: 'Crimson Black',
+    description: 'Bold red roads on pure black - dramatic high-contrast network',
+    tags: ['dark', 'red', 'black', 'dramatic', 'bold', 'network', 'modern'],
+    background: '#000000',  // Pure black
+    textColor: '#fbc6cb',   // Soft pink
+    defaultFeatures: {
+      showMapLabels: false,   // OFF - no street names
+      showBuildings: false,   // OFF - clean network
+      showParks: false,       // OFF - minimal
+      showWater: false,       // OFF - pure road focus
+      showRoads: true         // ON - red roads
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#000000'  // Pure black base
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'  // No labels
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'all',
+        stylers: [
+          {
+            color: '#000000'  // Pure black land
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#000000'  // Black water (invisible)
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#dc143c'  // Crimson red roads
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#ff0000'  // Bright red highways (most prominent)
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#dc143c'  // Crimson arterial
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#b22222'  // Darker red for local roads
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      }
+    ]
+  },
+
+  treasureMap: {
+    name: 'Treasure Map',
+    description: 'Vintage aged parchment map with sepia tones - nostalgic adventure aesthetic',
+    tags: ['vintage', 'treasure', 'parchment', 'sepia', 'aged', 'adventure', 'nostalgic'],
+    background: '#e5d4b8',  // Aged parchment tan
+    textColor: '#5a4a3a',   // Dark brown text
+    defaultFeatures: {
+      showMapLabels: true,    // ON - authentic old map feel
+      showBuildings: false,   // OFF - clean vintage
+      showParks: false,       // OFF - minimal
+      showWater: true,        // ON - light sandy color
+      showRoads: true         // ON - brown roads
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#d4b896'  // Aged parchment base
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#5a4a3a'  // Dark brown text
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.text.stroke',
+        stylers: [
+          {
+            color: '#e5d4b8',  // Light parchment halo
+            visibility: 'on'
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'all',
+        stylers: [
+          {
+            color: '#e5d4b8'  // Light parchment land
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#f5e6c8'  // Light sandy/cream water
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#6b5a4a'  // Medium brown for water labels
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels.text.stroke',
+        stylers: [
+          {
+            color: '#f5e6c8'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#9b8265'  // Brown/tan roads
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#8b7355'  // Darker brown highways
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#5a4a3a'
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#9b8265'  // Medium brown arterial
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#a89276'  // Light brown local roads
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            color: '#b5a38a',  // Subtle brown boundaries
+            visibility: 'on'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#5a4a3a'  // Dark brown admin labels
+          }
+        ]
+      }
+    ]
+  },
+
+  treasureMapII: {
+    name: 'Treasure Map II',
+    description: 'Vintage aged parchment map with crumpled texture overlay - enhanced nostalgic adventure aesthetic',
+    tags: ['vintage', 'treasure', 'parchment', 'sepia', 'aged', 'adventure', 'nostalgic', 'textured'],
+    background: '#e5d4b8',  // Aged parchment tan
+    textColor: '#5a4a3a',   // Dark brown text
+    defaultBackgroundImage: 'crumpled-white',  // Crumpled white texture
+    defaultBackgroundImageOpacity: 35,  // 35% opacity
+    defaultShowPin: false,  // No pin by default
+    defaultFeatures: {
+      showMapLabels: true,    // ON - authentic old map feel
+      showBuildings: false,   // OFF - clean vintage
+      showParks: false,       // OFF - minimal
+      showWater: true,        // ON - light sandy color
+      showRoads: true         // ON - brown roads
+    },
+    style: [
+      {
+        featureType: 'all',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#d4b896'  // Aged parchment base
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#5a4a3a'  // Dark brown text
+          }
+        ]
+      },
+      {
+        featureType: 'all',
+        elementType: 'labels.text.stroke',
+        stylers: [
+          {
+            color: '#e5d4b8',  // Light parchment halo
+            visibility: 'on'
+          }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'all',
+        stylers: [
+          {
+            color: '#e5d4b8'  // Light parchment land
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#f5e6c8'  // Light sandy/cream water
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#6b5a4a'  // Medium brown for water labels
+          }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels.text.stroke',
+        stylers: [
+          {
+            color: '#f5e6c8'
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#9b8265'  // Brown/tan roads
+          }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#8b7355'  // Darker brown highways
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#5a4a3a'
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#9b8265'  // Medium brown arterial
+          }
+        ]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry',
+        stylers: [
+          {
+            color: '#a89276'  // Light brown local roads
+          }
+        ]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'all',
+        stylers: [
+          {
+            visibility: 'off'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'geometry.stroke',
+        stylers: [
+          {
+            color: '#b5a38a',  // Subtle brown boundaries
+            visibility: 'on'
+          }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'labels.text.fill',
+        stylers: [
+          {
+            color: '#5a4a3a'  // Dark brown admin labels
           }
         ]
       }
